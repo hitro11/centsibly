@@ -1,3 +1,4 @@
+import { LoginService } from './../../../login/services/login.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,10 +17,15 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 export class HeaderComponent {
   logo = 'img/logo.jpg';
   themeService: ThemeService = inject(ThemeService);
+  loginService: LoginService = inject(LoginService);
 
 
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  login() {
+    this.loginService.redirectToReddit();
   }
   
 }

@@ -1,0 +1,17 @@
+<mat-toolbar>
+  <img class="header-logo" [src]="logo" />
+  <span class="flexExpand"></span>
+  <span class="">
+    @if (themeService.getTheme() === 'dark-theme') {
+    <mat-icon>bedtime</mat-icon>
+    } @else {
+    <mat-icon>brightness_5</mat-icon>
+    }
+    <mat-slide-toggle
+      class=""
+      checked
+      (click)="toggleTheme()"
+    ></mat-slide-toggle>
+  </span>
+  <button mat-flat-button>Log in</button>
+</mat-toolbar>

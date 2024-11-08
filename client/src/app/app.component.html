@@ -1,1 +1,8 @@
-<button mat-flat-button color="primary">Basic</button>
+<div [ngClass]="themeService.themeSignal()">
+  <app-header></app-header>
+  <div class="content">
+    <h1>Hello, rSlash</h1>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

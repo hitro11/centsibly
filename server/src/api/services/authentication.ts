@@ -8,5 +8,5 @@ export async function redirectToLogin() {
     const scope = 'identity';
     const url = `${REDDIT_API_HOST}/v1/authorize?client_id=${process.env.REDDIT_OAUTH_CLIENT_ID}&response_type=code&state=${state}&redirect_uri=${REDDIT_OAUTH_REDIRECT_URI}&duration=temporary&scope=${scope}`
     logger.debug(url);
-    return;
+    return url;
 }

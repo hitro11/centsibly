@@ -1,11 +1,11 @@
-import { LoginService } from './../../../login/services/login.service';
+import { LoginService } from '../../../login/services/login';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeService } from '../../services/theme.service';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-header',
@@ -27,5 +27,5 @@ export class HeaderComponent {
   login() {
     this.loginService.redirectToReddit();
   }
-  
+
 }

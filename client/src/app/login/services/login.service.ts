@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { Injectable } from '@angular/core';
 
@@ -5,14 +6,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LoginService {
-  private scope = 'identity';
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
-  redirectToReddit() {
-    const state = Math.random().toString(36).substr(2, 5);
-    const url = `${environment.redditOauthUrl}/v1/authorize?client_id=id&response_type=code&state=${state}&redirect_uri=${environment.redditOauthRedirectUri}&duration=temporary&scope=${this.scope}`
-    console.log(url);
+  async redirectToReddit() {
+    await this.httpClient.get(`${environment.apiUrl}/login`);
   }
 }
- 

@@ -1,10 +1,12 @@
 {
   "name": "r-slash",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/app.ts",
+  "type": "module",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch --clear-screen=false src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

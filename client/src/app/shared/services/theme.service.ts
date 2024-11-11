@@ -8,7 +8,6 @@ export class ThemeService {
 
   toggleTheme() {
     this.themeSignal.update((value) => value === 'dark-theme' ? 'light-theme' : 'dark-theme');
-    console.log(this.themeSignal());
   }
 
   getTheme(): string {

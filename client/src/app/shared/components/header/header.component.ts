@@ -1,4 +1,4 @@
-import { LoginService } from '../../../login/services/login';
+import { LoginService } from '../../../login/services/login.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';

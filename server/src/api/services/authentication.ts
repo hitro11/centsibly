@@ -11,12 +11,12 @@ const state = Math.random().toString(36).substr(2, 5)
 const scope =
   'subscribe,vote,mysubreddits,submit,read,save,privatemessages,report,identity,account,wikiedit,wikiread,edit,modself,flair,history,'
 
-export async function redirectToLogin() {
+export async function getOauthCodeUrl() {
   const url = `${REDDIT_API_HOST}/v1/authorize?client_id=${process.env.REDDIT_OAUTH_CLIENT_ID}&response_type=code&state=${state}&redirect_uri=${REDDIT_OAUTH_REDIRECT_URI}&duration=permanent&scope=${scope}`
   return url
 }
 
-export async function generateAccessTokenInfoService(
+export async function generateAccessTokenInfo(
   code: string,
   state: string,
 ) {
@@ -30,7 +30,7 @@ export async function generateAccessTokenInfoService(
   return { url, body }
 }
 
-export async function getAccessTokenService(
+export async function getAccessToken(
   url: string,
   body: { grant_type: string; code: string; redirect_uri: string },
 ) {

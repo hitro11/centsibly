@@ -1,4 +1,4 @@
-import { LoginService } from '../../../login/services/login.service';
+import { AuthenticationService } from '../../../login/services/authentication.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,22 +10,30 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, MatSlideToggleModule],
+  imports: [
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+    MatSlideToggleModule,
+  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   logo = 'img/logo.jpg';
   themeService: ThemeService = inject(ThemeService);
-  loginService: LoginService = inject(LoginService);
-
+  authenticationService: AuthenticationService = inject(AuthenticationService);
 
   toggleTheme() {
     this.themeService.toggleTheme();
   }
 
   login() {
-    this.loginService.redirectToReddit();
+    this.authenticationService.redirectToReddit();
   }
 
+  logout() {
+    this.authenticationService.logout();
+  }
 }

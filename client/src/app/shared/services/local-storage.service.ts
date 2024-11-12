@@ -10,8 +10,8 @@ export class LocalStorageService {
     window.localStorage.setItem(key, JSON.stringify(value));
   }
 
-  get(key: any): unknown | -1 {
+  get(key: any): any | null {
     const stringifiedValue = window.localStorage.getItem(key);
-    return stringifiedValue ? JSON.parse(stringifiedValue) : -1;
+    return stringifiedValue ? JSON.parse(stringifiedValue) : null;
   }
 }

@@ -8,9 +8,11 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
+export class AuthenticationService {
   private localStorageService: LocalStorageService =
     inject(LocalStorageService);
+
+  private authTokenLocalStorageKey = 'access_token';
 
   constructor(private http: HttpClient) {}
 
@@ -31,6 +33,16 @@ export class LoginService {
   }
 
   storeAccessToken(authToken: AuthToken): void {
-    this.localStorageService.set('access_token', authToken);
+    authToken.expiry = Date.now() + authToken.expires_in;
+    this.localStorageService.set(this.authTokenLocalStorageKey, authToken);
   }
+
+  isUserLoggedIn(): boolean {
+    const authToken: AuthToken | null = this.localStorageService.get(
+      this.authTokenLocalStorageKey,
+    );
+    return (authToken?.expiry ?? 0) > Date.now() ? true : false;
+  }
+
+  logout(): void {}
 }

@@ -14,4 +14,8 @@ export class LocalStorageService {
     const stringifiedValue = window.localStorage.getItem(key);
     return stringifiedValue ? JSON.parse(stringifiedValue) : null;
   }
+
+  delete(key: any): void {
+    window.localStorage.removeItem(key);
+  }
 }

@@ -1,21 +1,13 @@
 <mat-toolbar>
   <img class="header-logo" [src]="logo" />
   <span class="flexExpand"></span>
-  @if (authenticationService.isUserLoggedIn()) {
-    <button class="mr-6 scale-90" mat-flat-button (click)="logout()">
-      Log out
-    </button>
-  } @else {
-    <button class="mr-6 scale-90" mat-flat-button (click)="login()">
-      Log in
-    </button>
-  }
+  <button class="mr-6 scale-90" mat-flat-button (click)="toggleLoginLogout()">
+    {{ isUserLoggedIn() ? 'Sign Out' : 'Sign In' }}
+  </button>
   <div class="-mr-2 mt-2">
-    @if (themeService.getTheme() === 'dark-theme') {
-      <mat-icon>bedtime</mat-icon>
-    } @else {
-      <mat-icon>brightness_5</mat-icon>
-    }
+    <mat-icon>{{
+      themeService.getTheme() === 'dark-theme' ? 'bedtime' : 'brightness_5'
+    }}</mat-icon>
   </div>
   <div class="scale-75">
     <mat-slide-toggle

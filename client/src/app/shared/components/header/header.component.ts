@@ -5,6 +5,7 @@ import {
   inject,
   OnChanges,
   OnInit,
+  Signal,
   SimpleChanges,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,25 +27,19 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnChanges {
+export class HeaderComponent {
   logo = 'img/logo.jpg';
   themeService: ThemeService = inject(ThemeService);
-  authenticationService: AuthenticationService = inject(AuthenticationService);
-  isUserLoggedIn: boolean = false;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
-  }
+  authService: AuthenticationService = inject(AuthenticationService);
+  isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
 
   toggleTheme() {
     this.themeService.toggleTheme();
   }
 
-  login() {
-    this.authenticationService.redirectToReddit();
-  }
-
-  logout() {
-    this.authenticationService.logout();
+  async toggleLoginLogout() {
+    this.isUserLoggedIn()
+      ? await this.authService.logout()
+      : await this.authService.startOauthLogin();
   }
 }

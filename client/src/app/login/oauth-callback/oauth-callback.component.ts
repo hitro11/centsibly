@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
-import { AuthToken } from '../../shared/models/AuthToken';
+import { AuthToken } from '../../shared/models/AccessToken';
 
 @Component({
   selector: 'app-oauth-callback',
@@ -18,8 +18,16 @@ export class OauthCallbackComponent implements OnInit {
     const callbackUrl = new URL(window.location.href);
     const state = callbackUrl.searchParams.get('state') ?? '';
     const code = callbackUrl.searchParams.get('code') ?? '';
-    const authToken = await this.loginService.getAccessToken(code, state);
-    this.loginService.storeAccessToken(authToken);
-    this.router.navigate(['/home']);
+    const authToken = await this.loginService.getAccessTokenFromOauth(
+      code,
+      state,
+    );
+
+    if (authToken) {
+      this.loginService.setAccessToken(authToken);
+      this.router.navigate(['/home']);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

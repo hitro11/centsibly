@@ -48,10 +48,22 @@ export async function getAccessToken(
   return data
 }
 
-export function storeOauthTokenInfo(token: {
-  access_token: string
-  token_type: 'bearer'
-  expires_in: number
-  refresh_token: string
-  scope: string
-}) {}
+export async function refreshAccessToken(
+  refreshToken: string,
+) {
+  const { data } = await axios({
+    url: `${REDDIT_API_HOST}/v1/access_token`,
+    method: 'post',
+    data: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    auth: {
+      username: process.env.REDDIT_OAUTH_CLIENT_ID ?? '',
+      password: process.env.REDDIT_OAUTH_SECRET_ID ?? '',
+    },
+  })
+
+  return data;
+}
+
+
+

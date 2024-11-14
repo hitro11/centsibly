@@ -1,8 +1,4 @@
-<div [ngClass]="themeService.themeSignal()">
+<div class="content" [ngClass]="themeService.themeSignal()">
   <app-header></app-header>
-  <div class="content mt-4">
-    <h1 class="mt-4 text-2xl font-bold underline">hello, reddit!</h1>
-  </div>
+  <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>

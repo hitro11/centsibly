@@ -2,6 +2,7 @@ import { AuthenticationService } from '../../../login/services/authentication.se
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  effect,
   inject,
   OnChanges,
   OnInit,
@@ -34,10 +35,7 @@ export class HeaderComponent {
   themeService: ThemeService = inject(ThemeService);
   authService: AuthenticationService = inject(AuthenticationService);
   isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
-
-  toggleTheme() {
-    this.themeService.toggleTheme();
-  }
+  theme: Signal<'dark-theme' | 'light-theme'> = this.themeService.getTheme();
 
   async toggleLoginLogout() {
     this.isUserLoggedIn()

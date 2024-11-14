@@ -1,6 +1,4 @@
-<mat-icon [matMenuTriggerFor]="menu" class="mt-2 scale-150 hover:cursor-pointer"
-  >account_circle</mat-icon
->
+<mat-icon [matMenuTriggerFor]="menu" class="mt-2 scale-150 hover:cursor-pointer">account_circle</mat-icon>
 
 <mat-menu class="w-[10rem]" #menu="matMenu">
   <button mat-menu-item>
@@ -9,14 +7,9 @@
   </button>
 
   <button mat-menu-item (click)="$event.stopPropagation()">
-    <mat-icon>{{
-      themeService.getTheme() === 'dark-theme' ? 'bedtime' : 'brightness_5'
-    }}</mat-icon>
-    <mat-slide-toggle
-      class="-mt-2 ml-2 scale-75"
-      checked
-      (click)="toggleTheme($event)"
-    ></mat-slide-toggle>
+    <mat-icon>bedtime</mat-icon>
+    <mat-slide-toggle class="-mt-2 ml-2 scale-75" [checked]="this.theme() === 'dark-theme'"
+      (click)="toggleTheme($event)"></mat-slide-toggle>
   </button>
 
   <button mat-menu-item (click)="authService.logout()">

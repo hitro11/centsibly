@@ -1,17 +1,16 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, Signal, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
   overlay;
+  themeSignal = signal<'dark-theme' | 'light-theme'>('dark-theme');
 
   constructor(private overlayContainer: OverlayContainer) {
     this.overlay = overlayContainer.getContainerElement();
   }
-
-  themeSignal = signal<'dark-theme' | 'light-theme'>('dark-theme');
 
   toggleTheme() {
     if (this.overlay.classList.contains('dark-theme')) {
@@ -29,7 +28,7 @@ export class ThemeService {
     );
   }
 
-  getTheme(): string {
-    return this.themeSignal();
+  getTheme(): Signal<'dark-theme' | 'light-theme'> {
+    return this.themeSignal.asReadonly();
   }
 }

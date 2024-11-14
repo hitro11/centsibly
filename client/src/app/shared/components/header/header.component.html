@@ -4,19 +4,19 @@
   <button class="mr-6 scale-90" mat-flat-button (click)="toggleLoginLogout()">
     {{ isUserLoggedIn() ? 'Sign Out' : 'Sign In' }}
   </button>
+  @if (isUserLoggedIn()) {
   <div class="-mr-2 mt-2">
-    <mat-icon>{{
-      themeService.getTheme() === 'dark-theme' ? 'bedtime' : 'brightness_5'
-    }}</mat-icon>
+    <mat-icon>bedtime</mat-icon>
   </div>
   <div class="scale-75">
-    <mat-slide-toggle
-      class="ml-2"
-      checked
-      (click)="toggleTheme()"
-    ></mat-slide-toggle>
+    <mat-slide-toggle class="ml-2" [checked]="this.theme() === 'dark-theme'"
+      (click)="themeService.toggleTheme()"></mat-slide-toggle>
   </div>
+  }
+
+  @if (isUserLoggedIn()) {
   <div class="ml-4 mr-2">
     <app-header-profile-dropdown></app-header-profile-dropdown>
   </div>
+  }
 </mat-toolbar>

@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 export class HeaderProfileDropdownComponent {
   authService = inject(AuthenticationService);
   themeService = inject(ThemeService);
+  theme = this.themeService.getTheme();
 
   toggleTheme($event: Event): void {
     $event.stopPropagation();

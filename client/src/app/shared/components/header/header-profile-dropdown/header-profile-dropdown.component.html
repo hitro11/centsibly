@@ -8,18 +8,18 @@
     Profile
   </button>
 
-  <button (click)="$event.stopPropagation()" class="ml-3">
-    <mat-icon class="">{{
+  <button mat-menu-item (click)="$event.stopPropagation()">
+    <mat-icon>{{
       themeService.getTheme() === 'dark-theme' ? 'bedtime' : 'brightness_5'
     }}</mat-icon>
     <mat-slide-toggle
-      class="-mt-2 ml-2 scale-75 scale-x-90"
+      class="-mt-2 ml-2 scale-75"
       checked
       (click)="toggleTheme($event)"
     ></mat-slide-toggle>
   </button>
 
-  <button mat-menu-item (onclick)="authService.logout()">
+  <button mat-menu-item (click)="authService.logout()">
     <mat-icon>logout</mat-icon>
     Logout
   </button>

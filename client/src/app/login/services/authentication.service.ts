@@ -61,7 +61,6 @@ export class AuthenticationService {
   async refreshAndSetAccessToken(
     accessToken: AccessToken | null,
   ): Promise<void> {
-    console.log('refreshAndSetAccessToken()');
     if (!accessToken) {
       console.error('no access token present');
       return;
@@ -96,8 +95,6 @@ export class AuthenticationService {
         `${environment.apiUrl}/auth/get-access-token?code=${code}&state=${state}`,
       ),
     );
-
-    console.log('handleOauthRedirectBack(): token: ', accessToken);
 
     if (accessToken) {
       this.setAccessToken(accessToken);

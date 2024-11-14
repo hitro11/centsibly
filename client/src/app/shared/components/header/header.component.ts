@@ -37,9 +37,7 @@ export class HeaderComponent {
   isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
   theme: Signal<'dark-theme' | 'light-theme'> = this.themeService.getTheme();
 
-  async toggleLoginLogout() {
-    this.isUserLoggedIn()
-      ? await this.authService.logout()
-      : await this.authService.startOauthLogin();
+  async signIn() {
+    await this.authService.startOauthLogin();
   }
 }

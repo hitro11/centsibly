@@ -1,9 +1,9 @@
-import { logger } from "../../config/logger";
+import { logger } from "../../config/logger.js";
 import {
   getAccessTokenController,
   getOauthRedirectUriController,
   refreshAccessTokenController,
-} from "../controllers/auth";
+} from "../controllers/auth.js";
 import { Router, Request, Response } from "express";
 
 const loginRoutes = Router();

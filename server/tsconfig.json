@@ -1,6 +1,6 @@
 {
   "include": [
-    "src/**/*, ./environment.d.ts"
+    "src/**/*", "./environment.d.ts"
   ],
   "compilerOptions": {
     "module": "NodeNext",

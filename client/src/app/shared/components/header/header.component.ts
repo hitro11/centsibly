@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeService } from '../../services/theme.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { HeaderProfileDropdownComponent } from './header-profile-dropdown/header-profile-dropdown.component';
 
 @Component({
   selector: 'app-header',
@@ -23,6 +24,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatIconModule,
     CommonModule,
     MatSlideToggleModule,
+    HeaderProfileDropdownComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

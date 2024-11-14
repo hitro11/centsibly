@@ -1,4 +1,4 @@
-@import "./styles/themes.scss";
+@import './styles/themes.scss';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,5 +9,5 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }

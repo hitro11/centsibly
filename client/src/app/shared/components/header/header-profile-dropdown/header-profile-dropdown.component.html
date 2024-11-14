@@ -1,0 +1,26 @@
+<mat-icon [matMenuTriggerFor]="menu" class="mt-2 scale-150 hover:cursor-pointer"
+  >account_circle</mat-icon
+>
+
+<mat-menu class="w-[10rem]" #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    Profile
+  </button>
+
+  <button (click)="$event.stopPropagation()" class="ml-3">
+    <mat-icon class="">{{
+      themeService.getTheme() === 'dark-theme' ? 'bedtime' : 'brightness_5'
+    }}</mat-icon>
+    <mat-slide-toggle
+      class="-mt-2 ml-2 scale-75 scale-x-90"
+      checked
+      (click)="toggleTheme($event)"
+    ></mat-slide-toggle>
+  </button>
+
+  <button mat-menu-item (onclick)="authService.logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>

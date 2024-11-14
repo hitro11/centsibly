@@ -81,7 +81,7 @@ export class AuthenticationService {
   }
 
   async logout(): Promise<void> {
-    console.log('logout()');
+    console.log('good bye!');
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.deleteAccessToken();
     this.isLoggedInSignal.set(false);

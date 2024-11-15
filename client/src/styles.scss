@@ -1,7 +1,8 @@
-@import "./styles/themes.scss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+$light-color: #474747;
 
 html,
 body {
@@ -9,5 +10,5 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }

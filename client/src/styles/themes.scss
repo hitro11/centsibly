@@ -1,6 +1,7 @@
 // angular material
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 @include mat.core();
+mat.$theme-ignore-duplication-warnings: true;
 
 $dark-theme: mat.define-theme(
   (
@@ -20,18 +21,9 @@ $light-theme: mat.define-theme(
   )
 );
 
-$dark-bg-color: rgb(15, 15, 15);
-$dark-color: rgb(219, 219, 219);
-
 .dark-theme {
-  @include mat.all-component-colors($dark-theme);
-  //   @include mat.core-theme($dark-theme);
-  //   @include mat.button-theme($dark-theme);
-  background-color: $dark-bg-color !important;
-  color: $dark-color !important;
+  @include mat.all-component-themes($dark-theme);
 }
 .light-theme {
-  @include mat.all-component-colors($light-theme);
-  @include mat.core-theme($light-theme);
-  @include mat.button-theme($light-theme);
+  @include mat.all-component-themes($light-theme);
 }

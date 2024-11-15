@@ -2,8 +2,8 @@ import express, { type Express } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import { logger } from "./config/logger";
-import router from "./api/routes/index";
+import { logger } from "./config/logger.js";
+import router from "./api/routes/index.js";
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
 // import errorHandler from "@/common/middleware/errorHandler";
 // import requestLogger from "@/common/middleware/requestLogger";
@@ -37,6 +37,6 @@ app
     logger.info(`Server (${NODE_ENV}) running on ${HOST}:${PORT}`);
   })
   .on("error", (err) => {
-    logger.error(err);
-    process.exit(1);
+    logger.error(err)
+    process.exit(1)  
   });

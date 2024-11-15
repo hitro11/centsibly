@@ -1,13 +1,20 @@
-import { Component, inject } from '@angular/core';
-import { AuthenticationService } from '../login/services/authentication.service';
+import { Component, inject } from "@angular/core";
+import { AuthenticationService } from "../login/services/authentication.service";
+import { MatButtonModule } from "@angular/material/button";
+import { firstValueFrom } from "rxjs";
 
 @Component({
-  selector: 'app-home',
+  selector: "app-home",
   standalone: true,
-  imports: [],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  imports: [MatButtonModule],
+  templateUrl: "./home.component.html",
+  styleUrl: "./home.component.scss",
 })
 export class HomeComponent {
   authService = inject(AuthenticationService);
+
+  async getJWT() {
+    const jwtToken = await firstValueFrom(this.authService.getJWT());
+    console.log({ jwtToken });
+  }
 }

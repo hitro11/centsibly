@@ -1,8 +1,13 @@
-// angular material
-@use '@angular/material' as mat;
-@include mat.core();
-mat.$theme-ignore-duplication-warnings: true;
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
 
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the theme object.
 $dark-theme: mat.define-theme(
   (
     color: (
@@ -21,9 +26,9 @@ $light-theme: mat.define-theme(
   )
 );
 
-.dark-theme {
-  @include mat.all-component-themes($dark-theme);
-}
-.light-theme {
-  @include mat.all-component-themes($light-theme);
-}
+// Comment out the line below if you want to use the pre-defined typography utility classes.
+// For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
+// @include mat.typography-hierarchy($client-theme);
+
+// Comment out the line below if you want to use the deprecated `color` inputs.
+// @include mat.color-variants-backwards-compatibility($client-theme);

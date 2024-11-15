@@ -1,20 +1,20 @@
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
-import { AuthToken as AccessToken } from '../../shared/models/AccessToken';
-import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../../environments/environment";
+import { inject, Injectable, signal, WritableSignal } from "@angular/core";
+import { firstValueFrom, Observable, of } from "rxjs";
+import { AuthToken as AccessToken } from "../../shared/models/AccessToken";
+import { LocalStorageService } from "../../shared/services/local-storage.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthenticationService {
   private localStorageService: LocalStorageService =
     inject(LocalStorageService);
   private router = inject(Router);
   private http = inject(HttpClient);
-  private accessTokenLocalStorageKey = 'access_token';
+  private accessTokenLocalStorageKey = "access_token";
   private isLoggedInSignal = signal(false);
 
   constructor() {
@@ -25,7 +25,7 @@ export class AuthenticationService {
     const url =
       (await firstValueFrom(
         this.http.get(`${environment.apiUrl}/auth/get-oauth-code`),
-      )) ?? '/';
+      )) ?? "/";
     location.href = url as string;
   }
 
@@ -33,8 +33,8 @@ export class AuthenticationService {
     return this.localStorageService.get(this.accessTokenLocalStorageKey);
   }
 
-  setAccessToken(accessToken: AccessToken | ''): void {
-    if (accessToken === '') {
+  setAccessToken(accessToken: AccessToken | ""): void {
+    if (accessToken === "") {
       this.localStorageService.set(
         this.accessTokenLocalStorageKey,
         accessToken,
@@ -62,7 +62,7 @@ export class AuthenticationService {
     accessToken: AccessToken | null,
   ): Promise<void> {
     if (!accessToken) {
-      console.error('no access token present');
+      console.error("no access token present");
       return;
     }
 
@@ -80,11 +80,11 @@ export class AuthenticationService {
   }
 
   async logout(): Promise<void> {
-    console.log('good bye!');
+    console.log("good bye!");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     this.deleteAccessToken();
     this.isLoggedInSignal.set(false);
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   /* Handles logic for when reddit redirects back after user either authorizes our app or not */
@@ -99,13 +99,19 @@ export class AuthenticationService {
     if (accessToken) {
       this.setAccessToken(accessToken);
       this.isLoggedInSignal.set(true);
-      this.router.navigate(['/home']);
+      this.router.navigate(["/home"]);
     } else {
-      this.router.navigate(['/']);
+      this.router.navigate(["/"]);
     }
   }
 
   isUserLoggedIn() {
     return this.isLoggedInSignal.asReadonly();
+  }
+
+  getJWT() {
+    return this.http.post<any>(`${environment.apiUrl}/auth/get-jwt`, {
+      accessToken: this.getAccessToken()?.access_token,
+    });
   }
 }

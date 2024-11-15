@@ -15,6 +15,7 @@ export class AuthenticationService {
   private router = inject(Router);
   private http = inject(HttpClient);
   private accessTokenLocalStorageKey = "access_token";
+  private jwtLocalStorageKey = "jwt";
   private isLoggedInSignal = signal(false);
 
   constructor() {
@@ -46,8 +47,12 @@ export class AuthenticationService {
     this.localStorageService.set(this.accessTokenLocalStorageKey, accessToken);
   }
 
-  deleteAccessToken(): void {
-    this.localStorageService.delete(this.accessTokenLocalStorageKey);
+  getJWT(): string {
+    return this.localStorageService.get(this.jwtLocalStorageKey);
+  }
+
+  setJWT(jwt: string) {
+    this.localStorageService.set(this.jwtLocalStorageKey, jwt);
   }
 
   isAccessTokenExpired(): boolean {
@@ -82,7 +87,8 @@ export class AuthenticationService {
   async logout(): Promise<void> {
     console.log("good bye!");
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.deleteAccessToken();
+    this.localStorageService.delete(this.accessTokenLocalStorageKey);
+    this.localStorageService.delete(this.jwtLocalStorageKey);
     this.isLoggedInSignal.set(false);
     this.router.navigate(["/"]);
   }
@@ -90,14 +96,18 @@ export class AuthenticationService {
   /* Handles logic for when reddit redirects back after user either authorizes our app or not */
   // todo: handle case if they do not authorize our app
   async handleOauthRedirectBack(code: string, state: string) {
-    const accessToken = await firstValueFrom(
-      this.http.get<Promise<AccessToken>>(
+    const { accessToken, jwt } = await firstValueFrom(
+      this.http.get<Promise<{ accessToken: AccessToken; jwt: string }>>(
         `${environment.apiUrl}/auth/get-access-token?code=${code}&state=${state}`,
       ),
     );
 
+    console.log({ accessToken });
+    console.log({ jwt });
+
     if (accessToken) {
       this.setAccessToken(accessToken);
+      this.setJWT(jwt);
       this.isLoggedInSignal.set(true);
       this.router.navigate(["/home"]);
     } else {
@@ -107,11 +117,5 @@ export class AuthenticationService {
 
   isUserLoggedIn() {
     return this.isLoggedInSignal.asReadonly();
-  }
-
-  getJWT() {
-    return this.http.post<any>(`${environment.apiUrl}/auth/get-jwt`, {
-      accessToken: this.getAccessToken()?.access_token,
-    });
   }
 }

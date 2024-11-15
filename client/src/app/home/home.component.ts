@@ -12,9 +12,4 @@ import { firstValueFrom } from "rxjs";
 })
 export class HomeComponent {
   authService = inject(AuthenticationService);
-
-  async getJWT() {
-    const jwtToken = await firstValueFrom(this.authService.getJWT());
-    console.log({ jwtToken });
-  }
 }

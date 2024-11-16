@@ -5,6 +5,10 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { AuthToken as AccessToken } from '../../shared/models/AccessToken';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
+import {
+  ACCESS_TOKEN_LOCAL_STORAGE_KEY,
+  AUTH_TOKEN_LOCAL_STORAGE_KEY,
+} from '../../shared/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +18,6 @@ export class AuthenticationService {
     inject(LocalStorageService);
   private router = inject(Router);
   private http = inject(HttpClient);
-  private accessTokenLocalStorageKey = 'access_token';
-  private jwtLocalStorageKey = 'jwt';
   private isLoggedInSignal = signal(false);
 
   constructor() {
@@ -31,23 +33,20 @@ export class AuthenticationService {
   }
 
   getAccessToken(): AccessToken | null {
-    return this.localStorageService.get(this.accessTokenLocalStorageKey);
+    return this.localStorageService.get(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
   }
 
   setAccessToken(accessToken: AccessToken | ''): void {
     if (accessToken === '') {
-      this.localStorageService.set(
-        this.accessTokenLocalStorageKey,
-        accessToken
-      );
+      this.localStorageService.set(ACCESS_TOKEN_LOCAL_STORAGE_KEY, accessToken);
       return;
     }
 
-    this.localStorageService.set(this.accessTokenLocalStorageKey, accessToken);
+    this.localStorageService.set(ACCESS_TOKEN_LOCAL_STORAGE_KEY, accessToken);
   }
 
-  getJWT(): string {
-    return this.localStorageService.get(this.jwtLocalStorageKey);
+  getAuthToken(): string {
+    return this.localStorageService.get(AUTH_TOKEN_LOCAL_STORAGE_KEY);
   }
 
   isAccessTokenExpired(): boolean {
@@ -58,32 +57,43 @@ export class AuthenticationService {
     return this.getAccessToken() !== null;
   }
 
-  async refreshAndSetAccessToken(
-    accessToken: AccessToken | null
+  async refreshAndSetTokens(
+    accessToken: AccessToken | null,
+    username: string
   ): Promise<void> {
     if (!accessToken) {
       console.error('no access token present');
       return;
     }
 
-    const newAccessToken = await firstValueFrom(
-      this.http.post<Promise<AccessToken>>(
-        `${environment.apiUrl}/auth/refresh-tokens`,
-        {
-          refreshToken: accessToken.refresh_token,
-        }
-      )
+    const {
+      authToken,
+      accessToken: newAccessToken,
+      username: newUsername,
+    } = await firstValueFrom(
+      this.http.post<
+        Promise<{
+          authToken: string;
+          accessToken: AccessToken;
+          username: string;
+        }>
+      >(`${environment.apiUrl}/auth/refresh-tokens`, {
+        refreshToken: accessToken.refresh_token,
+        username,
+      })
     );
 
     this.setAccessToken(newAccessToken);
+    this.localStorageService.set('authToken', authToken);
+    this.localStorageService.set('username', username);
     return;
   }
 
   async logout(): Promise<void> {
     console.log('good bye!');
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.localStorageService.delete(this.accessTokenLocalStorageKey);
-    this.localStorageService.delete(this.jwtLocalStorageKey);
+    this.localStorageService.delete(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    this.localStorageService.delete(AUTH_TOKEN_LOCAL_STORAGE_KEY);
     this.isLoggedInSignal.set(false);
     this.router.navigate(['/']);
   }
@@ -103,7 +113,7 @@ export class AuthenticationService {
 
     if (accessToken) {
       this.setAccessToken(accessToken);
-      this.localStorageService.set(this.jwtLocalStorageKey, authToken);
+      this.localStorageService.set(AUTH_TOKEN_LOCAL_STORAGE_KEY, authToken);
       this.localStorageService.set('username', username);
       this.isLoggedInSignal.set(true);
       this.router.navigate(['/home']);

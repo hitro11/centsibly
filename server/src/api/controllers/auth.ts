@@ -22,13 +22,18 @@ export async function getAccessTokenController(code: string, state: string) {
 }
 
 export async function getJwtController(
-  accessToken: string
+  accessToken: string,
+  username: string = ''
 ): Promise<{ authToken: string; username: string }> {
-  const profileData = await getProfileData(accessToken);
-  const username = profileData.name;
+  if (!username) {
+    const profileData = await getProfileData(accessToken);
+    username = profileData.name;
+  }
+
   const authToken = jwt.sign({ username }, process.env.JWT_SECRET_KEY, {
     expiresIn: '24h',
   });
+
   return { authToken, username };
 }
 

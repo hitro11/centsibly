@@ -26,9 +26,11 @@ loginRoutes.get('/get-tokens', async (req: Request, res: Response) => {
 
 loginRoutes.post('/refresh-tokens', async (req: Request, res: Response) => {
   const refreshToken = req.body.refreshToken ?? '';
+  const usernameQuery = req.body.username ?? '';
   const { accessToken } = await refreshTokensController(refreshToken);
   const { authToken, username } = await getJwtController(
-    accessToken.access_token
+    accessToken.access_token,
+    usernameQuery
   );
   res.json({ accessToken, authToken, username });
 });

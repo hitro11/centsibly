@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { logger } from './config/logger.js';
 import router from './api/routes/index.js';
+import { verifyJWT } from './api/services/authentication.js';
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
 // import errorHandler from "@/common/middleware/errorHandler";
 // import requestLogger from "@/common/middleware/requestLogger";
@@ -19,7 +20,7 @@ app.use(
     origin: 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
-  }),
+  })
 );
 app.use(helmet());
 

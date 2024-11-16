@@ -5,7 +5,8 @@
 <mat-menu class="w-[13rem]" #menu="matMenu">
   <button mat-menu-item>
     <mat-icon>person</mat-icon>
-    Profile
+    View profile <br />
+    <span class="text-light-color text-xs">u/{{ username }}</span>
   </button>
 
   <button mat-menu-item (click)="$event.stopPropagation()">

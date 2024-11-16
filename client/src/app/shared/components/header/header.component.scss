@@ -1,8 +1,8 @@
-@import '../../../../styles.scss';
+@import "../../../../styles.scss";
 
 .header-logo {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
 }
 
 .flexExpand {
@@ -11,4 +11,9 @@
 
 .header {
   border-bottom: 1px solid $light-color;
+}
+
+.fix {
+  font-size: medium;
+  padding: 0 1rem;
 }

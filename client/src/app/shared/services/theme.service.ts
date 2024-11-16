@@ -24,7 +24,7 @@ export class ThemeService {
     }
 
     this.themeSignal.update((value) =>
-      value === 'dark-theme' ? 'light-theme' : 'dark-theme',
+      value === 'dark-theme' ? 'light-theme' : 'dark-theme'
     );
   }
 

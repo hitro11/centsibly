@@ -1,5 +1,5 @@
-@use "./styles/themes.scss" as themes;
-@use "@angular/material" as mat;
+@use './styles/themes.scss' as themes;
+@use '@angular/material' as mat;
 @include mat.core();
 
 @tailwind base;

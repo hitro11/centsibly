@@ -17,9 +17,9 @@ loginRoutes.get('/get-oauth-code', async (req: Request, res: Response) => {
 loginRoutes.get('/get-access-token', async (req: Request, res: Response) => {
 	const code = req.query.code?.toString() ?? '';
 	const state = req.query.state?.toString() ?? '';
-	const token = await getAccessTokenController(code, state);
-	const jwt = await getJwtController(token.access_token);
-	res.json({ accessToken: token, jwt });
+	const accessToken = await getAccessTokenController(code, state);
+	const { jwt, username } = await getJwtController(accessToken.access_token);
+	res.json({ accessToken: accessToken, jwt, username })
 });
 
 loginRoutes.post(

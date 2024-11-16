@@ -51,10 +51,6 @@ export class AuthenticationService {
     return this.localStorageService.get(this.jwtLocalStorageKey);
   }
 
-  setJWT(jwt: string) {
-    this.localStorageService.set(this.jwtLocalStorageKey, jwt);
-  }
-
   isAccessTokenExpired(): boolean {
     return (this.getAccessToken()?.expiry ?? -1) <= Date.now() - 60000;
   }
@@ -96,18 +92,18 @@ export class AuthenticationService {
   /* Handles logic for when reddit redirects back after user either authorizes our app or not */
   // todo: handle case if they do not authorize our app
   async handleOauthRedirectBack(code: string, state: string) {
-    const { accessToken, jwt } = await firstValueFrom(
-      this.http.get<Promise<{ accessToken: AccessToken; jwt: string }>>(
+    const { accessToken, jwt, username } = await firstValueFrom(
+      this.http.get<
+        Promise<{ accessToken: AccessToken; jwt: string; username: string }>
+      >(
         `${environment.apiUrl}/auth/get-access-token?code=${code}&state=${state}`,
       ),
     );
 
-    console.log({ accessToken });
-    console.log({ jwt });
-
     if (accessToken) {
       this.setAccessToken(accessToken);
-      this.setJWT(jwt);
+      this.localStorageService.set(this.jwtLocalStorageKey, jwt);
+      this.localStorageService.set("username", username);
       this.isLoggedInSignal.set(true);
       this.router.navigate(["/home"]);
     } else {

@@ -1,0 +1,41 @@
+<div class="sidenav-header">
+  <mat-nav-list class="border-b-[1px] border-light-color">
+    <!-- <a
+      [routerLink]="['/home']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      mat-list-item
+      ><mat-icon fontIcon="home" matListItemIcon></mat-icon>Home</a
+    > -->
+
+    <app-sidenav-menu-item
+      [route]="'/home'"
+      [icon]="'home'"
+      [title]="'Home'"
+    ></app-sidenav-menu-item>
+
+    <app-sidenav-menu-item
+      [route]="'/popular'"
+      [icon]="'people'"
+      [title]="'Popular'"
+    ></app-sidenav-menu-item>
+
+    <app-sidenav-menu-item
+      [route]="'/explore'"
+      [icon]="'explore'"
+      [title]="'Explore'"
+    ></app-sidenav-menu-item>
+
+    <app-sidenav-menu-item
+      [route]="'/all'"
+      [icon]="'all_out'"
+      [title]="'All'"
+    ></app-sidenav-menu-item>
+  </mat-nav-list>
+  <mat-nav-list>
+    <a href="" mat-list-item>Recent</a>
+  </mat-nav-list>
+  <mat-nav-list>
+    <a href="" mat-list-item>Communities</a>
+  </mat-nav-list>
+</div>

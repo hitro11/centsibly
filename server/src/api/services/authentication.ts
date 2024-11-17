@@ -66,18 +66,17 @@ export function verifyJWT(req: Request, res: any, next: NextFunction) {
   const authToken = req.headers['authorization']
     ?.toLocaleString()
     .split('Bearer ')[1];
-  logger.debug({ authToken });
 
   if (!authToken) {
     const msg = 'No Authorization header or header is empty.';
-    logger.error(msg);
+    logger.warn(msg);
     return res.status(401).json(msg);
   }
 
   jwt.verify(authToken, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
       const msg = 'Invalid Authorization header.';
-      logger.error(msg);
+      logger.warn(msg);
       return res.status(401).json(msg);
     }
 

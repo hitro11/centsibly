@@ -7,6 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.component';
+import { SidenavCommunityItemComponent } from './sidenav-community-item/sidenav-community-item.component';
 
 @Component({
   selector: 'app-sidenav',
@@ -21,6 +22,7 @@ import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.
     MatListModule,
     RouterModule,
     SidenavMenuItemComponent,
+    SidenavCommunityItemComponent,
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',

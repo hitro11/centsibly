@@ -1,17 +1,7 @@
 import { Router } from 'express';
-import { logger } from '../../../config/logger.js';
+import { redditUserRoutes } from './user/user.js';
 
 const router = Router();
+router.use('/user', redditUserRoutes);
 
-router.get('/test', async (req: Request, res: any) => {
-  console.log('test route');
-  res.json('test route');
-});
-
-router.get('/user/:username/subreddits', async (req: any, res: any) => {
-  logger.debug('username: ', req.params.username);
-  logger.debug('subreddits()');
-  res.json('subreddits()');
-});
-
-export default router;
+export const redditRoutes = router;

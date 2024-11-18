@@ -43,7 +43,7 @@ export function authInterceptor(
   const modifiedReq = req.clone({
     setHeaders: {
       Authorization: `Bearer ${authService.getAuthToken()}`,
-      'X-Reddit-OAuth': `Bearer ${authService.getAccessToken()}`,
+      'X-Reddit-OAuth': `Bearer ${authService.getAccessToken()?.access_token}`,
     },
   });
 

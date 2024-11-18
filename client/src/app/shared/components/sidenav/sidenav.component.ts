@@ -1,3 +1,4 @@
+import { Subreddit } from '../../../../../../models/Subreddit';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +10,6 @@ import { HeaderComponent } from '../header/header.component';
 import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.component';
 import { SidenavCommunityItemComponent } from './sidenav-community-item/sidenav-community-item.component';
 import { ProfileService } from '../../services/profile/profile.service';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-sidenav',
@@ -31,12 +31,10 @@ import { firstValueFrom } from 'rxjs';
 })
 export class SidenavComponent implements OnInit {
   profileService = inject(ProfileService);
+  subreddits: Subreddit[] = [];
 
   async ngOnInit(): Promise<void> {
-    await this.getUserSubscribedSubreddits();
-  }
-
-  async getUserSubscribedSubreddits() {
-    await firstValueFrom(this.profileService.getUserSubscribedSubreddits());
+    this.subreddits = await this.profileService.getUserSubscribedSubreddits();
+    console.log(this.subreddits[0]);
   }
 }

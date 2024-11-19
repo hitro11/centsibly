@@ -1,0 +1,57 @@
+<div class="sidenav-header px-4">
+  <mat-nav-list class="border-b-[1px] border-light-color">
+    <app-sidenav-menu-item
+      [route]="'/home'"
+      [icon]="'home'"
+      [title]="'Home'"
+    ></app-sidenav-menu-item>
+
+    <app-sidenav-menu-item
+      [route]="'/popular'"
+      [icon]="'people'"
+      [title]="'Popular'"
+    ></app-sidenav-menu-item>
+
+    @if (isUserLoggedIn()) {
+      <app-sidenav-menu-item
+        [route]="'/explore'"
+        [icon]="'explore'"
+        [title]="'Explore'"
+      ></app-sidenav-menu-item>
+
+      <app-sidenav-menu-item
+        [route]="'/all'"
+        [icon]="'all_out'"
+        [title]="'All'"
+      ></app-sidenav-menu-item>
+    }
+  </mat-nav-list>
+
+  @if (isUserLoggedIn()) {
+    <mat-nav-list class="border-b-[1px] border-light-color">
+      <div class="ml-4 mt-4">
+        <p class="hover:bg-transparent" mat-list-item>Recent</p>
+      </div>
+    </mat-nav-list>
+    <mat-nav-list class="border-b-[1px] border-light-color">
+      <div class="mb-4 ml-4 mt-4">
+        <p class="hover:bg-transparent" mat-list-item>Communities</p>
+      </div>
+
+      @if (subreddits !== null) {
+        @for (subreddit of subreddits; track subreddit.name) {
+          <div class="px-2">
+            <app-sidenav-community-item
+              [id]="subreddit.id"
+              [name]="subreddit.name"
+              [link]="subreddit.url"
+              [imgSrc]="subreddit.icon"
+              [favorited]="subreddit.favorited"
+              (favoriteChangedEvent)="toggleFavorite($event)"
+            ></app-sidenav-community-item>
+          </div>
+        }
+      }
+    </mat-nav-list>
+  }
+</div>

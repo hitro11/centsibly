@@ -1,10 +1,7 @@
 import { Router } from 'express';
+import { redditUserRoutes } from './user/user.js';
 
 const router = Router();
+router.use('/user', redditUserRoutes);
 
-router.get('/test', async (req: Request, res: any) => {
-  console.log('test route');
-  res.json('test route');
-});
-
-export default router;
+export const redditRoutes = router;

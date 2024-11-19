@@ -1,25 +1,27 @@
-<mat-toolbar class="header">
-  <img class="header-logo" [src]="logo" />
-  <span class="flexExpand"></span>
-  @if (!isUserLoggedIn()) {
-    <button class="fix mr-6 scale-90" mat-flat-button (click)="signIn()">
-      Sign In
-    </button>
-    <div class="-mr-2 mt-2">
-      <mat-icon>bedtime</mat-icon>
-    </div>
-    <div class="scale-75">
-      <mat-slide-toggle
-        class="ml-2"
-        [checked]="this.theme() === 'dark-theme'"
-        (click)="themeService.toggleTheme()"
-      ></mat-slide-toggle>
-    </div>
-  }
+<div class="header">
+  <mat-toolbar class="">
+    <img class="header-logo" [src]="logo" />
+    <span class="flexExpand"></span>
+    @if (!isUserLoggedIn()) {
+      <button class="fix mr-6 scale-90" mat-flat-button (click)="signIn()">
+        Sign In
+      </button>
+      <div class="-mr-2 mt-2">
+        <mat-icon>bedtime</mat-icon>
+      </div>
+      <div class="scale-75">
+        <mat-slide-toggle
+          class="ml-2"
+          [checked]="this.theme() === 'dark-theme'"
+          (click)="themeService.toggleTheme()"
+        ></mat-slide-toggle>
+      </div>
+    }
 
-  @if (isUserLoggedIn()) {
-    <div class="ml-4 mr-2">
-      <app-header-profile-dropdown></app-header-profile-dropdown>
-    </div>
-  }
-</mat-toolbar>
+    @if (isUserLoggedIn()) {
+      <div class="ml-4 mr-2">
+        <app-header-profile-dropdown></app-header-profile-dropdown>
+      </div>
+    }
+  </mat-toolbar>
+</div>

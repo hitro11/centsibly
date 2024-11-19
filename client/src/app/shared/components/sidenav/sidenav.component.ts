@@ -1,6 +1,6 @@
 import { Subreddit } from '../../../../../../models/Subreddit';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -11,6 +11,7 @@ import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.
 import { SidenavCommunityItemComponent } from './sidenav-community-item/sidenav-community-item.component';
 import { ProfileService } from '../../services/profile/profile.service';
 import { firstValueFrom, Observable } from 'rxjs';
+import { AuthenticationService } from '../../../login/services/authentication.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -32,20 +33,32 @@ import { firstValueFrom, Observable } from 'rxjs';
 })
 export class SidenavComponent implements OnInit {
   profileService = inject(ProfileService);
+  authService = inject(AuthenticationService);
   // subreddits$: Observable<Subreddit[]>;
   subreddits: Subreddit[] = [];
+  isUserLoggedIn = this.authService.isUserLoggedIn();
 
   // constructor() {
   //   this.subreddits$ = this.profileService.getUserSubscribedSubreddits();
   // }
 
-  async ngOnInit(): Promise<void> {
-    this.subreddits = await firstValueFrom(
-      this.profileService.getUserSubscribedSubreddits()
-    );
+  constructor() {
+    effect(async () => {
+      if (this.isUserLoggedIn()) {
+        try {
+          this.subreddits = await firstValueFrom(
+            this.profileService.getUserSubscribedSubreddits()
+          );
 
-    this.sortSubreddits();
+          this.sortSubreddits();
+        } catch (error) {
+          console.error('could not get user subreddits since: ', error);
+        }
+      }
+    });
   }
+
+  async ngOnInit(): Promise<void> {}
 
   toggleFavorite(event: { id: string; currentlyFavorited: boolean }) {
     const i = this.subreddits.findIndex(

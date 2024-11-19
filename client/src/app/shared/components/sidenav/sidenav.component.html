@@ -1,13 +1,5 @@
-<div class="sidenav-header">
+<div class="sidenav-header px-4">
   <mat-nav-list class="border-b-[1px] border-light-color">
-    <!-- <a
-      [routerLink]="['/home']"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      mat-list-item
-      ><mat-icon fontIcon="home" matListItemIcon></mat-icon>Home</a
-    > -->
-
     <app-sidenav-menu-item
       [route]="'/home'"
       [icon]="'home'"
@@ -38,18 +30,23 @@
     </div>
   </mat-nav-list>
   <mat-nav-list class="border-b-[1px] border-light-color">
-    <div class="ml-4 mt-4">
+    <div class="mb-4 ml-4 mt-4">
       <p class="hover:bg-transparent" mat-list-item>Communities</p>
     </div>
 
-    @for (subreddit of subreddits; track subreddit.name) {
-      <div class="">
-        <app-sidenav-community-item
-          [link]="subreddit.url"
-          [name]="subreddit.name"
-          [imgSrc]="subreddit.icon"
-        ></app-sidenav-community-item>
-      </div>
+    @if (subreddits !== null) {
+      @for (subreddit of subreddits; track subreddit.name) {
+        <div class="px-2">
+          <app-sidenav-community-item
+            [id]="subreddit.id"
+            [name]="subreddit.name"
+            [link]="subreddit.url"
+            [imgSrc]="subreddit.icon"
+            [favorited]="subreddit.favorited"
+            (favoriteChangedEvent)="toggleFavorite($event)"
+          ></app-sidenav-community-item>
+        </div>
+      }
     }
   </mat-nav-list>
 </div>

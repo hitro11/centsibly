@@ -1,13 +1,16 @@
-<a [href]="link" target="_blank" mat-list-item>
-  <div class="ml-4 flex flex-row rounded-full pb-1.5 pt-1.5 hover:bg-[#292320]">
-    <div class="mr-2 basis-1/12">
+<a mat-list-item>
+  <div
+    class="hover:bg-dark-theme-highlight flex flex-row items-center rounded-full pb-1.5 pt-1.5"
+  >
+    <div class="ml-2 mr-2 flex basis-2/12 items-center">
       @if (imgSrc.length) {
-        <img [src]="imgSrc" alt="" class="size-7 rounded-full" />
+        <img [src]="imgSrc" alt="" class="size-9 rounded-full" />
       } @else {
         <!-- default subreddit icon from reddit -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
+          height="32"
           fill="currentColor"
         >
           <path
@@ -16,6 +19,20 @@
         </svg>
       }
     </div>
-    <div class="basis-11/12 text-sm font-thin">{{ name }}</div>
+    <div
+      (click)="openSubreddit()"
+      class="cursor-pointe basis-9/12 text-sm font-thin"
+    >
+      <span class="">{{ name }}</span>
+    </div>
+    <div
+      class="hover:bg-dark-theme-highlight-2 mr-3 basis-1/12 rounded-full px-2 pb-0.5 pt-1"
+    >
+      <button (click)="toggleFavorite()">
+        <mat-icon
+          fontIcon="{{ favorited ? 'star' : 'star_border' }}"
+        ></mat-icon>
+      </button>
+    </div>
   </div>
 </a>

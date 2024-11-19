@@ -23,8 +23,9 @@ export const redditProfileService = {
         subreddits.push({
           name: subreddit.data.display_name_prefixed,
           url: `https://reddit.com${subreddit.data.url}`,
-          icon: subreddit.data.icon_img,
+          icon: subreddit.data.community_icon.split('?')[0],
           id: subreddit.data.name,
+          favorited: subreddit.data.user_has_favorited,
         });
       }
     } while (after);

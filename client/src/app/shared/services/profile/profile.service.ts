@@ -15,12 +15,12 @@ export class ProfileService {
 
   constructor() {}
 
-  async getUserSubscribedSubreddits(): Promise<Subreddit[]> {
+  getUserSubscribedSubreddits(): Observable<Subreddit[]> {
     const username = this.localStorageService.get(USERNAME_LOCAL_STORAGE_KEY);
-    return await firstValueFrom(
-      this.http.get<Subreddit[]>(
-        `${environment.hostRedditAPI}/user/${username}/subreddits`
-      )
+    return this.http.get<Subreddit[]>(
+      `${environment.hostRedditAPI}/user/${username}/subreddits`
     );
   }
+
+  toggleSubredditFavorited(id: string, favorited: boolean) {}
 }

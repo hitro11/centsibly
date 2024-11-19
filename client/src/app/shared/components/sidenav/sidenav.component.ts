@@ -10,6 +10,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.component';
 import { SidenavCommunityItemComponent } from './sidenav-community-item/sidenav-community-item.component';
 import { ProfileService } from '../../services/profile/profile.service';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sidenav',
@@ -31,10 +32,36 @@ import { ProfileService } from '../../services/profile/profile.service';
 })
 export class SidenavComponent implements OnInit {
   profileService = inject(ProfileService);
+  // subreddits$: Observable<Subreddit[]>;
   subreddits: Subreddit[] = [];
 
+  // constructor() {
+  //   this.subreddits$ = this.profileService.getUserSubscribedSubreddits();
+  // }
+
   async ngOnInit(): Promise<void> {
-    this.subreddits = await this.profileService.getUserSubscribedSubreddits();
-    console.log(this.subreddits[0]);
+    this.subreddits = await firstValueFrom(
+      this.profileService.getUserSubscribedSubreddits()
+    );
+
+    this.sortSubreddits();
+  }
+
+  toggleFavorite(event: { id: string; currentlyFavorited: boolean }) {
+    const i = this.subreddits.findIndex(
+      (subreddit) => subreddit.id === event.id
+    );
+    this.subreddits[i].favorited = !event.currentlyFavorited;
+    this.sortSubreddits();
+  }
+
+  sortSubreddits() {
+    this.subreddits = this.subreddits.sort((a, b) => {
+      if (a.favorited !== b.favorited) {
+        return a.favorited ? -1 : 1;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
   }
 }

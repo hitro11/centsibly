@@ -3,4 +3,5 @@ export interface Subreddit {
   url: string;
   icon: string;
   id: string;
+  favorited: boolean;
 }

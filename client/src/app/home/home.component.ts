@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthenticationService } from '../login/services/authentication.service';
+import { AuthenticationService } from '../auth/services/authentication.service';
 import { MatButtonModule } from '@angular/material/button';
 import { firstValueFrom } from 'rxjs';
 

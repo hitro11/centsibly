@@ -1,4 +1,4 @@
-import { AuthenticationService } from '../../../login/services/authentication.service';
+import { AuthenticationService } from '../../../auth/services/authentication.service';
 import { CommonModule } from '@angular/common';
 import {
   Component,

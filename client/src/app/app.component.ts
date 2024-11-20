@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { ThemeService } from './shared/services/theme.service';
 import { CommonModule } from '@angular/common';
-import { AuthenticationService } from './login/services/authentication.service';
+import { AuthenticationService } from './auth/services/authentication.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';

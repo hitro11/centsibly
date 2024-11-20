@@ -1,5 +1,5 @@
 import { ThemeService } from './../../../services/theme.service';
-import { AuthenticationService } from './../../../../login/services/authentication.service';
+import { AuthenticationService } from './../../../../auth/services/authentication.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';

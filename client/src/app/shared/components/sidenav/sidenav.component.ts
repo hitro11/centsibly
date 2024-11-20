@@ -11,7 +11,7 @@ import { SidenavMenuItemComponent } from './sidenav-menu-item/sidenav-menu-item.
 import { SidenavCommunityItemComponent } from './sidenav-community-item/sidenav-community-item.component';
 import { ProfileService } from '../../services/profile/profile.service';
 import { firstValueFrom, Observable } from 'rxjs';
-import { AuthenticationService } from '../../../login/services/authentication.service';
+import { AuthenticationService } from '../../../auth/services/authentication.service';
 
 @Component({
   selector: 'app-sidenav',

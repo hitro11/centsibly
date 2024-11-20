@@ -16,9 +16,7 @@ import { errorHandler } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { verifySession } from 'supertokens-node/recipe/session/framework/express';
-
 dotenv.config();
-const app: Express = express();
 
 supertokens.init({
   framework: 'express',
@@ -75,9 +73,9 @@ supertokens.init({
   ],
 });
 
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const app: Express = express();
+
+// Middleware
 app.use(
   cors({
     origin: process.env.CLIENT_ORIGIN,
@@ -86,7 +84,11 @@ app.use(
   })
 );
 app.use(middleware());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
+app.use('/api', verifySession(), router);
+app.use(errorHandler());
 
 // Set the application to trust the reverse proxy
 // app.set("trust proxy", true);
@@ -96,11 +98,6 @@ app.use(helmet());
 
 // Swagger UI
 // app.use(openAPIRouter);
-
-app.use('/api', verifySession(), router);
-
-// Error handlers
-app.use(errorHandler());
 
 app
   .listen(process.env.PORT, () => {

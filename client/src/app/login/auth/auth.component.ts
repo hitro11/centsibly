@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../../shared/services/theme.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -44,8 +45,8 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
       (window as any).supertokensUIInit('supertokensui', {
         appInfo: {
           appName: 'Grove',
-          apiDomain: 'http://localhost:3000',
-          websiteDomain: 'http://localhost:4200',
+          apiDomain: environment.SERVER_URL,
+          websiteDomain: environment.HOST,
           apiBasePath: '/auth',
           websiteBasePath: '/auth',
         },

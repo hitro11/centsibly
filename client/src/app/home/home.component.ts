@@ -12,8 +12,4 @@ import { firstValueFrom } from 'rxjs';
 })
 export class HomeComponent {
   authService = inject(AuthenticationService);
-
-  async testRoute() {
-    await firstValueFrom(this.authService.test());
-  }
 }

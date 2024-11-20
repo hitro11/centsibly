@@ -18,7 +18,7 @@ import EmailPassword from 'supertokens-web-js/recipe/emailpassword';
 SuperTokens.init({
   appInfo: {
     appName: 'Grove',
-    apiDomain: environment.HOST,
+    apiDomain: environment.SERVER_URL,
     apiBasePath: '/auth',
   },
 

@@ -102,10 +102,9 @@ export class AuthenticationService {
   }
 
   async logout(): Promise<void> {
-    console.log('good bye!');
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    console.log('goodbye!');
     await Session.signOut();
-    window.location.href = '/';
+    this.router.navigate(['/auth']);
   }
 
   isUserLoggedIn() {

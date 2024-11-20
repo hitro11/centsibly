@@ -46,11 +46,10 @@ export class SidenavComponent implements OnInit {
     effect(async () => {
       if (this.isUserLoggedIn()) {
         try {
-          this.subreddits = await firstValueFrom(
-            this.profileService.getUserSubscribedSubreddits()
-          );
-
-          this.sortSubreddits();
+          // this.subreddits = await firstValueFrom(
+          //   this.profileService.getUserSubscribedSubreddits()
+          // );
+          // this.sortSubreddits();
         } catch (error) {
           console.error('could not get user subreddits since: ', error);
         }

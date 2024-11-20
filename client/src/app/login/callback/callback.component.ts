@@ -3,18 +3,20 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
-  selector: 'app-oauth-callback',
+  selector: 'app-callback',
   standalone: true,
   imports: [],
-  templateUrl: './oauth-callback.component.html',
-  styleUrl: './oauth-callback.component.scss',
+  templateUrl: './callback.component.html',
+  styleUrl: './callback.component.scss',
 })
-export class OauthCallbackComponent implements OnInit {
+export class CallbackComponent implements OnInit {
   private authService: AuthenticationService = inject(AuthenticationService);
   private router: Router = inject(Router);
 
   async ngOnInit(): Promise<void> {
+    console.log('callback!!');
     const callbackUrl = new URL(window.location.href);
+    console.log(callbackUrl);
     const code = callbackUrl.searchParams.get('code') ?? '';
     const state = callbackUrl.searchParams.get('state') ?? '';
     // const authToken = await this.loginService.getAccessTokenFromOauth(
@@ -22,7 +24,7 @@ export class OauthCallbackComponent implements OnInit {
     //   state,
     // );
 
-    await this.authService.handleOauthRedirectBack(code, state);
+    // await this.authService.handleOauthRedirectBack(code, state);
 
     // if (authToken) {
     //   this.loginService.setAccessToken(authToken);

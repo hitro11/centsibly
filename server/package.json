@@ -21,7 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "pino": "^9.5.0",
-    "pino-pretty": "^12.1.0"
+    "pino-pretty": "^12.1.0",
+    "supertokens-node": "^21.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

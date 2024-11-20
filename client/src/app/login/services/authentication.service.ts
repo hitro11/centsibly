@@ -1,7 +1,14 @@
+import Session from 'supertokens-web-js/recipe/session';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { firstValueFrom, Observable, of } from 'rxjs';
 import { AuthToken as AccessToken } from '../../shared/models/AccessToken';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -21,13 +28,18 @@ export class AuthenticationService {
   private isLoggedInSignal = signal(false);
 
   constructor() {
-    this.isLoggedInSignal.set(this.getAccessToken() !== null);
+    effect(async () => {
+      console.log('checking if user is logged in');
+      const isLoggedIn = await Session.doesSessionExist();
+      console.log({ isLoggedIn });
+      this.isLoggedInSignal.set(isLoggedIn);
+    });
   }
 
   async startOauthLogin() {
     const url =
       (await firstValueFrom(
-        this.http.get(`${environment.apiUrl}/auth/get-oauth-code`)
+        this.http.get(`${environment.API_URL}/auth/get-oauth-code`)
       )) ?? '/';
     location.href = url as string;
   }
@@ -77,7 +89,7 @@ export class AuthenticationService {
           accessToken: AccessToken;
           username: string;
         }>
-      >(`${environment.apiUrl}/auth/refresh-tokens`, {
+      >(`${environment.API_URL}/auth/refresh-tokens`, {
         refreshToken: accessToken.refresh_token,
         username,
       })
@@ -91,35 +103,9 @@ export class AuthenticationService {
 
   async logout(): Promise<void> {
     console.log('good bye!');
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.localStorageService.delete(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-    this.localStorageService.delete(AUTH_TOKEN_LOCAL_STORAGE_KEY);
-    this.isLoggedInSignal.set(false);
-    this.router.navigate(['/']);
-  }
-
-  /* Handles logic for when reddit redirects back after user either authorizes our app or not */
-  // todo: handle case if they do not authorize our app
-  async handleOauthRedirectBack(code: string, state: string) {
-    const { accessToken, authToken, username } = await firstValueFrom(
-      this.http.get<
-        Promise<{
-          accessToken: AccessToken;
-          authToken: string;
-          username: string;
-        }>
-      >(`${environment.apiUrl}/auth/get-tokens?code=${code}&state=${state}`)
-    );
-
-    if (accessToken) {
-      this.setAccessToken(accessToken);
-      this.localStorageService.set(AUTH_TOKEN_LOCAL_STORAGE_KEY, authToken);
-      this.localStorageService.set('username', username);
-      this.isLoggedInSignal.set(true);
-      this.router.navigate(['/home']);
-    } else {
-      this.router.navigate(['/']);
-    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await Session.signOut();
+    window.location.href = '/';
   }
 
   isUserLoggedIn() {
@@ -127,6 +113,6 @@ export class AuthenticationService {
   }
 
   test() {
-    return this.http.get(`${environment.apiUrl}/reddit/test`);
+    return this.http.get(`${environment.API_URL}/reddit/test`);
   }
 }

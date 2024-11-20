@@ -15,6 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeService } from '../../services/theme.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderProfileDropdownComponent } from './header-profile-dropdown/header-profile-dropdown.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -31,13 +32,14 @@ import { HeaderProfileDropdownComponent } from './header-profile-dropdown/header
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  logo = 'img/logo.jpg';
+  logo = 'img/logo.png';
   themeService: ThemeService = inject(ThemeService);
   authService: AuthenticationService = inject(AuthenticationService);
   isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
-  theme: Signal<'dark-theme' | 'light-theme'> = this.themeService.getTheme();
+  theme = this.themeService.getTheme();
+  router = inject(Router);
 
   async signIn() {
-    await this.authService.startOauthLogin();
+    this.router.navigate(['/auth']);
   }
 }

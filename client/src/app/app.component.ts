@@ -9,6 +9,21 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
+import SuperTokens from 'supertokens-web-js';
+import Session from 'supertokens-web-js/recipe/session';
+import { environment } from '../../environments/environment';
+import ThirdParty from 'supertokens-web-js/recipe/thirdparty';
+import EmailPassword from 'supertokens-web-js/recipe/emailpassword';
+
+SuperTokens.init({
+  appInfo: {
+    appName: 'Grove',
+    apiDomain: environment.HOST,
+    apiBasePath: '/auth',
+  },
+
+  recipeList: [Session.init(), EmailPassword.init(), ThirdParty.init()],
+});
 
 @Component({
   selector: 'app-root',

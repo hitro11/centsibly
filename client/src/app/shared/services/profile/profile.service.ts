@@ -18,7 +18,7 @@ export class ProfileService {
   getUserSubscribedSubreddits(): Observable<Subreddit[]> {
     const username = this.localStorageService.get(USERNAME_LOCAL_STORAGE_KEY);
     return this.http.get<Subreddit[]>(
-      `${environment.hostRedditAPI}/user/${username}/subreddits`
+      `${environment.HOST}/user/${username}/subreddits`
     );
   }
 

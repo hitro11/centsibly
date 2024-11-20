@@ -3,3 +3,21 @@ mat-sidenav-content,
 mat-sidenav {
   height: calc(100vh - 65px);
 }
+
+.light-theme .supertokens {
+  --palette-primary: #6200ea;
+  --palette-background: #f8f9fa;
+  --palette-inputBackground: #ffffff;
+  --palette-textPrimary: #333333;
+  --palette-textSecondary: #666666;
+  --palette-error: #d32f2f;
+}
+
+.dark-theme .supertokens {
+  --palette-primary: #bb86fc;
+  --palette-background: #121212;
+  --palette-inputBackground: #1f1f1f;
+  --palette-textPrimary: #ffffff;
+  --palette-textSecondary: #bbbbbb;
+  --palette-error: #cf6679;
+}

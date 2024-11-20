@@ -1,8 +1,12 @@
 <div class="header">
   <mat-toolbar class="">
-    <img class="header-logo" [src]="logo" />
+    <img class="w-[6rem]" [src]="logo" />
     <span class="flexExpand"></span>
-    @if (!isUserLoggedIn()) {
+    @if (isUserLoggedIn()) {
+      <div class="ml-4 mr-2">
+        <app-header-profile-dropdown></app-header-profile-dropdown>
+      </div>
+    } @else {
       <button class="fix mr-6 scale-90" mat-flat-button (click)="signIn()">
         Sign In
       </button>
@@ -15,12 +19,6 @@
           [checked]="this.theme() === 'dark-theme'"
           (click)="themeService.toggleTheme()"
         ></mat-slide-toggle>
-      </div>
-    }
-
-    @if (isUserLoggedIn()) {
-      <div class="ml-4 mr-2">
-        <app-header-profile-dropdown></app-header-profile-dropdown>
       </div>
     }
   </mat-toolbar>

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth/auth.component';
 import { HomeComponent } from './home/home.component';
 import { isUserLoggedInGuard } from './routeGuards/isUserLoggedIn.guard';
+import { GoogleCallbackComponent } from './auth/callbacks/google-callback.component';
 
 export const routes: Routes = [
   {
@@ -12,9 +13,11 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
+    children: [
+      {
+        path: 'callback/google',
+        component: GoogleCallbackComponent,
+      },
+    ],
   },
-  // {
-  //   path: 'auth',
-  //   loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
-  // },
 ];

@@ -16,6 +16,7 @@ import { errorHandler } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { verifySession } from 'supertokens-node/recipe/session/framework/express';
+
 dotenv.config();
 
 supertokens.init({
@@ -32,7 +33,7 @@ supertokens.init({
     websiteBasePath: '/auth',
   },
   recipeList: [
-    EmailPassword.init(),
+    EmailPassword.init({}),
     ThirdParty.init({
       // We have provided you with development keys which you can use for testing.
       // IMPORTANT: Please replace them with your own OAuth keys for production use.
@@ -92,8 +93,8 @@ supertokens.init({
                 return originalImplementation.signInUp(input);
               }
               // this means that the email already exists with another social login method, so we throw an error
-              logger.warn('Cannot sign up as email already exists');
-              throw new Error('Cannot sign up as email already exists');
+              logger.warn('emailAlreadyExistsWithDifferentProvider');
+              throw new Error('emailAlreadyExistsWithDifferentProvider');
             },
           };
         },
@@ -104,14 +105,11 @@ supertokens.init({
               try {
                 return await originalImplementation.signInUpPOST!(input);
               } catch (err: any) {
-                if (err.message === 'Cannot sign up as email already exists') {
-                  logger.info(
-                    'Seems like you already have an account with another social login provider. Please use that instead.'
-                  );
+                if (err.message === 'emailAlreadyExistsWithDifferentProvider') {
                   return {
                     status: 'GENERAL_ERROR',
                     message:
-                      'You already have an account with another social login provider. Please sign in with that instead.',
+                      'It looks like this email is already linked to an account created with a social login. Please sign in using your social account instead.',
                   };
                 }
                 throw err;

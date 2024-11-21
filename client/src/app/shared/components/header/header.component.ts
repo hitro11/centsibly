@@ -9,35 +9,33 @@ import {
   Signal,
   SimpleChanges,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeService } from '../../services/theme.service';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderProfileDropdownComponent } from './header-profile-dropdown/header-profile-dropdown.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    CommonModule,
-    MatSlideToggleModule,
-    HeaderProfileDropdownComponent,
-  ],
+  imports: [HeaderProfileDropdownComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  logo = 'img/logo.png';
+  logoPath = '';
   themeService: ThemeService = inject(ThemeService);
   authService: AuthenticationService = inject(AuthenticationService);
   isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
   theme = this.themeService.getTheme();
   router = inject(Router);
+
+  constructor() {
+    effect(() => {
+      this.logoPath =
+        this.theme() === 'dark-theme'
+          ? './img/logo-dark.png'
+          : './img/logo-light.png';
+    });
+  }
 
   async signIn() {
     this.router.navigate(['/auth']);

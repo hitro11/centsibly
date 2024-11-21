@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 // import  from '';
 
 @Component({
   selector: 'app-sidenav-community-item',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [],
   templateUrl: './sidenav-community-item.component.html',
   styleUrl: './sidenav-community-item.component.scss',
 })

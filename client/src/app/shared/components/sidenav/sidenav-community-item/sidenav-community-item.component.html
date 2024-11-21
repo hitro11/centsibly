@@ -1,6 +1,6 @@
 <a mat-list-item>
   <div
-    class="hover:bg-dark-theme-highlight flex flex-row items-center rounded-full pb-1.5 pt-1.5"
+    class="flex flex-row items-center rounded-full pb-1.5 pt-1.5 hover:bg-dark-theme-highlight"
   >
     <div class="ml-2 mr-2 flex basis-2/12 items-center">
       @if (imgSrc.length) {
@@ -26,12 +26,12 @@
       <span class="">{{ name }}</span>
     </div>
     <div
-      class="hover:bg-dark-theme-highlight-2 mr-3 basis-1/12 rounded-full px-2 pb-0.5 pt-1"
+      class="mr-3 basis-1/12 rounded-full px-2 pb-0.5 pt-1 hover:bg-dark-theme-highlight-2"
     >
       <button (click)="toggleFavorite()">
-        <mat-icon
+        <!-- <mat-icon
           fontIcon="{{ favorited ? 'star' : 'star_border' }}"
-        ></mat-icon>
+        ></mat-icon> -->
       </button>
     </div>
   </div>

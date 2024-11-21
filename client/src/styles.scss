@@ -1,29 +1,6 @@
-@use './styles/themes.scss' as themes;
-@use '@angular/material' as mat;
-@include mat.core();
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-// variables
-$light-color: #474747;
-
-// themes
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-// :root {
-//   @include mat.all-component-themes(themes.$dark-theme);
-// }
-
-.dark-theme {
-  @include mat.all-component-themes(themes.$dark-theme);
-}
-.light-theme {
-  @include mat.all-component-themes(themes.$light-theme);
-}
 
 html,
 body {

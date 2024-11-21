@@ -4,10 +4,6 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { ThemeService } from './shared/services/theme.service';
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from './auth/services/authentication.service';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { SidenavComponent } from './shared/components/sidenav/sidenav.component';
 import SuperTokens from 'supertokens-web-js';
 import Session from 'supertokens-web-js/recipe/session';
@@ -28,16 +24,7 @@ SuperTokens.init({
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    CommonModule,
-    HeaderComponent,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule,
-    SidenavComponent,
-  ],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, SidenavComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

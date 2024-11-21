@@ -9,18 +9,10 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import {
-  MatSnackBar,
-  MatSnackBarConfig,
-  MatSnackBarModule,
-} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-auth',
-  imports: [MatDialogModule, MatCardModule, MatButtonModule, MatSnackBarModule],
+  imports: [],
   standalone: true,
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
@@ -31,8 +23,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
 
   constructor(
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document,
-    private snackBar: MatSnackBar
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngAfterViewInit() {

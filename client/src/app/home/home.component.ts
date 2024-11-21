@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AuthenticationService } from '../auth/services/authentication.service';
-import { MatButtonModule } from '@angular/material/button';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

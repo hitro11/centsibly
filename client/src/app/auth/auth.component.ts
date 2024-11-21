@@ -58,8 +58,8 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           this.themeService.getTheme()() === 'dark'
             ? `
         [data-supertokens~=container] {
-          --palette-background: 40, 40, 40;
-          --palette-inputBackground: 21, 21, 21;
+          --palette-background: 25, 25, 25;
+          --palette-inputBackground: 20, 20, 20;
           --palette-inputBorder: 41, 41, 41;
           --palette-textTitle: 200, 200, 200;
           --palette-textLabel: 200, 200, 200;
@@ -70,12 +70,14 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           --palette-textLink: 169, 169, 169;
         }
         [data-supertokens~="button"] {
-          background-color: #2b4226;
+          background-color: #19251b;
+          color: rgb(200, 200, 200);
+          border: 1px solid lightgrey;
         }
         [data-supertokens~="button"][data-supertokens~="providerButton"],
         [data-supertokens~="superTokensBranding"] {
-          background-color: rgb(11, 11, 11);
-          color: white;
+          background-color: rgb(40, 40, 40);
+          color: rgb(169, 169, 169);
         }
         `
             : '',

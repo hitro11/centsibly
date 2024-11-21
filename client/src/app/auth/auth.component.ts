@@ -9,18 +9,10 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import {
-  MatSnackBar,
-  MatSnackBarConfig,
-  MatSnackBarModule,
-} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-auth',
-  imports: [MatDialogModule, MatCardModule, MatButtonModule, MatSnackBarModule],
+  imports: [],
   standalone: true,
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
@@ -31,8 +23,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
 
   constructor(
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document,
-    private snackBar: MatSnackBar
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngAfterViewInit() {
@@ -64,11 +55,11 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           websiteBasePath: '/auth',
         },
         style:
-          this.themeService.getTheme()() !== 'dark-theme'
+          this.themeService.getTheme()() === 'dark'
             ? `
         [data-supertokens~=container] {
-          --palette-background: 40, 40, 40;
-          --palette-inputBackground: 21, 21, 21;
+          --palette-background: 25, 25, 25;
+          --palette-inputBackground: 20, 20, 20;
           --palette-inputBorder: 41, 41, 41;
           --palette-textTitle: 200, 200, 200;
           --palette-textLabel: 200, 200, 200;
@@ -79,12 +70,14 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           --palette-textLink: 169, 169, 169;
         }
         [data-supertokens~="button"] {
-          background-color: #2b4226;
+          background-color: #19251b;
+          color: rgb(200, 200, 200);
+          border: 1px solid lightgrey;
         }
         [data-supertokens~="button"][data-supertokens~="providerButton"],
         [data-supertokens~="superTokensBranding"] {
-          background-color: rgb(11, 11, 11);
-          color: white;
+          background-color: rgb(40, 40, 40);
+          color: rgb(169, 169, 169);
         }
         `
             : '',

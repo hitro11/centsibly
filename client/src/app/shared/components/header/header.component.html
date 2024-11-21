@@ -1,25 +1,9 @@
-<div class="header">
-  <mat-toolbar class="">
-    <img class="w-[6rem]" [src]="logo" />
-    <span class="flexExpand"></span>
-    @if (isUserLoggedIn()) {
-      <div class="ml-4 mr-2">
-        <app-header-profile-dropdown></app-header-profile-dropdown>
-      </div>
-    } @else {
-      <button class="fix mr-6 scale-90" mat-flat-button (click)="signIn()">
-        Sign In
-      </button>
-      <div class="-mr-2 mt-2">
-        <mat-icon>bedtime</mat-icon>
-      </div>
-      <div class="scale-75">
-        <mat-slide-toggle
-          class="ml-2"
-          [checked]="this.theme() === 'dark-theme'"
-          (click)="themeService.toggleTheme()"
-        ></mat-slide-toggle>
-      </div>
-    }
-  </mat-toolbar>
-</div>
+<header>
+  <nav class="p-4">
+    <div class="flex flex-row">
+      <img class="w-[3.5rem]" [src]="logoPath" />
+      <div class="flexExpand"></div>
+      <app-header-profile-dropdown></app-header-profile-dropdown>
+    </div>
+  </nav>
+</header>

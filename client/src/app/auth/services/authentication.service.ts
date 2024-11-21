@@ -27,10 +27,11 @@ export class AuthenticationService {
     return this.isLoggedInSignal.asReadonly();
   }
 
-  async logout(): Promise<void> {
+  async signout(): Promise<void> {
     console.log('goodbye!');
     await Session.signOut();
     this.router.navigate(['/auth']);
+    this.isLoggedInSignal.set(false);
   }
 
   test() {

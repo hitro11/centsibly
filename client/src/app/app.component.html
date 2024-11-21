@@ -1,12 +1,5 @@
-<div class="content mat-app-background" [ngClass]="themeService.themeSignal()">
-  <app-header></app-header>
+<app-header></app-header>
 
-  <mat-sidenav-container class="">
-    <mat-sidenav #sidenav mode="side" opened
-      ><app-sidenav></app-sidenav
-    ></mat-sidenav>
-    <mat-sidenav-content>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+<h1 class="hlmH1 m-4 text-2xl">Hello Grove!</h1>
+
+<router-outlet></router-outlet>

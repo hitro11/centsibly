@@ -7,19 +7,32 @@ import {
   inject,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { ThemeService } from '../../shared/services/theme.service';
-import { environment } from '../../../../environments/environment';
+import { ThemeService } from '../shared/services/theme.service';
+import { environment } from '../../../environments/environment';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import {
+  MatSnackBar,
+  MatSnackBarConfig,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-auth',
-  template: '<div id="supertokensui"></div>',
+  imports: [MatDialogModule, MatCardModule, MatButtonModule, MatSnackBarModule],
+  standalone: true,
+  templateUrl: './auth.component.html',
+  styleUrl: './auth.component.scss',
 })
 export class AuthComponent implements OnDestroy, AfterViewInit {
   themeService = inject(ThemeService);
+  errorMessage = '';
 
   constructor(
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private snackBar: MatSnackBar
   ) {}
 
   ngAfterViewInit() {
@@ -29,7 +42,6 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    // Remove the script when the component is destroyed
     const script = this.document.getElementById('supertokens-script');
     if (script) {
       script.remove();
@@ -41,6 +53,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
     script.type = 'text/javascript';
     script.src = src;
     script.id = 'supertokens-script';
+
     script.onload = () => {
       (window as any).supertokensUIInit('supertokensui', {
         appInfo: {
@@ -51,7 +64,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           websiteBasePath: '/auth',
         },
         style:
-          this.themeService.getTheme()() === 'dark-theme'
+          this.themeService.getTheme()() !== 'dark-theme'
             ? `
         [data-supertokens~=container] {
           --palette-background: 40, 40, 40;
@@ -76,8 +89,11 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
         `
             : '',
         recipeList: [
-          (window as any).supertokensUIEmailPassword.init(),
+          (window as any).supertokensUIEmailPassword.init({
+            onHandleEvent: this.postSignInSignUpHandler,
+          }),
           (window as any).supertokensUIThirdParty.init({
+            onHandleEvent: this.postSignInSignUpHandler,
             signInAndUpFeature: {
               providers: [
                 (window as any).supertokensUIThirdParty.Github.init(),
@@ -91,4 +107,17 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
     };
     this.renderer.appendChild(this.document.body, script);
   }
+
+  postSignInSignUpHandler = async (context: any) => {
+    console.log(context);
+    if (context.action === 'SUCCESS') {
+      console.log('signed in successfully!');
+      if (context.isNewRecipeUser && context.user.loginMethods.length === 1) {
+        console.log('create an account:');
+        //todo: redirect user to create an account after successful sign up
+      }
+    } else {
+      console.error('Something went wrong with the sign in');
+    }
+  };
 }

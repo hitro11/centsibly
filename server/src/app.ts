@@ -62,8 +62,66 @@ supertokens.init({
           },
         ],
       },
+      override: {
+        functions: (originalImplementation) => {
+          return {
+            ...originalImplementation,
+            signInUp: async function (input) {
+              let existingUsers = await supertokens.listUsersByAccountInfo(
+                input.tenantId,
+                {
+                  email: input.email,
+                }
+              );
+              if (existingUsers.length === 0) {
+                return originalImplementation.signInUp(input);
+              }
+              if (
+                existingUsers.find(
+                  (u) =>
+                    u.loginMethods.find(
+                      (lM) =>
+                        lM.hasSameThirdPartyInfoAs({
+                          id: input.thirdPartyId,
+                          userId: input.thirdPartyUserId,
+                        }) && lM.recipeId === 'thirdparty'
+                    ) !== undefined
+                )
+              ) {
+                // this means we are trying to sign in with the same social login, so we allow it
+                return originalImplementation.signInUp(input);
+              }
+              // this means that the email already exists with another social login method, so we throw an error
+              logger.warn('Cannot sign up as email already exists');
+              throw new Error('Cannot sign up as email already exists');
+            },
+          };
+        },
+        apis: (originalImplementation) => {
+          return {
+            ...originalImplementation,
+            signInUpPOST: async (input) => {
+              try {
+                return await originalImplementation.signInUpPOST!(input);
+              } catch (err: any) {
+                if (err.message === 'Cannot sign up as email already exists') {
+                  logger.info(
+                    'Seems like you already have an account with another social login provider. Please use that instead.'
+                  );
+                  return {
+                    status: 'GENERAL_ERROR',
+                    message:
+                      'You already have an account with another social login provider. Please sign in with that instead.',
+                  };
+                }
+                throw err;
+              }
+            },
+          };
+        },
+      },
     }),
-    Session.init(), // initializes session features
+    Session.init(),
     Dashboard.init({
       admins: process.env.SUPERT0KENS_DASHBOARD_ADMIN
         ? [process.env.SUPERT0KENS_DASHBOARD_ADMIN]

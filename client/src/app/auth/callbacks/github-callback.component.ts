@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-github-callback',
@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
   template: ``,
   styles: ``,
 })
-export class GithubCallbackComponent {}
+export class GithubCallbackComponent implements OnInit {
+  ngOnInit(): void {}
+}

@@ -55,7 +55,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           websiteBasePath: '/auth',
         },
         style:
-          this.themeService.getTheme()() !== 'dark'
+          this.themeService.getTheme()() === 'dark'
             ? `
         [data-supertokens~=container] {
           --palette-background: 40, 40, 40;

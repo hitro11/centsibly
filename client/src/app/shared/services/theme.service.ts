@@ -1,34 +1,47 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Injectable, Signal, signal } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import {
+  inject,
+  Injectable,
+  PLATFORM_ID,
+  RendererFactory2,
+  signal,
+  Signal,
+  WritableSignal,
+} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  overlay;
-  themeSignal = signal<'dark-theme' | 'light-theme'>('dark-theme');
+  themeSignal = signal<'dark' | 'light'>('light');
+  private _renderer = inject(RendererFactory2).createRenderer(null, null);
+  private _document = inject(DOCUMENT);
 
-  constructor(private overlayContainer: OverlayContainer) {
-    this.overlay = overlayContainer.getContainerElement();
+  constructor() {
+    const currentTheme =
+      localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+    this.setTheme(currentTheme);
   }
 
-  toggleTheme() {
-    if (this.overlay.classList.contains('dark-theme')) {
-      this.overlay.classList.remove('dark-theme');
-      this.overlay.classList.add('light-theme');
-    } else if (this.overlay.classList.contains('light-theme')) {
-      this.overlay.classList.remove('light-theme');
-      this.overlay.classList.add('dark-theme');
+  public toggleTheme(): void {
+    const newTheme =
+      localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+    this.setTheme(newTheme);
+  }
+
+  setTheme(theme: 'dark' | 'light') {
+    if (theme === 'dark') {
+      this._renderer.addClass(this._document.documentElement, 'dark');
     } else {
-      this.overlay.classList.add('light-theme');
+      this._renderer.removeClass(this._document.documentElement, 'dark');
     }
 
-    this.themeSignal.update((value) =>
-      value === 'dark-theme' ? 'light-theme' : 'dark-theme'
-    );
+    localStorage.setItem('theme', theme);
+    this.themeSignal.update(() => theme);
   }
 
-  getTheme(): Signal<'dark-theme' | 'light-theme'> {
+  getTheme(): Signal<'dark' | 'light'> {
     return this.themeSignal.asReadonly();
   }
 }

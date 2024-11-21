@@ -31,7 +31,7 @@ export class HeaderComponent {
   constructor() {
     effect(() => {
       this.logoPath =
-        this.theme() === 'dark-theme'
+        this.theme() === 'dark'
           ? './img/logo-dark.png'
           : './img/logo-light.png';
     });

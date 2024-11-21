@@ -10,6 +10,8 @@ import Session from 'supertokens-web-js/recipe/session';
 import { environment } from '../../environments/environment';
 import ThirdParty from 'supertokens-web-js/recipe/thirdparty';
 import EmailPassword from 'supertokens-web-js/recipe/emailpassword';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { hlmH1 } from '@spartan-ng/ui-typography-helm';
 
 SuperTokens.init({
   appInfo: {
@@ -24,7 +26,13 @@ SuperTokens.init({
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, HeaderComponent, SidenavComponent],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    HeaderComponent,
+    SidenavComponent,
+    HlmButtonDirective,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

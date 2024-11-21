@@ -1,22 +1,19 @@
 import { AuthenticationService } from '../../../auth/services/authentication.service';
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  effect,
-  inject,
-  OnChanges,
-  OnInit,
-  Signal,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, effect, inject, Signal } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { HeaderProfileDropdownComponent } from './header-profile-dropdown/header-profile-dropdown.component';
 import { Router } from '@angular/router';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [HeaderProfileDropdownComponent],
+  imports: [
+    HeaderProfileDropdownComponent,
+    HlmButtonDirective,
+    HlmIconComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

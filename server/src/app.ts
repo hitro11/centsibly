@@ -16,6 +16,8 @@ import { errorHandler } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { verifySession } from 'supertokens-node/recipe/session/framework/express';
+import { connectToDB, getDb } from './config/db.js';
+import { UserRepositoryService } from './api/repositories/user.repository.js';
 
 dotenv.config();
 
@@ -130,6 +132,10 @@ supertokens.init({
 });
 
 const app: Express = express();
+
+// db
+await connectToDB();
+await UserRepositoryService.addUser('test@gmail.com', 'test');
 
 // Middleware
 app.use(

@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { isUserLoggedInGuard } from './routeGuards/isUserLoggedIn.guard';
 import { GoogleCallbackComponent } from './auth/callbacks/google-callback.component';
 import { GithubCallbackComponent } from './auth/callbacks/github-callback.component';
+import { CreateAccountComponent } from './login/create-account/create-account.component';
 
 export const routes: Routes = [
   {
@@ -19,4 +20,5 @@ export const routes: Routes = [
       { path: 'callback/github', component: GithubCallbackComponent },
     ],
   },
+  { path: 'create-account', component: CreateAccountComponent },
 ];

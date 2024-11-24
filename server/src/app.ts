@@ -35,7 +35,68 @@ supertokens.init({
     websiteBasePath: '/auth',
   },
   recipeList: [
-    EmailPassword.init({}),
+    EmailPassword.init({
+      signUpFeature: {
+        formFields: [{ id: 'username' }],
+      },
+      override: {
+        functions: (originalImplementation) => {
+          return {
+            ...originalImplementation,
+
+            // override the email password sign up function
+            signUp: async (input) => {
+              // TODO: some pre sign up logic
+
+              let response = await originalImplementation.signUp(input);
+
+              if (
+                response.status === 'OK' &&
+                response.user.loginMethods.length === 1 &&
+                input.session === undefined
+              ) {
+                // TODO: some post sign up logic
+              }
+
+              return response;
+            },
+
+            // override the email password sign in function
+            signIn: async (input) => {
+              // TODO: some pre sign in logic
+
+              let response = await originalImplementation.signIn(input);
+
+              if (response.status === 'OK' && input.session === undefined) {
+                // TODO: some post sign in logic
+              }
+
+              return response;
+            },
+          };
+        },
+        apis: (originalImplementation) => {
+          return {
+              ...originalImplementation,
+              signUpPOST: async function (input) {
+
+                  if (originalImplementation.signUpPOST === undefined) {
+                      throw Error("Should never come here");
+                  }
+
+                  let response = await originalImplementation.signUpPOST(input);
+
+                  if (response.status === "OK") {
+
+                      // These are the input form fields values that the user used while signing up
+                      let formFields = input.formFields;
+
+                  }
+                  return response;
+              }
+          }
+      },
+    }),
     ThirdParty.init({
       // We have provided you with development keys which you can use for testing.
       // IMPORTANT: Please replace them with your own OAuth keys for production use.
@@ -111,7 +172,7 @@ supertokens.init({
                   return {
                     status: 'GENERAL_ERROR',
                     message:
-                      'It looks like this email is already linked to an account created with a social login. Please sign in using your social account instead.',
+                      'This email is already linked to an account created with a social login. Please sign in using your social account instead.',
                   };
                 }
                 throw err;

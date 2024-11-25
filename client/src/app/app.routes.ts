@@ -1,3 +1,4 @@
+import { VerifyEmailComponent } from './login/verify-email/verify-email.component';
 import { Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
@@ -16,6 +17,7 @@ export const routes: Routes = [
     path: 'auth',
     component: AuthComponent,
     children: [
+      { path: 'verify-email', component: VerifyEmailComponent },
       { path: 'callback/google', component: GoogleCallbackComponent },
       { path: 'callback/github', component: GithubCallbackComponent },
     ],

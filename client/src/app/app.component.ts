@@ -12,6 +12,7 @@ import ThirdParty from 'supertokens-web-js/recipe/thirdparty';
 import EmailPassword from 'supertokens-web-js/recipe/emailpassword';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { hlmH1 } from '@spartan-ng/ui-typography-helm';
+import EmailVerification from 'supertokens-web-js/recipe/emailverification';
 
 SuperTokens.init({
   appInfo: {
@@ -20,7 +21,12 @@ SuperTokens.init({
     apiBasePath: '/auth',
   },
 
-  recipeList: [Session.init(), EmailPassword.init(), ThirdParty.init()],
+  recipeList: [
+    EmailPassword.init(),
+    ThirdParty.init(),
+    EmailVerification.init(),
+    Session.init(),
+  ],
 });
 
 @Component({

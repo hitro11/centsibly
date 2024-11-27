@@ -17,4 +17,18 @@ router.get('/info', async (req, res) => {
   res.json(await UserController.getUserInfo(req, res));
 });
 
+router.post('/setUsername', async (req, res) => {
+  try {
+    await UserController.setUsername(req, res);
+    res.json();
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+router.post('/getUsername', async (req, res) => {
+  await UserController.setUserRoles(req, res);
+  res.json();
+});
+
 export const userRoutes = router;

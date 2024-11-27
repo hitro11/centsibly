@@ -8,11 +8,8 @@ import { GithubCallbackComponent } from './auth/callbacks/github-callback.compon
 import { CreateAccountComponent } from './login/create-account/create-account.component';
 
 export const routes: Routes = [
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [isUserLoggedInGuard],
-  },
+  { path: '', component: HomeComponent },
+  { path: '*', component: HomeComponent },
   {
     path: 'auth',
     component: AuthComponent,

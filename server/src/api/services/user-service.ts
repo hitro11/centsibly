@@ -6,6 +6,7 @@ import Session from 'supertokens-node/recipe/session';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { USER_ROLE } from '../../config/constants.js';
 import supertokens from 'supertokens-node';
+import { UserRepositoryService } from '../repositories/user.repository.js';
 
 export class UserService {
   static async getUserRoles(req: Request, res: Response) {
@@ -29,10 +30,23 @@ export class UserService {
     return session.getUserId();
   }
 
+  static async setUsername(req: Request, res: Response) {
+    try {
+      const email = (await this.getUserInfo(req, res))?.emails[0];
+      if (!email) {
+        throw new Error('Email not found');
+      }
+      logger.debug({ email });
+      const username = req.body.username;
+      await UserRepositoryService.setUsername(email, username);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getUserInfo(req: Request, res: Response) {
     try {
       const userid = await this.getUserid(req, res);
-      logger.debug({ userid });
       const userInfo = await supertokens.getUser(userid);
       return userInfo;
     } catch (error) {

@@ -17,4 +17,12 @@ export class UserController {
   static async getUserInfo(req: Request, res: Response) {
     return await UserService.getUserInfo(req, res);
   }
+
+  static async setUsername(req: Request, res: Response) {
+    try {
+      return await UserService.setUsername(req, res);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

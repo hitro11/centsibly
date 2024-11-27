@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { Observable } from 'rxjs';
+import { StandardHTTPresponse } from '../../shared/models/Http';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,13 @@ export class AuthenticationService {
   getUserInfo() {
     return this.http.get<{ emails: string[]; id: string }>(
       `${environment.API_URL}/user/info`
+    );
+  }
+
+  setUsername(username: string) {
+    return this.http.post<StandardHTTPresponse>(
+      `${environment.API_URL}/user/setUsername`,
+      { username }
     );
   }
 }

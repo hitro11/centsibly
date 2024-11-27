@@ -15,6 +15,7 @@ import {
 } from '@spartan-ng/ui-card-helm';
 import { firstValueFrom } from 'rxjs';
 import { AuthenticationService } from '../../auth/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-account',
@@ -37,6 +38,7 @@ import { AuthenticationService } from '../../auth/services/authentication.servic
 export class CreateAccountComponent implements OnInit {
   authService = inject(AuthenticationService);
   fb = inject(FormBuilder);
+  router = inject(Router);
   maxUsernameLength = 30;
   minUsernameLength = 3;
   userid = '';
@@ -60,8 +62,6 @@ export class CreateAccountComponent implements OnInit {
       this.userEmail = (
         await firstValueFrom(this.authService.getUserInfo())
       ).emails[0];
-
-      console.log(this.userEmail);
     } catch (error) {
       console.error(error);
     }
@@ -72,16 +72,19 @@ export class CreateAccountComponent implements OnInit {
   }
 
   async onSubmit() {
-    const id = await this.authService.getUserId();
-    console.log({ id });
+    try {
+      if (this.form.valid) {
+        await firstValueFrom(this.authService.setUserRoleForUser());
 
-    if (this.form.valid) {
-      console.log('Form Submitted:', this.form.value);
-      // await firstValueFrom(this.authService.setUserRoleForUser());
+        await firstValueFrom(
+          this.authService.setUsername(this.username?.value as string)
+        );
 
-      console.log('user role updated');
-    } else {
-      console.log('Form Invalid');
+        console.log('username updated');
+        this.router.navigateByUrl('/');
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }

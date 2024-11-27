@@ -68,19 +68,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           (window as any).supertokensUIEmailVerification.init({
             mode: 'REQUIRED',
           }),
-          (window as any).supertokensUIEmailPassword.init({
-            // signInAndUpFeature: {
-            //   signUpForm: {
-            //     formFields: [
-            //       {
-            //         id: 'username',
-            //         label: 'Username',
-            //         placeholder: '',
-            //       },
-            //     ],
-            //   },
-            // },
-          }),
+          (window as any).supertokensUIEmailPassword.init({}),
           (window as any).supertokensUIThirdParty.init({
             signInAndUpFeature: {
               providers: [

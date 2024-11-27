@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { logger } from './config/logger.js';
-import router from './api/routes/index.js';
+import { router } from './api/routes/index.js';
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
 // import requestLogger from "@/common/middleware/requestLogger";
 import supertokens from 'supertokens-node';
@@ -140,7 +140,6 @@ const app: Express = express();
 
 // db
 await connectToDB();
-await UserRepositoryService.addUser('test@gmail.com', 'test');
 
 // Middleware
 app.use(
@@ -154,7 +153,7 @@ app.use(middleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-app.use('/api', verifySession(), router);
+app.use('/api', router);
 app.use(errorHandler());
 
 // Set the application to trust the reverse proxy

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { redditUserRoutes } from './user/user.js';
+import { redditUserRoutes } from '../user-routes.js';
 
 const router = Router();
 router.use('/user', redditUserRoutes);

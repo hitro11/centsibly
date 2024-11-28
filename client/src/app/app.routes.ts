@@ -5,10 +5,10 @@ import { HomeComponent } from './home/home.component';
 import { GoogleCallbackComponent } from './auth/callbacks/google-callback.component';
 import { GithubCallbackComponent } from './auth/callbacks/github-callback.component';
 import { CreateAccountComponent } from './login/create-account/create-account.component';
+import { isUserLoggedInGuard } from './routeGuards/isUserLoggedIn.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: '**', component: HomeComponent },
   {
     path: 'auth',
     component: AuthComponent,
@@ -18,5 +18,9 @@ export const routes: Routes = [
       { path: 'callback/github', component: GithubCallbackComponent },
     ],
   },
-  { path: 'create-account', component: CreateAccountComponent },
+  {
+    path: 'create-account',
+    component: CreateAccountComponent,
+    canActivate: [isUserLoggedInGuard],
+  },
 ];

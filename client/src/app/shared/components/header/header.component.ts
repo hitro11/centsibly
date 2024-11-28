@@ -18,7 +18,7 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  logoPath = '';
+  logoPath = './img/logo.png';
   themeService: ThemeService = inject(ThemeService);
   authService: AuthenticationService = inject(AuthenticationService);
   isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
@@ -26,12 +26,12 @@ export class HeaderComponent {
   router = inject(Router);
 
   constructor() {
-    effect(() => {
-      this.logoPath =
-        this.theme() === 'dark'
-          ? './img/logo-dark.png'
-          : './img/logo-light.png';
-    });
+    // effect(() => {
+    //   this.logoPath =
+    //     this.theme() === 'dark'
+    //       ? './img/logo-dark.png'
+    //       : './img/logo-light.png';
+    // });
   }
 
   async signIn() {

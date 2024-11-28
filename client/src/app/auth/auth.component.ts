@@ -54,6 +54,32 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           apiBasePath: '/auth',
           websiteBasePath: '/auth',
         },
+        getRedirectionURL: async (context: any) => {
+          if (context.action === 'SUCCESS' && context.newSessionCreated) {
+            if (context.createdNewUser) {
+              console.log('NEW USER');
+              return '/create-account';
+            }
+            return context.redirectToPath ?? '/';
+          }
+          return undefined;
+        },
+        recipeList: [
+          (window as any).supertokensUIEmailVerification.init({
+            mode: 'REQUIRED',
+          }),
+          (window as any).supertokensUIEmailPassword.init({}),
+          (window as any).supertokensUIThirdParty.init({
+            signInAndUpFeature: {
+              providers: [
+                (window as any).supertokensUIThirdParty.Github.init(),
+                (window as any).supertokensUIThirdParty.Google.init(),
+              ],
+            },
+          }),
+          (window as any).supertokensUISession.init(),
+        ],
+
         style:
           this.themeService.getTheme()() === 'dark'
             ? `
@@ -81,36 +107,8 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
         }
         `
             : '',
-        recipeList: [
-          (window as any).supertokensUIEmailPassword.init({
-            onHandleEvent: this.postSignInSignUpHandler,
-          }),
-          (window as any).supertokensUIThirdParty.init({
-            onHandleEvent: this.postSignInSignUpHandler,
-            signInAndUpFeature: {
-              providers: [
-                (window as any).supertokensUIThirdParty.Github.init(),
-                (window as any).supertokensUIThirdParty.Google.init(),
-              ],
-            },
-          }),
-          (window as any).supertokensUISession.init(),
-        ],
       });
     };
     this.renderer.appendChild(this.document.body, script);
   }
-
-  postSignInSignUpHandler = async (context: any) => {
-    console.log(context);
-    if (context.action === 'SUCCESS') {
-      console.log('signed in successfully!');
-      if (context.isNewRecipeUser && context.user.loginMethods.length === 1) {
-        console.log('create an account:');
-        //todo: redirect user to create an account after successful sign up
-      }
-    } else {
-      console.error('Something went wrong with the sign in');
-    }
-  };
 }

@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { logger } from './config/logger.js';
-import router from './api/routes/index.js';
+import { router } from './api/routes/index.js';
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
 // import requestLogger from "@/common/middleware/requestLogger";
 import supertokens from 'supertokens-node';
@@ -16,6 +16,9 @@ import { errorHandler } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { verifySession } from 'supertokens-node/recipe/session/framework/express';
+import { connectToDB, getDb } from './config/db.js';
+import { UserRepositoryService } from './api/repositories/user.repository.js';
+import EmailVerification from 'supertokens-node/recipe/emailverification';
 
 dotenv.config();
 
@@ -33,7 +36,11 @@ supertokens.init({
     websiteBasePath: '/auth',
   },
   recipeList: [
+    EmailVerification.init({
+      mode: 'REQUIRED',
+    }),
     EmailPassword.init({}),
+
     ThirdParty.init({
       // We have provided you with development keys which you can use for testing.
       // IMPORTANT: Please replace them with your own OAuth keys for production use.
@@ -109,7 +116,7 @@ supertokens.init({
                   return {
                     status: 'GENERAL_ERROR',
                     message:
-                      'It looks like this email is already linked to an account created with a social login. Please sign in using your social account instead.',
+                      'This email is already linked to an account created with a social login. Please sign in using your social account instead.',
                   };
                 }
                 throw err;
@@ -131,6 +138,9 @@ supertokens.init({
 
 const app: Express = express();
 
+// db
+await connectToDB();
+
 // Middleware
 app.use(
   cors({
@@ -143,7 +153,7 @@ app.use(middleware());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-app.use('/api', verifySession(), router);
+app.use('/api', router);
 app.use(errorHandler());
 
 // Set the application to trust the reverse proxy

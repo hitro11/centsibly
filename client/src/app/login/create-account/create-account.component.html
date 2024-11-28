@@ -1,0 +1,95 @@
+<div class="flex justify-center p-4">
+  <section class="p-6" hlmCard>
+    <div hlmCardHeader>
+      <h2 class="${hlmH2} text-3xl" hlmCardTitle>Create Account</h2>
+    </div>
+    <div hlmCardContent>
+      <form class="mt-8" [formGroup]="form" (submit)="onSubmit()">
+        <hlm-form-field>
+          <input
+            formControlName="username"
+            class="w-80"
+            hlmInput
+            type="name"
+            placeholder="username"
+          />
+          @if (username?.errors?.['required']) {
+            <hlm-error>Username is required</hlm-error>
+          }
+          @if (username?.errors?.['minlength']) {
+            <hlm-error
+              >Username must be at least
+              {{ maxUsernameLength }} characters</hlm-error
+            >
+          }
+          @if (username?.errors?.['maxlength']) {
+            <hlm-error
+              >Username cannot exceed
+              {{ maxUsernameLength }} characters.</hlm-error
+            >
+          }
+          @if (username?.errors?.['pattern']) {
+            <hlm-error
+              >Username must contain only alphanumeric, period, hyphen or
+              underscore characters.</hlm-error
+            >
+          }
+
+          <hlm-hint>This is your username</hlm-hint>
+        </hlm-form-field>
+      </form>
+    </div>
+
+    <p hlmCardFooter>
+      <button
+        class="mt-8"
+        type="submit"
+        hlmBtn
+        [disabled]="form.invalid"
+        (click)="onSubmit()"
+      >
+        Submit
+      </button>
+    </p>
+  </section>
+</div>
+
+<!-- <div>
+    <form class="mt-8" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <hlm-form-field>
+        <input
+          formControlName="username"
+          class="w-80"
+          hlmInput
+          type="name"
+          placeholder="username"
+        />
+        @if (username?.errors?.['required']) {
+          <hlm-error>Username is required</hlm-error>
+        }
+        @if (username?.errors?.['minlength']) {
+          <hlm-error
+            >Username must be at least
+            {{ maxUsernameLength }} characters</hlm-error
+          >
+        }
+        @if (username?.errors?.['maxlength']) {
+          <hlm-error
+            >Username cannot exceed
+            {{ maxUsernameLength }} characters.</hlm-error
+          >
+        }
+        @if (username?.errors?.['pattern']) {
+          <hlm-error
+            >Username must contain only alphanumeric, period, hyphen or
+            underscore characters.</hlm-error
+          >
+        }
+
+        <hlm-hint>This is your username</hlm-hint>
+      </hlm-form-field>
+      <button class="mt-8" type="submit" hlmBtn [disabled]="form.invalid">
+        Submit
+      </button>
+    </form>
+  </div> -->

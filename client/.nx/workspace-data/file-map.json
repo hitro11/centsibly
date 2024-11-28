@@ -117,19 +117,11 @@
       "client": [
         {
           "file": ".angular/cache/18.2.11/client/.tsbuildinfo",
-          "hash": "4581191643102911532"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps/@angular_cdk_overlay.js",
-          "hash": "15188615537059886953"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps/@angular_cdk_overlay.js.map",
-          "hash": "7083473363018742944"
+          "hash": "4030369057128662933"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_common.js",
-          "hash": "11617954637055285274"
+          "hash": "4886296649427659223"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_common.js.map",
@@ -137,7 +129,7 @@
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_common_http.js",
-          "hash": "13123430756330592956"
+          "hash": "17812394382778556005"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_common_http.js.map",
@@ -145,15 +137,23 @@
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_core.js",
-          "hash": "14166777146377634367"
+          "hash": "17457088294754491267"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_core.js.map",
           "hash": "9947606979680686569"
         },
         {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@angular_forms.js",
+          "hash": "6750762761145475591"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@angular_forms.js.map",
+          "hash": "3458987345642914706"
+        },
+        {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_platform-browser.js",
-          "hash": "18337890811026234973"
+          "hash": "11386499472522669790"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_platform-browser.js.map",
@@ -161,31 +161,79 @@
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_platform-browser_animations_async.js",
-          "hash": "7299953922271767219"
+          "hash": "340922647603175872"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_platform-browser_animations_async.js.map",
-          "hash": "805830707225720497"
+          "hash": "9022110564104324816"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_router.js",
-          "hash": "14305771579517319588"
+          "hash": "9980534494051017184"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/@angular_router.js.map",
-          "hash": "6349982115949082353"
+          "hash": "15942769876128235836"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@ng-icons_core.js",
+          "hash": "16403551235562936277"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@ng-icons_core.js.map",
+          "hash": "4071556678278390154"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@ng-icons_lucide.js",
+          "hash": "75318910508843256"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@ng-icons_lucide.js.map",
+          "hash": "11170051418590537379"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-core.js",
+          "hash": "5318872407376957035"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-core.js.map",
+          "hash": "15645775019864292179"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-formfield-brain.js",
+          "hash": "2780923576019777731"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-formfield-brain.js.map",
+          "hash": "8200938043122379101"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-forms-brain.js",
+          "hash": "8353433607209338196"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-forms-brain.js.map",
+          "hash": "10746606266576727899"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-menu-brain.js",
+          "hash": "318312518945583788"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/@spartan-ng_ui-menu-brain.js.map",
+          "hash": "16062485440584635377"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/_metadata.json",
-          "hash": "15217523833344629377"
+          "hash": "4895372665054615205"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/browser-ROLNHW7V.js",
-          "hash": "2515064492536334493"
+          "file": ".angular/cache/18.2.11/client/vite/deps/browser-FGSOW65L.js",
+          "hash": "16733680188539672389"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/browser-ROLNHW7V.js.map",
-          "hash": "5748076408724300587"
+          "file": ".angular/cache/18.2.11/client/vite/deps/browser-FGSOW65L.js.map",
+          "hash": "10416604431895584254"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/chunk-3OV72XIM.js",
@@ -196,275 +244,331 @@
           "hash": "9947606979680686569"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-3U5FR6QT.js",
-          "hash": "8598644589495926582"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-3VIZYGPT.js",
+          "hash": "9308220020875663434"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-3U5FR6QT.js.map",
-          "hash": "1999767830588638973"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-3VIZYGPT.js.map",
+          "hash": "5730944056411147484"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-4VHZDN3A.js",
-          "hash": "7723083969723915924"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-FVWC2ZBG.js",
+          "hash": "11601224808128724584"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-4VHZDN3A.js.map",
-          "hash": "18401650634073028427"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-FVWC2ZBG.js.map",
+          "hash": "6435274265928154063"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-DINTSTJH.js",
-          "hash": "4932449634887156826"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-HOZBPNLK.js",
+          "hash": "18369766625523778535"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-DINTSTJH.js.map",
-          "hash": "17093925197415265369"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-HOZBPNLK.js.map",
+          "hash": "10395430057370299418"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-GZF76MHK.js",
-          "hash": "3975463801135380911"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-I4TTI7NC.js",
+          "hash": "1923662117553528075"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-GZF76MHK.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-I4TTI7NC.js.map",
           "hash": "9194960991590266808"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-HM5YLMWO.js",
-          "hash": "18342950665338961338"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-KMCJBFEZ.js",
+          "hash": "7969316520717158547"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-HM5YLMWO.js.map",
-          "hash": "5909360634461904635"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-KMCJBFEZ.js.map",
+          "hash": "17093925197415265369"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-KOIB4TPY.js",
-          "hash": "5324377219207007112"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-LW6KWHP6.js",
+          "hash": "7387217955956620567"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-KOIB4TPY.js.map",
-          "hash": "12994938470851582065"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-LW6KWHP6.js.map",
+          "hash": "11509632181127518145"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-TXSD4FEB.js",
-          "hash": "839354785204515100"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-WJK5EVCE.js",
+          "hash": "11801063728184856676"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-TXSD4FEB.js.map",
-          "hash": "4753571402052611312"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-WJK5EVCE.js.map",
+          "hash": "17067046927321247996"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-U2NT6OJE.js",
-          "hash": "9596231729236888005"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-XCQJKGOB.js",
+          "hash": "17774852497638904935"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-U2NT6OJE.js.map",
-          "hash": "6435274265928154063"
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-XCQJKGOB.js.map",
+          "hash": "12328858729020275444"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-Y3THE7CW.js",
+          "hash": "12305789045664015163"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-Y3THE7CW.js.map",
+          "hash": "7685607682694794898"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-YUQGGJB6.js",
+          "hash": "1590215296990942823"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/chunk-YUQGGJB6.js.map",
+          "hash": "16850572469272576347"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/class-variance-authority.js",
+          "hash": "17522960201444235357"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/class-variance-authority.js.map",
+          "hash": "6074779803388794761"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/package.json",
           "hash": "8630294688235076505"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/rxjs.js",
-          "hash": "2738543712493101080"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps/rxjs.js.map",
-          "hash": "9947606979680686569"
-        },
-        {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js.js",
-          "hash": "426806640378442347"
+          "hash": "15940336418174514182"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js.js.map",
-          "hash": "7302038477915846889"
+          "hash": "18028086802528682731"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_emailpassword.js",
-          "hash": "4694914785795294749"
+          "hash": "9126061242083114059"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_emailpassword.js.map",
-          "hash": "15087369670175528080"
+          "hash": "11973461795521190298"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_emailverification.js",
+          "hash": "8100692831662913571"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_emailverification.js.map",
+          "hash": "10547010594169077316"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_session.js",
-          "hash": "12199140153726804672"
+          "hash": "13788859984691428964"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_session.js.map",
-          "hash": "88339946037340824"
+          "hash": "7727001822809428287"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_thirdparty.js",
-          "hash": "17372631874343260598"
+          "hash": "6114029787074514729"
         },
         {
           "file": ".angular/cache/18.2.11/client/vite/deps/supertokens-web-js_recipe_thirdparty.js.map",
-          "hash": "8063533060513333121"
+          "hash": "3625645230310622808"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/tslib.js",
-          "hash": "16867489355216698822"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_common.js",
+          "hash": "8908362514227117368"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps/tslib.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_common.js.map",
           "hash": "9947606979680686569"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_cdk_overlay.js",
-          "hash": "17868070061667920047"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_common_http.js",
+          "hash": "2834667893669345708"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_cdk_overlay.js.map",
-          "hash": "1991069208125032072"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_common.js",
-          "hash": "2695441601156496307"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_common.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_common_http.js.map",
           "hash": "9947606979680686569"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_common_http.js",
-          "hash": "16775593131158788277"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_core.js",
+          "hash": "8485614838649723509"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_common_http.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_core.js.map",
           "hash": "9947606979680686569"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_core.js",
-          "hash": "13711887810492765366"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_platform-browser.js",
+          "hash": "2965250054711919162"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_core.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_platform-browser.js.map",
           "hash": "9947606979680686569"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_platform-browser.js",
-          "hash": "15451043824507101376"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_platform-browser_animations_async.js",
+          "hash": "9277365594135503099"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_platform-browser.js.map",
-          "hash": "9947606979680686569"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_platform-browser_animations_async.js",
-          "hash": "2348936284901503031"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_platform-browser_animations_async.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_platform-browser_animations_async.js.map",
           "hash": "9022110564104324816"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_router.js",
-          "hash": "5103289492419234003"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_router.js",
+          "hash": "12883557904398589350"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/@angular_router.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@angular_router.js.map",
           "hash": "15942769876128235836"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/browser-NA3ZNJD7.js",
-          "hash": "10231723630975018494"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@ng-icons_core.js",
+          "hash": "16593055835272481266"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/browser-NA3ZNJD7.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@ng-icons_core.js.map",
+          "hash": "4071556678278390154"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@ng-icons_lucide.js",
+          "hash": "75318910508843256"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@ng-icons_lucide.js.map",
+          "hash": "11170051418590537379"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@spartan-ng_ui-core.js",
+          "hash": "15428074153916546140"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@spartan-ng_ui-core.js.map",
+          "hash": "15645775019864292179"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@spartan-ng_ui-menu-brain.js",
+          "hash": "5442929435649963075"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/@spartan-ng_ui-menu-brain.js.map",
+          "hash": "16062485440584635377"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/browser-SMJ6RY6T.js",
+          "hash": "9503916304900565603"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/browser-SMJ6RY6T.js.map",
           "hash": "10416604431895584254"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-3JGO7RLB.js",
-          "hash": "12160335713347717811"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-3JGO7RLB.js.map",
-          "hash": "6435274265928154063"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-3OV72XIM.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-3OV72XIM.js",
           "hash": "8005286085224571545"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-3OV72XIM.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-3OV72XIM.js.map",
           "hash": "9947606979680686569"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-F3RKC6KG.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-3SQA3YZN.js",
+          "hash": "3872171970272390839"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-3SQA3YZN.js.map",
+          "hash": "7685607682694794898"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-F3RKC6KG.js",
           "hash": "17809381680272280664"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-F3RKC6KG.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-F3RKC6KG.js.map",
           "hash": "4753571402052611312"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-HE75FEOI.js",
-          "hash": "16704654138597431410"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-JLLJIJVL.js",
+          "hash": "9017256632071036647"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-HE75FEOI.js.map",
-          "hash": "14684682042986145056"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-JLLJIJVL.js.map",
+          "hash": "6435274265928154063"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-PPPGCDGW.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-L43NDAPX.js",
+          "hash": "14189649958229395379"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-L43NDAPX.js.map",
+          "hash": "8175628561287812728"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-PPPGCDGW.js",
           "hash": "3349859046850524640"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-PPPGCDGW.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-PPPGCDGW.js.map",
           "hash": "17093925197415265369"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-QFMERDGD.js",
-          "hash": "2250435244065386122"
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-VDPJJRKU.js",
+          "hash": "6053844746216282152"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-QFMERDGD.js.map",
-          "hash": "9194960991590266808"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-ZVPCAT3Z.js",
-          "hash": "4293376647042121325"
-        },
-        {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/chunk-ZVPCAT3Z.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-VDPJJRKU.js.map",
           "hash": "16850572469272576347"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/package.json",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-ZRFSKKEC.js",
+          "hash": "15985270120916240006"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/chunk-ZRFSKKEC.js.map",
+          "hash": "9194960991590266808"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/class-variance-authority.js",
+          "hash": "17522960201444235357"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/class-variance-authority.js.map",
+          "hash": "6074779803388794761"
+        },
+        {
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/package.json",
           "hash": "8630294688235076505"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js.js",
           "hash": "11175799483998409200"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js.js.map",
           "hash": "7302038477915846889"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js_recipe_emailpassword.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js_recipe_emailpassword.js",
           "hash": "14709755044611016234"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js_recipe_emailpassword.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js_recipe_emailpassword.js.map",
           "hash": "15087369670175528080"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js_recipe_session.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js_recipe_session.js",
           "hash": "11878704489954629944"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js_recipe_session.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js_recipe_session.js.map",
           "hash": "88339946037340824"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js_recipe_thirdparty.js",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js_recipe_thirdparty.js",
           "hash": "9237028796374245237"
         },
         {
-          "file": ".angular/cache/18.2.11/client/vite/deps_temp_e0559964/supertokens-web-js_recipe_thirdparty.js.map",
+          "file": ".angular/cache/18.2.11/client/vite/deps_temp_c8c1afbe/supertokens-web-js_recipe_thirdparty.js.map",
           "hash": "8063533060513333121"
         },
         {
@@ -602,7 +706,7 @@
         },
         {
           "file": "src/app/app.component.html",
-          "hash": "13640747418866321862"
+          "hash": "16314803192065210954"
         },
         {
           "file": "src/app/app.component.scss",
@@ -614,7 +718,7 @@
         },
         {
           "file": "src/app/app.component.ts",
-          "hash": "2135221397056978956"
+          "hash": "5459170332525109531"
         },
         {
           "file": "src/app/app.config.ts",
@@ -622,7 +726,7 @@
         },
         {
           "file": "src/app/app.routes.ts",
-          "hash": "14139157016218693203"
+          "hash": "15849186535764039011"
         },
         {
           "file": "src/app/auth/auth.component.html",
@@ -634,7 +738,7 @@
         },
         {
           "file": "src/app/auth/auth.component.ts",
-          "hash": "5548273168432673269"
+          "hash": "1691108279420403769"
         },
         {
           "file": "src/app/auth/callbacks/github-callback.component.ts",
@@ -650,7 +754,7 @@
         },
         {
           "file": "src/app/auth/services/authentication.service.ts",
-          "hash": "5580780669575790119"
+          "hash": "3487401778048849825"
         },
         {
           "file": "src/app/home/home.component.html",
@@ -673,6 +777,38 @@
           "hash": "14408226699608931201"
         },
         {
+          "file": "src/app/login/create-account/create-account.component.html",
+          "hash": "13579682567545787676"
+        },
+        {
+          "file": "src/app/login/create-account/create-account.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/login/create-account/create-account.component.spec.ts",
+          "hash": "12337006875854207451"
+        },
+        {
+          "file": "src/app/login/create-account/create-account.component.ts",
+          "hash": "5757476640706825825"
+        },
+        {
+          "file": "src/app/login/verify-email/verify-email.component.html",
+          "hash": "16488913561901605359"
+        },
+        {
+          "file": "src/app/login/verify-email/verify-email.component.scss",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/login/verify-email/verify-email.component.spec.ts",
+          "hash": "73115789686946789"
+        },
+        {
+          "file": "src/app/login/verify-email/verify-email.component.ts",
+          "hash": "14741245709374489540"
+        },
+        {
           "file": "src/app/routeGuards/isUserLoggedIn.guard.ts",
           "hash": "2981781807924644638"
         },
@@ -682,11 +818,11 @@
         },
         {
           "file": "src/app/shared/components/header/header-profile-dropdown/header-profile-dropdown.component.html",
-          "hash": "17596661583677716493"
+          "hash": "18211025846019578048"
         },
         {
           "file": "src/app/shared/components/header/header-profile-dropdown/header-profile-dropdown.component.scss",
-          "hash": "11980355247248040796"
+          "hash": "3244421341483603138"
         },
         {
           "file": "src/app/shared/components/header/header-profile-dropdown/header-profile-dropdown.component.spec.ts",
@@ -694,15 +830,15 @@
         },
         {
           "file": "src/app/shared/components/header/header-profile-dropdown/header-profile-dropdown.component.ts",
-          "hash": "6366986548621315929"
+          "hash": "7168946124047591989"
         },
         {
           "file": "src/app/shared/components/header/header.component.html",
-          "hash": "1871257689926118926"
+          "hash": "63426610466753146"
         },
         {
           "file": "src/app/shared/components/header/header.component.scss",
-          "hash": "14028673583297328448"
+          "hash": "8277315552312829527"
         },
         {
           "file": "src/app/shared/components/header/header.component.spec.ts",
@@ -710,7 +846,7 @@
         },
         {
           "file": "src/app/shared/components/header/header.component.ts",
-          "hash": "3767220609825935482"
+          "hash": "13579801682317173064"
         },
         {
           "file": "src/app/shared/components/header/logo.jpg",
@@ -798,7 +934,7 @@
         },
         {
           "file": "src/index.html",
-          "hash": "18023990852756258840"
+          "hash": "17412115609350442018"
         },
         {
           "file": "src/libs/ui/ui-accordion-helm/src/index.ts",
@@ -1610,11 +1746,11 @@
         },
         {
           "file": "src/styles.scss",
-          "hash": "15721511436006774312"
+          "hash": "723079216885839964"
         },
         {
           "file": "tailwind.config.js",
-          "hash": "13012137350229027292"
+          "hash": "2776468780475429782"
         },
         {
           "file": "tsconfig.app.json",

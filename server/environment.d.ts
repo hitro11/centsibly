@@ -12,6 +12,7 @@ declare global {
       OAUTH_GOOGLE_CLIENT_SECRET: string;
       OAUTH_GITHUB_CLIENT_ID: string;
       OAUTH_GITHUB_CLIENT_SECRET: string;
+      DB_CONNECTION_STRING: string;
     }
   }
 }

@@ -60,7 +60,7 @@ export class HeaderProfileDropdownComponent {
   themeService = inject(ThemeService);
   localStorageService = inject(LocalStorageService);
   theme = this.themeService.getTheme();
-  username = this.localStorageService.get('username') ?? 'hitro11';
+  email = this.localStorageService.get('email') ?? 'test_user@test.com';
   isUserLoggedIn = this.authService.isUserLoggedIn();
   router = inject(Router);
 

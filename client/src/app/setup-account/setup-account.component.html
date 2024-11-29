@@ -1,0 +1,38 @@
+<section class="mt-16 w-[50rem] p-6" hlmCard>
+  <div hlmCardContent>
+    @if (currrentScreen === 0) {
+      <div class="">
+        <h2 class="${hlmH2} mt-6 text-center text-4xl" hlmCardTitle>
+          Welcome to Centsibly!
+        </h2>
+        <p class="mt-8 text-center text-xl">
+          Let's set up your budget in a few easy steps
+        </p>
+      </div>
+    }
+
+    @if (currrentScreen === 1) {
+      <app-setup-income></app-setup-income>
+    }
+    @if (currrentScreen === 2) {
+      <app-setup-expenses></app-setup-expenses>
+    }
+  </div>
+
+  <div
+    hlmCardFooter
+    class="mt-8 flex"
+    [ngClass]="{
+      'justify-center': currrentScreen === 0,
+      'justify-between': currrentScreen !== 0,
+    }"
+  >
+    @if (currrentScreen === 0) {
+      <button (click)="updateScreen('next')" hlmBtn>Get Started</button>
+    }
+    @if (currrentScreen > 0) {
+      <button (click)="updateScreen('previous')" hlmBtn>Back</button>
+      <button (click)="updateScreen('next')" hlmBtn>Continue</button>
+    }
+  </div>
+</section>

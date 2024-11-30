@@ -1,4 +1,4 @@
 export interface StandardHTTPresponse {
-  code: number | string;
-  message: any;
+    code: number | string;
+    message: any;
 }

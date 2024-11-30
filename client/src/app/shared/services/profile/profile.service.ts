@@ -7,20 +7,22 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { Subreddit } from '../../../../../../models/Subreddit';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ProfileService {
-  http = inject(HttpClient);
-  localStorageService = inject(LocalStorageService);
+    http = inject(HttpClient);
+    localStorageService = inject(LocalStorageService);
 
-  constructor() {}
+    constructor() {}
 
-  getUserSubscribedSubreddits(): Observable<Subreddit[]> {
-    const username = this.localStorageService.get(USERNAME_LOCAL_STORAGE_KEY);
-    return this.http.get<Subreddit[]>(
-      `${environment.HOST}/user/${username}/subreddits`
-    );
-  }
+    getUserSubscribedSubreddits(): Observable<Subreddit[]> {
+        const username = this.localStorageService.get(
+            USERNAME_LOCAL_STORAGE_KEY
+        );
+        return this.http.get<Subreddit[]>(
+            `${environment.HOST}/user/${username}/subreddits`
+        );
+    }
 
-  toggleSubredditFavorited(id: string, favorited: boolean) {}
+    toggleSubredditFavorited(id: string, favorited: boolean) {}
 }

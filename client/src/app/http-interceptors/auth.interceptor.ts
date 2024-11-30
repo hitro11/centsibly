@@ -6,8 +6,8 @@ import { LocalStorageService } from '../shared/services/local-storage.service';
 import { USERNAME_LOCAL_STORAGE_KEY } from '../shared/constants';
 
 export function authInterceptor(
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  return next(req);
+    return next(req);
 }

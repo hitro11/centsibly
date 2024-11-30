@@ -15,36 +15,36 @@ import { hlmH1 } from '@spartan-ng/ui-typography-helm';
 import EmailVerification from 'supertokens-web-js/recipe/emailverification';
 
 SuperTokens.init({
-  appInfo: {
-    appName: 'Grove',
-    apiDomain: environment.SERVER_URL,
-    apiBasePath: '/auth',
-  },
+    appInfo: {
+        appName: 'Grove',
+        apiDomain: environment.SERVER_URL,
+        apiBasePath: '/auth',
+    },
 
-  recipeList: [
-    EmailPassword.init(),
-    ThirdParty.init(),
-    EmailVerification.init(),
-    Session.init(),
-  ],
+    recipeList: [
+        EmailPassword.init(),
+        ThirdParty.init(),
+        EmailVerification.init(),
+        Session.init(),
+    ],
 });
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    CommonModule,
-    HeaderComponent,
-    SidenavComponent,
-    HlmButtonDirective,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    standalone: true,
+    imports: [
+        RouterOutlet,
+        CommonModule,
+        HeaderComponent,
+        SidenavComponent,
+        HlmButtonDirective,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'rSlash';
-  themeService: ThemeService = inject(ThemeService);
-  authService: AuthenticationService = inject(AuthenticationService);
-  isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
+    title = 'rSlash';
+    themeService: ThemeService = inject(ThemeService);
+    authService: AuthenticationService = inject(AuthenticationService);
+    isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
 }

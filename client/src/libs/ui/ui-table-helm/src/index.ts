@@ -15,16 +15,16 @@ export { HlmThComponent } from './lib/hlm-th.component';
 export { HlmTrowComponent } from './lib/hlm-trow.component';
 
 export const HlmTableImports = [
-	HlmTableComponent,
-	HlmTableDirective,
-	HlmCaptionComponent,
-	HlmThComponent,
-	HlmTdComponent,
-	HlmTrowComponent,
+    HlmTableComponent,
+    HlmTableDirective,
+    HlmCaptionComponent,
+    HlmThComponent,
+    HlmTdComponent,
+    HlmTrowComponent,
 ] as const;
 
 @NgModule({
-	imports: [...HlmTableImports],
-	exports: [...HlmTableImports],
+    imports: [...HlmTableImports],
+    exports: [...HlmTableImports],
 })
 export class HlmTableModule {}

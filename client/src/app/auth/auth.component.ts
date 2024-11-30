@@ -1,88 +1,95 @@
 import {
-  Component,
-  OnDestroy,
-  AfterViewInit,
-  Renderer2,
-  Inject,
-  inject,
+    Component,
+    OnDestroy,
+    AfterViewInit,
+    Renderer2,
+    Inject,
+    inject,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-auth',
-  imports: [],
-  standalone: true,
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss',
+    selector: 'app-auth',
+    imports: [],
+    standalone: true,
+    templateUrl: './auth.component.html',
+    styleUrl: './auth.component.scss',
 })
 export class AuthComponent implements OnDestroy, AfterViewInit {
-  themeService = inject(ThemeService);
-  errorMessage = '';
+    themeService = inject(ThemeService);
+    errorMessage = '';
 
-  constructor(
-    private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+    constructor(
+        private renderer: Renderer2,
+        @Inject(DOCUMENT) private document: Document
+    ) {}
 
-  ngAfterViewInit() {
-    this.loadScript(
-      'https://cdn.jsdelivr.net/gh/supertokens/prebuiltui@v0.48.0/build/static/js/main.81589a39.js'
-    );
-  }
-
-  ngOnDestroy() {
-    const script = this.document.getElementById('supertokens-script');
-    if (script) {
-      script.remove();
+    ngAfterViewInit() {
+        this.loadScript(
+            'https://cdn.jsdelivr.net/gh/supertokens/prebuiltui@v0.48.0/build/static/js/main.81589a39.js'
+        );
     }
-  }
 
-  private loadScript(src: string) {
-    const script = this.renderer.createElement('script');
-    script.type = 'text/javascript';
-    script.src = src;
-    script.id = 'supertokens-script';
+    ngOnDestroy() {
+        const script = this.document.getElementById('supertokens-script');
+        if (script) {
+            script.remove();
+        }
+    }
 
-    script.onload = () => {
-      (window as any).supertokensUIInit('supertokensui', {
-        appInfo: {
-          appName: 'Grove',
-          apiDomain: environment.SERVER_URL,
-          websiteDomain: environment.HOST,
-          apiBasePath: '/auth',
-          websiteBasePath: '/auth',
-        },
-        getRedirectionURL: async (context: any) => {
-          if (context.action === 'SUCCESS' && context.newSessionCreated) {
-            if (context.createdNewUser) {
-              console.log('NEW USER');
-              return '/create-account';
-            }
-            return context.redirectToPath ?? '/';
-          }
-          return undefined;
-        },
-        recipeList: [
-          (window as any).supertokensUIEmailVerification.init({
-            mode: 'REQUIRED',
-          }),
-          (window as any).supertokensUIEmailPassword.init({}),
-          (window as any).supertokensUIThirdParty.init({
-            signInAndUpFeature: {
-              providers: [
-                (window as any).supertokensUIThirdParty.Github.init(),
-                (window as any).supertokensUIThirdParty.Google.init(),
-              ],
-            },
-          }),
-          (window as any).supertokensUISession.init(),
-        ],
+    private loadScript(src: string) {
+        const script = this.renderer.createElement('script');
+        script.type = 'text/javascript';
+        script.src = src;
+        script.id = 'supertokens-script';
 
-        style:
-          this.themeService.getTheme()() === 'dark'
-            ? `
+        script.onload = () => {
+            (window as any).supertokensUIInit('supertokensui', {
+                appInfo: {
+                    appName: 'Grove',
+                    apiDomain: environment.SERVER_URL,
+                    websiteDomain: environment.HOST,
+                    apiBasePath: '/auth',
+                    websiteBasePath: '/auth',
+                },
+                getRedirectionURL: async (context: any) => {
+                    if (
+                        context.action === 'SUCCESS' &&
+                        context.newSessionCreated
+                    ) {
+                        if (context.createdNewUser) {
+                            console.log('NEW USER');
+                            return '/create-account';
+                        }
+                        return context.redirectToPath ?? '/';
+                    }
+                    return undefined;
+                },
+                recipeList: [
+                    (window as any).supertokensUIEmailVerification.init({
+                        mode: 'REQUIRED',
+                    }),
+                    (window as any).supertokensUIEmailPassword.init({}),
+                    (window as any).supertokensUIThirdParty.init({
+                        signInAndUpFeature: {
+                            providers: [
+                                (
+                                    window as any
+                                ).supertokensUIThirdParty.Github.init(),
+                                (
+                                    window as any
+                                ).supertokensUIThirdParty.Google.init(),
+                            ],
+                        },
+                    }),
+                    (window as any).supertokensUISession.init(),
+                ],
+
+                style:
+                    this.themeService.getTheme()() === 'dark'
+                        ? `
         [data-supertokens~=container] {
           --palette-background: 25, 25, 25;
           --palette-inputBackground: 20, 20, 20;
@@ -106,9 +113,9 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           color: rgb(169, 169, 169);
         }
         `
-            : '',
-      });
-    };
-    this.renderer.appendChild(this.document.body, script);
-  }
+                        : '',
+            });
+        };
+        this.renderer.appendChild(this.document.body, script);
+    }
 }

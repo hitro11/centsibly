@@ -1,4 +1,4 @@
-import pino from "pino";
+import pino from 'pino';
 
 export const logger = pino({
     transport: {
@@ -6,7 +6,7 @@ export const logger = pino({
         options: {
             translateTime: 'SYS:dd-mm-yyyy HH:MM:ss',
             ignore: 'pid,hostname',
-        }
+        },
     },
     level: 'debug',
 });

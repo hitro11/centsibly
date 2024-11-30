@@ -4,8 +4,8 @@ import { HlmSliderTrackComponent } from './lib/hlm-slider-track.component';
 import { HlmSliderComponent } from './lib/hlm-slider.component';
 
 export const HlmSliderImports = [
-	HlmSliderComponent,
-	HlmSliderTrackComponent,
-	HlmSliderInputDirective,
-	HlmSliderThumbDirective,
+    HlmSliderComponent,
+    HlmSliderTrackComponent,
+    HlmSliderInputDirective,
+    HlmSliderThumbDirective,
 ] as const;

@@ -8,19 +8,19 @@ import { SetupAccountComponent } from './setup-account/setup-account.component';
 import { isUserLoggedInGuard } from './routeGuards/isUserLoggedIn.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  {
-    path: 'auth',
-    component: AuthComponent,
-    children: [
-      { path: 'verify-email', component: VerifyEmailComponent },
-      { path: 'callback/google', component: GoogleCallbackComponent },
-      { path: 'callback/github', component: GithubCallbackComponent },
-    ],
-  },
-  {
-    path: 'create-account',
-    component: SetupAccountComponent,
-    canActivate: [isUserLoggedInGuard],
-  },
+    { path: '', component: HomeComponent },
+    {
+        path: 'auth',
+        component: AuthComponent,
+        children: [
+            { path: 'verify-email', component: VerifyEmailComponent },
+            { path: 'callback/google', component: GoogleCallbackComponent },
+            { path: 'callback/github', component: GithubCallbackComponent },
+        ],
+    },
+    {
+        path: 'create-account',
+        component: SetupAccountComponent,
+        canActivate: [isUserLoggedInGuard],
+    },
 ];

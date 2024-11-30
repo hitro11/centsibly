@@ -1,1 +1,37 @@
-<p>setup-expenses works!</p>
+<p class="mt-8 text-center text-3xl">Expenses</p>
+
+<!-- <form class="mt-8" [formGroup]="form">
+  <label class="my-4 mb-1.5 block" hlmLabel>Currency</label>
+  <brn-select class="inline-block" formControlName="currency">
+    <hlm-select-trigger class="w-24">
+      <hlm-select-value />
+    </hlm-select-trigger>
+    <hlm-select-content>
+      @for (currency of CURRENCIES; track currency.value) {
+        <hlm-option [value]="currency.value">{{ currency.label }}</hlm-option>
+      }
+    </hlm-select-content>
+  </brn-select>
+  @if (currency?.errors?.['required']) {
+    <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
+  }
+  <div class="mt-4 flex flex-row justify-normal">
+    <hlm-form-field class="mt-4">
+      <label hlmLabel>Monthly Income</label>
+
+      <input formControlName="income" class="w-44" hlmInput type="number" />
+      @if (income?.errors?.['required']) {
+        <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
+      }
+      @if (income?.errors?.['maxlength']) {
+        <hlm-error
+          >Monthly income cannot exceed
+          {{ maxIncomeLength }} characters.</hlm-error
+        >
+      }
+      @if (income?.errors?.['pattern']) {
+        <hlm-error>Please enter whole numbers only</hlm-error>
+      }
+    </hlm-form-field>
+  </div>
+</form> -->

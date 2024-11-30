@@ -59,7 +59,7 @@ export class SetupAccountComponent implements OnInit {
   maxIncomeLength = 30;
   userid = '';
   userEmail = '';
-  currrentScreen = 1;
+  currrentScreen = 2;
   CURRENCIES = CURRENCIES;
 
   async ngOnInit(): Promise<void> {

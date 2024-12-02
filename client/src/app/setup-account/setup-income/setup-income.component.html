@@ -33,14 +33,25 @@
             @if (income?.errors?.['maxlength']) {
                 <hlm-error
                     >Monthly income cannot exceed
-                    {{ maxIncomeLength }} characters.</hlm-error
+                    {{ maxIncomeLength }} digits.</hlm-error
                 >
             }
-            @if (income?.errors?.['pattern']) {
-                <hlm-error>Please enter whole numbers only</hlm-error>
+            @if (income?.errors?.['min']) {
+                <hlm-error>Income cannot be less than 0</hlm-error>
             }
 
             <!-- <hlm-hint>Monthly income</hlm-hint> -->
         </hlm-form-field>
+    </div>
+
+    <div class="mt-16 flex justify-between">
+        <button (click)="updateSectionFn('previous')" hlmBtn>Back</button>
+        <button
+            (click)="updateSectionFn('next')"
+            [disabled]="!form.valid"
+            hlmBtn
+        >
+            Continue
+        </button>
     </div>
 </form>

@@ -32,3 +32,4 @@ export const CURRENCIES = [
 ];
 
 export const REQUIRED_ERROR_MESSAGE = 'This field is required';
+export const MAX_INCOME_LENGTH = 10;

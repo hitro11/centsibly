@@ -1,37 +1,69 @@
 <p class="mt-8 text-center text-3xl">Expenses</p>
 
-<!-- <form class="mt-8" [formGroup]="form">
-  <label class="my-4 mb-1.5 block" hlmLabel>Currency</label>
-  <brn-select class="inline-block" formControlName="currency">
-    <hlm-select-trigger class="w-24">
-      <hlm-select-value />
-    </hlm-select-trigger>
-    <hlm-select-content>
-      @for (currency of CURRENCIES; track currency.value) {
-        <hlm-option [value]="currency.value">{{ currency.label }}</hlm-option>
-      }
-    </hlm-select-content>
-  </brn-select>
-  @if (currency?.errors?.['required']) {
-    <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
-  }
-  <div class="mt-4 flex flex-row justify-normal">
-    <hlm-form-field class="mt-4">
-      <label hlmLabel>Monthly Income</label>
+<form class="mt-8" [formGroup]="form">
+    <div formArrayName="expenses">
+        @for (expense of expenseTypes; track $index) {
+            <div class="mb-8 flex flex-row">
+                <div class="mr-2 mt-10">
+                    <hlm-icon size="sm" name="lucideDollarSign" />
+                </div>
 
-      <input formControlName="income" class="w-44" hlmInput type="number" />
-      @if (income?.errors?.['required']) {
-        <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
-      }
-      @if (income?.errors?.['maxlength']) {
-        <hlm-error
-          >Monthly income cannot exceed
-          {{ maxIncomeLength }} characters.</hlm-error
-        >
-      }
-      @if (income?.errors?.['pattern']) {
-        <hlm-error>Please enter whole numbers only</hlm-error>
-      }
-    </hlm-form-field>
-  </div>
-</form> -->
+                <div class="">
+                    <hlm-form-field class="">
+                        <label class="block" hlmLabel>{{
+                            expense.label
+                        }}</label>
+                        <input
+                            [formControlName]="$index"
+                            class="w-40"
+                            hlmInput
+                            type="number"
+                            step="0.01"
+                        />
+                    </hlm-form-field>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- <div formArrayName="expenses">
+        @for (expense of expenses.controls; track $index) {
+            <div class="mt-4 flex flex-row justify-center">
+                <div>
+                    <label class="mb-2 block" hlmLabel>Expense Type</label>
+                    <brn-select class="" formControlName="type">
+                        <hlm-select-trigger class="w-40">
+                            <hlm-select-value />
+                        </hlm-select-trigger>
+                        <hlm-select-content>
+                            @for (type of expenseTypes; track type.value) {
+                                <hlm-option [value]="type.value">{{
+                                    type.label
+                                }}</hlm-option>
+                            }
+                        </hlm-select-content>
+                    </brn-select>
+                </div>
+
+                <div>
+                    <hlm-form-field class="">
+                        <label class="block" hlmLabel>Amount</label>
+                        <input
+                            formControlName="amount"
+                            class="w-24"
+                            hlmInput
+                            type="number"
+                        />
+                    </hlm-form-field>
+                </div>
+            </div>
+        }
+    </div> -->
+</form>
+
+<div class="mt-16 flex justify-between">
+    <button (click)="updateSectionFn('previous')" hlmBtn>Back</button>
+    <button (click)="updateSectionFn('next')" [disabled]="!form.valid" hlmBtn>
+        Continue
+    </button>
+</div>

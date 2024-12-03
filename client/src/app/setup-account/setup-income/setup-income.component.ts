@@ -5,8 +5,7 @@ import {
     EventEmitter,
     inject,
     Input,
-    OnInit,
-    Output,
+    output,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
@@ -20,6 +19,7 @@ import {
 } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { SetupAccountService } from '../services/setup-account.service';
+import { Currency } from '../models/AccountDetails';
 
 @Component({
     selector: 'app-setup-income',
@@ -38,11 +38,7 @@ import { SetupAccountService } from '../services/setup-account.service';
 })
 export class SetupIncomeComponent {
     @Input() nextButtonClicked!: () => boolean;
-    @Output() updateSection = new EventEmitter<'previous' | 'next'>();
-    @Output() sendData = new EventEmitter<{
-        income: number;
-        currency: string;
-    }>();
+    updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
     setupAccountService = inject(SetupAccountService);
@@ -50,21 +46,31 @@ export class SetupIncomeComponent {
     REQUIRED_ERROR_MESSAGE = REQUIRED_ERROR_MESSAGE;
 
     form = this.fb.group({
+        currency: [
+            this.setupAccountService.data.currency,
+            [Validators.required],
+        ],
         income: [
-            null,
+            this.setupAccountService.data.income,
             [
                 Validators.required,
                 Validators.maxLength(MAX_NUMBER_VALUE),
                 Validators.min(0),
             ],
         ],
-        currency: ['USD', [Validators.required]],
     });
 
     constructor() {}
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (direction === 'next') {
+            this.setupAccountService.data.currency = (this.currency?.value ??
+                'USD') as Currency;
+
+            this.setupAccountService.data.income =
+                this.income?.value ?? undefined;
+
+            console.log(this.setupAccountService.data);
         }
 
         this.updateSection.emit(direction);

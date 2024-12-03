@@ -1,21 +1,5 @@
-import { CURRENCIES } from '../../shared/constants';
-
 export interface AccountDetails {
-    currency:
-        | 'USD'
-        | 'EUR'
-        | 'JPY'
-        | 'GBP'
-        | 'CAD'
-        | 'CNY'
-        | 'KRW'
-        | 'SGD'
-        | 'HKD'
-        | 'NZD'
-        | 'INR'
-        | 'MXN'
-        | 'RUB'
-        | 'ZAR';
+    currency: Currency;
     income: number;
     expenses: {
         housingExpenseExpenses: number;
@@ -26,3 +10,19 @@ export interface AccountDetails {
         otherExpenses: number;
     };
 }
+
+export type Currency =
+    | 'USD'
+    | 'EUR'
+    | 'JPY'
+    | 'GBP'
+    | 'CAD'
+    | 'CNY'
+    | 'KRW'
+    | 'SGD'
+    | 'HKD'
+    | 'NZD'
+    | 'INR'
+    | 'MXN'
+    | 'RUB'
+    | 'ZAR';

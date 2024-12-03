@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import {
     AbstractControl,
     FormArray,
@@ -39,8 +39,7 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
     styleUrl: './setup-expenses.component.scss',
 })
 export class SetupExpensesComponent {
-    @Output() sendData = new EventEmitter<{}>();
-    @Output() updateSection = new EventEmitter<'previous' | 'next'>();
+    updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
     form: FormGroup;
@@ -83,7 +82,6 @@ export class SetupExpensesComponent {
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (direction === 'next') {
-            this.sendData.emit({});
         }
 
         this.updateSection.emit(direction);

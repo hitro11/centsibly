@@ -5,7 +5,7 @@ import { AccountDetails } from '../models/AccountDetails';
     providedIn: 'root',
 })
 export class SetupAccountService {
-    data = {};
+    data: Partial<AccountDetails> = { currency: 'USD' };
 
     constructor() {}
 }

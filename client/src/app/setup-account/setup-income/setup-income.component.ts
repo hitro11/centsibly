@@ -13,8 +13,13 @@ import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
-import { CURRENCIES, REQUIRED_ERROR_MESSAGE } from '../../shared/constants';
+import {
+    CURRENCIES,
+    MAX_NUMBER_VALUE,
+    REQUIRED_ERROR_MESSAGE,
+} from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { SetupAccountService } from '../services/setup-account.service';
 
 @Component({
     selector: 'app-setup-income',
@@ -40,16 +45,16 @@ export class SetupIncomeComponent {
     }>();
 
     fb = inject(FormBuilder);
+    setupAccountService = inject(SetupAccountService);
     CURRENCIES = CURRENCIES;
     REQUIRED_ERROR_MESSAGE = REQUIRED_ERROR_MESSAGE;
-    maxIncomeLength = 10;
 
     form = this.fb.group({
         income: [
             null,
             [
                 Validators.required,
-                Validators.maxLength(this.maxIncomeLength),
+                Validators.maxLength(MAX_NUMBER_VALUE),
                 Validators.min(0),
             ],
         ],
@@ -60,10 +65,6 @@ export class SetupIncomeComponent {
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (direction === 'next') {
-            this.sendData.emit({
-                currency: this.currency?.value ?? '',
-                income: Number(this.income?.value) ?? -1,
-            });
         }
 
         this.updateSection.emit(direction);

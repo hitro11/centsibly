@@ -19,17 +19,7 @@ export const CURRENCIES = [
     { label: 'MXN', value: 'MXN' },
     { label: 'RUB', value: 'RUB' },
     { label: 'ZAR', value: 'ZAR' },
-    { label: 'BRL', value: 'BRL' },
-    { label: 'TRY', value: 'TRY' },
-    { label: 'SEK', value: 'SEK' },
-    { label: 'NOK', value: 'NOK' },
-    { label: 'IDR', value: 'IDR' },
-    { label: 'MYR', value: 'MYR' },
-    { label: 'PHP', value: 'PHP' },
-    { label: 'THB', value: 'THB' },
-    { label: 'PLN', value: 'PLN' },
-    { label: 'CZK', value: 'CZK' },
 ];
 
 export const REQUIRED_ERROR_MESSAGE = 'This field is required';
-export const MAX_INCOME_LENGTH = 10;
+export const MAX_NUMBER_VALUE = 999999999;

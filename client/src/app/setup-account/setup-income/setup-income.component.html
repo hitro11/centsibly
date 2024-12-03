@@ -30,11 +30,8 @@
             @if (income?.errors?.['required']) {
                 <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
             }
-            @if (income?.errors?.['maxlength']) {
-                <hlm-error
-                    >Monthly income cannot exceed
-                    {{ maxIncomeLength }} digits.</hlm-error
-                >
+            @if (income?.errors?.['max']) {
+                <hlm-error>Income exceeded maximum value</hlm-error>
             }
             @if (income?.errors?.['min']) {
                 <hlm-error>Income cannot be less than 0</hlm-error>

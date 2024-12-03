@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import {
+    AbstractControl,
     FormArray,
     FormBuilder,
+    FormControl,
     FormGroup,
     ReactiveFormsModule,
+    ValidationErrors,
+    ValidatorFn,
     Validators,
 } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
@@ -14,7 +18,8 @@ import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucideDollarSign } from '@ng-icons/lucide';
-import { MAX_INCOME_LENGTH } from '../../shared/constants';
+import { MAX_NUMBER_VALUE } from '../../shared/constants';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 
 @Component({
     selector: 'app-setup-expenses',
@@ -27,6 +32,7 @@ import { MAX_INCOME_LENGTH } from '../../shared/constants';
         BrnSelectImports,
         HlmSelectImports,
         HlmIconComponent,
+        HlmButtonDirective,
     ],
     providers: [provideIcons({ lucideDollarSign })],
     templateUrl: './setup-expenses.component.html',
@@ -38,7 +44,6 @@ export class SetupExpensesComponent {
 
     fb = inject(FormBuilder);
     form: FormGroup;
-    MAX_INCOME_LENGTH = MAX_INCOME_LENGTH;
 
     expenseTypes = [
         { label: 'Housing', value: 'housing' },
@@ -47,23 +52,21 @@ export class SetupExpensesComponent {
         { label: 'Groceries', value: 'groceries' },
         { label: 'Transportation', value: 'transportation' },
         { label: 'Entertainment', value: 'entertainment' },
-        { label: 'Others', value: 'others' },
+        { label: 'Other', value: 'other' },
     ];
 
-    expenseValidators = [
-        Validators.required,
-        Validators.maxLength(MAX_INCOME_LENGTH),
-        Validators.min(0),
-    ];
+    expenseValidators = [Validators.max(MAX_NUMBER_VALUE), Validators.min(0)];
 
     constructor() {
         this.form = this.fb.group({
-            expenses: this.fb.array([]),
+            expenses: this.fb.array([], this.atLeastOneValidator),
         });
 
         for (const expense of this.expenseTypes) {
             this.addExpense(expense.value);
         }
+
+        console.log(this.expenses.controls);
     }
 
     addExpense(name: string): void {
@@ -84,5 +87,12 @@ export class SetupExpensesComponent {
         }
 
         this.updateSection.emit(direction);
+    }
+
+    atLeastOneValidator(control: AbstractControl): ValidationErrors | null {
+        const isAnyFilled = (control as FormArray).controls.some(
+            (control) => control.value
+        );
+        return isAnyFilled ? null : { atLeastOneRequired: true };
     }
 }

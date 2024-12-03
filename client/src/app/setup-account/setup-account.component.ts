@@ -26,10 +26,8 @@ import { SetupExpensesComponent } from './setup-expenses/setup-expenses.componen
         ReactiveFormsModule,
         CommonModule,
         HlmFormFieldModule,
-        HlmButtonDirective,
         HlmCardContentDirective,
         HlmCardDirective,
-        HlmCardFooterDirective,
         HlmCardTitleDirective,
         SetupIncomeComponent,
         SetupExpensesComponent,
@@ -42,29 +40,10 @@ export class SetupAccountComponent implements OnInit {
     fb = inject(FormBuilder);
     router = inject(Router);
     maxIncomeLength = 10;
-    currentSection = 1;
+    currentSection = 2;
     CURRENCIES = CURRENCIES;
 
-    triggerNextForIncome = signal(false);
-
     async ngOnInit(): Promise<void> {}
-
-    recordIncome(data: any) {
-        console.log(data);
-    }
-
-    previousScreen() {
-        this.triggerNextForIncome.set(false);
-        this.currentSection--;
-    }
-
-    nextScreen() {
-        if (this.currentSection === 1) {
-            this.triggerNextForIncome.set(true);
-        }
-
-        this.currentSection++;
-    }
 
     updateSection(direction: 'previous' | 'next'): void {
         direction === 'previous'

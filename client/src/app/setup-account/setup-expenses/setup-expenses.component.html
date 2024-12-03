@@ -20,6 +20,15 @@
                             type="number"
                             step="0.01"
                         />
+
+                        @if (expenses.controls[$index].errors?.['min']) {
+                            <hlm-error>Expense cannot be less than 0</hlm-error>
+                        }
+                        @if (expenses.controls[$index].errors?.['max']) {
+                            <hlm-error
+                                >Expense exceeded maximum value</hlm-error
+                            >
+                        }
                     </hlm-form-field>
                 </div>
             </div>

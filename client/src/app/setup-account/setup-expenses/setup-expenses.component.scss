@@ -1,0 +1,13 @@
+.delete {
+    filter: invert(15%) sepia(35%) saturate(3889%) hue-rotate(341deg)
+        brightness(97%) contrast(92%);
+}
+
+.add {
+    filter: invert(72%) sepia(51%) saturate(657%) hue-rotate(179deg)
+        brightness(99%) contrast(96%);
+}
+
+h1 {
+    color: #771e1e;
+}

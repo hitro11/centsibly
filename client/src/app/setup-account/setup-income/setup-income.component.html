@@ -1,7 +1,7 @@
-<p class="mt-8 text-center text-3xl">Income Streams</p>
+<p class="mt-8 text-center text-3xl">Income</p>
 
 <form class="mt-8" [formGroup]="form">
-    <label class="my-4 mb-1.5 block" hlmLabel>Currency</label>
+    <label class="my-4 block" hlmLabel>Currency</label>
     <brn-select class="inline-block" formControlName="currency">
         <hlm-select-trigger class="w-24">
             <hlm-select-value />
@@ -17,7 +17,8 @@
     @if (currency?.errors?.['required']) {
         <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
     }
-    <div class="mt-4 flex flex-row justify-normal">
+
+    <div class="mt-4 flex flex-row">
         <hlm-form-field class="mt-4">
             <label hlmLabel>Monthly Income</label>
 
@@ -26,6 +27,7 @@
                 class="w-44"
                 hlmInput
                 type="number"
+                placeholder="$19.09"
             />
             @if (income?.errors?.['required']) {
                 <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>

@@ -1,73 +1,75 @@
-<p class="mt-8 text-center text-3xl">Expenses</p>
+<p class="mt-8 text-center text-4xl">Expenses</p>
 
-<form class="mt-8" [formGroup]="form">
-    <div formArrayName="expenses">
-        @for (expense of expenseTypes; track $index) {
-            <div class="mb-8 flex flex-row">
-                <div class="mr-2 mt-10">
-                    <hlm-icon size="sm" name="lucideDollarSign" />
-                </div>
+<p class="mt-12">
+    Enter your expenses for a typical month below. Each expense must have a
+    category and an amount.
+</p>
 
-                <div class="">
-                    <hlm-form-field class="">
-                        <label class="block" hlmLabel>{{
-                            expense.label
-                        }}</label>
-                        <input
-                            [formControlName]="$index"
-                            class="w-40"
-                            hlmInput
-                            type="number"
-                            step="0.01"
-                        />
-
-                        @if (expenses.controls[$index].errors?.['min']) {
-                            <hlm-error>Expense cannot be less than 0</hlm-error>
-                        }
-                        @if (expenses.controls[$index].errors?.['max']) {
-                            <hlm-error
-                                >Expense exceeded maximum value</hlm-error
-                            >
-                        }
-                    </hlm-form-field>
-                </div>
-            </div>
-        }
-    </div>
-
-    <!-- <div formArrayName="expenses">
+<form class="mt-16" [formGroup]="form">
+    <ng-container formArrayName="expenses">
         @for (expense of expenses.controls; track $index) {
-            <div class="mt-4 flex flex-row justify-center">
-                <div>
-                    <label class="mb-2 block" hlmLabel>Expense Type</label>
-                    <brn-select class="" formControlName="type">
-                        <hlm-select-trigger class="w-40">
-                            <hlm-select-value />
-                        </hlm-select-trigger>
-                        <hlm-select-content>
-                            @for (type of expenseTypes; track type.value) {
-                                <hlm-option [value]="type.value">{{
-                                    type.label
-                                }}</hlm-option>
-                            }
-                        </hlm-select-content>
-                    </brn-select>
-                </div>
+            <div class="mb-8 flex flex-row justify-around">
+                <hlm-form-field class="">
+                    <!-- <label class="block" hlmLabel>{{ sdfsd }}</label> -->
+                    <input
+                        formControlName="name"
+                        class="w-52"
+                        hlmInput
+                        type="text"
+                        placeholder="Name"
+                    />
+
+                    @if (expense?.errors?.['pattern']) {
+                        <hlm-error>Invalid characters</hlm-error>
+                    }
+                    @if (expense?.errors?.['maxlength']) {
+                        <hlm-error
+                            >Name cannot be greater than
+                            {{ maxCharacterLimit }} characters
+                        </hlm-error>
+                    }
+                </hlm-form-field>
+                <hlm-form-field class="">
+                    <input
+                        formControlName="amount"
+                        class="w-40"
+                        hlmInput
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="$"
+                    />
+
+                    @if (expense?.errors?.['pattern']) {
+                        <hlm-error>Not a valid number</hlm-error>
+                    }
+                    @if (expense?.errors?.['min']) {
+                        <hlm-error>Expense cannot be less than 0</hlm-error>
+                    }
+                    @if (expense?.errors?.['max']) {
+                        <hlm-error>Expense exceeded maximum value</hlm-error>
+                    }
+                </hlm-form-field>
 
                 <div>
-                    <hlm-form-field class="">
-                        <label class="block" hlmLabel>Amount</label>
-                        <input
-                            formControlName="amount"
-                            class="w-24"
-                            hlmInput
-                            type="number"
+                    <button (click)="deleteExpense($index)" class="mr-4">
+                        <hlm-icon
+                            class="delete"
+                            size="lg"
+                            name="lucideTrash2"
                         />
-                    </hlm-form-field>
+                    </button>
+                    <button (click)="addExpense()">
+                        <hlm-icon
+                            class="add"
+                            size="lg"
+                            name="lucidePlusCircle"
+                        />
+                    </button>
                 </div>
             </div>
         }
-    </div> -->
+    </ng-container>
 </form>
 
 <div class="mt-16 flex justify-between">

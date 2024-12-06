@@ -17,9 +17,16 @@ import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
-import { lucideDollarSign } from '@ng-icons/lucide';
+import {
+    lucideBadgePlus,
+    lucideTrash2,
+    lucidePlusCircle,
+} from '@ng-icons/lucide';
 import { MAX_NUMBER_VALUE } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { SetupAccountService } from '../services/setup-account.service';
+import { deepCopy } from '../../shared/utils';
+import { Expense } from '../../shared/types';
 
 @Component({
     selector: 'app-setup-expenses',
@@ -34,7 +41,7 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
         HlmIconComponent,
         HlmButtonDirective,
     ],
-    providers: [provideIcons({ lucideDollarSign })],
+    providers: [provideIcons({ lucideTrash2, lucidePlusCircle })],
     templateUrl: './setup-expenses.component.html',
     styleUrl: './setup-expenses.component.scss',
 })
@@ -42,55 +49,59 @@ export class SetupExpensesComponent {
     updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
-    form: FormGroup;
+    Object = Object;
+    setupAccountService = inject(SetupAccountService);
+    maxCharacterLimit = 25;
 
-    expenseTypes = [
-        { label: 'Housing', value: 'housing' },
-        { label: 'Investments', value: 'investments' },
-        { label: 'Utilities', value: 'utilities' },
-        { label: 'Groceries', value: 'groceries' },
-        { label: 'Transportation', value: 'transportation' },
-        { label: 'Entertainment', value: 'entertainment' },
-        { label: 'Other', value: 'other' },
+    expenseNameValidators = [
+        Validators.required,
+        Validators.maxLength(this.maxCharacterLimit),
+        Validators.pattern(/^[a-zA-Z0-9\s\(\)\-_]+$/),
+    ];
+    expenseAmountValidators = [
+        Validators.max(MAX_NUMBER_VALUE),
+        Validators.min(0.01),
+        Validators.pattern(/^\d+(\.\d{1,})?$/),
     ];
 
-    expenseValidators = [Validators.max(MAX_NUMBER_VALUE), Validators.min(0)];
+    // expenses = deepCopy(this.setupAccountService.data.expenses);
+
+    form = this.fb.group({ expenses: this.fb.array([]) });
 
     constructor() {
-        this.form = this.fb.group({
-            expenses: this.fb.array([], this.atLeastOneValidator),
-        });
-
-        for (const expense of this.expenseTypes) {
-            this.addExpense(expense.value);
-        }
-
-        console.log(this.expenses.controls);
+        this.addExpense();
+        console.log(this.expenses.at(0).value);
     }
 
-    addExpense(name: string): void {
-        this.expenses.push(this.fb.control(null, this.expenseValidators));
+    get expenses() {
+        return this.form.controls['expenses'] as FormArray;
     }
 
-    get expenses(): FormArray {
-        return this.form.get('expenses') as FormArray;
+    addExpense() {
+        this.expenses?.push(
+            this.fb.group({
+                name: ['housing', this.expenseNameValidators],
+                amount: [0, this.expenseAmountValidators],
+            })
+        );
     }
 
     deleteExpense(index: number): void {
-        this.expenses.removeAt(index);
+        this.expenses?.removeAt(index);
     }
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (direction === 'next') {
+            const expenses: Partial<Record<Expense, number>> = {};
+
+            for (const key of Object.keys(this.expenses.controls)) {
+                // expenses[key as Expense] = this.form.controls[key].value;
+            }
+
+            // this.setupAccountService.data.expenses = expenses;
+            console.log(this.setupAccountService.data);
         }
 
         this.updateSection.emit(direction);
-    }
-
-    atLeastOneValidator(control: AbstractControl): ValidationErrors | null {
-        const isAnyFilled = (control as FormArray).controls.some(
-            (control) => control.value
-        );
-        return isAnyFilled ? null : { atLeastOneRequired: true };
     }
 }

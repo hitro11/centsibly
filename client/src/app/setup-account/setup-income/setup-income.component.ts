@@ -1,3 +1,4 @@
+import { Currency } from './../models/AccountDetails';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -19,7 +20,8 @@ import {
 } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { SetupAccountService } from '../services/setup-account.service';
-import { Currency } from '../models/AccountDetails';
+import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
+import { lucideDollarSign } from '@ng-icons/lucide';
 
 @Component({
     selector: 'app-setup-income',
@@ -32,7 +34,9 @@ import { Currency } from '../models/AccountDetails';
         BrnSelectImports,
         HlmSelectImports,
         HlmButtonDirective,
+        HlmIconComponent,
     ],
+    providers: [provideIcons({ lucideDollarSign })],
     templateUrl: './setup-income.component.html',
     styleUrl: './setup-income.component.scss',
 })
@@ -60,7 +64,9 @@ export class SetupIncomeComponent {
         ],
     });
 
-    constructor() {}
+    constructor() {
+        const v = this.form.value;
+    }
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (direction === 'next') {

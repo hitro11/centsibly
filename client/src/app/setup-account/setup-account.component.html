@@ -21,5 +21,10 @@
                 (updateSection)="updateSection($event)"
             ></app-setup-expenses>
         }
+        @if (currentSection === 3) {
+            <app-setup-income
+                (updateSection)="updateSection($event)"
+            ></app-setup-income>
+        }
     </div>
 </section>

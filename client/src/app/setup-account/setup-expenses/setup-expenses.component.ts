@@ -144,7 +144,7 @@ export class SetupExpensesComponent {
         }
     }
 
-    updateSectionFn(direction: 'previous' | 'next') {
+    async updateSectionFn(direction: 'previous' | 'next') {
         if (this.form.valid) {
             const expenses: Expense[] = [];
 
@@ -155,9 +155,12 @@ export class SetupExpensesComponent {
             }
 
             this.setupAccountService.data.expenses = expenses;
-            console.log(this.setupAccountService.data.expenses);
         }
 
-        this.updateSection.emit(direction);
+        if (direction === 'next') {
+            await this.setupAccountService.onSetupFormSubmit();
+        } else {
+            this.updateSection.emit(direction);
+        }
     }
 }

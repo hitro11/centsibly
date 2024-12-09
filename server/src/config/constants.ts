@@ -1,4 +1,4 @@
-export const DATABASE_NAME = 'grove';
+export const DATABASE_NAME = 'centsibly';
 
 export const COLLECTIONS = {
     ACCOUNTS: 'accounts',

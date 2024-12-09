@@ -1,4 +1,3 @@
-import { Subreddit } from '../../../../../../models/Subreddit';
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -27,7 +26,7 @@ export class SidenavComponent implements OnInit {
     profileService = inject(ProfileService);
     authService = inject(AuthenticationService);
     // subreddits$: Observable<Subreddit[]>;
-    subreddits: Subreddit[] = [];
+    subreddits: any = [];
     isUserLoggedIn = this.authService.isUserLoggedIn();
 
     // constructor() {
@@ -53,22 +52,4 @@ export class SidenavComponent implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {}
-
-    toggleFavorite(event: { id: string; currentlyFavorited: boolean }) {
-        const i = this.subreddits.findIndex(
-            (subreddit) => subreddit.id === event.id
-        );
-        this.subreddits[i].favorited = !event.currentlyFavorited;
-        this.sortSubreddits();
-    }
-
-    sortSubreddits() {
-        this.subreddits = this.subreddits.sort((a, b) => {
-            if (a.favorited !== b.favorited) {
-                return a.favorited ? -1 : 1;
-            }
-
-            return a.name.localeCompare(b.name);
-        });
-    }
 }

@@ -4,7 +4,6 @@ import { environment } from '../../../../../environments/environment';
 import { LocalStorageService } from '../local-storage.service';
 import { USERNAME_LOCAL_STORAGE_KEY } from '../../constants';
 import { Observable, firstValueFrom } from 'rxjs';
-import { Subreddit } from '../../../../../../models/Subreddit';
 
 @Injectable({
     providedIn: 'root',
@@ -15,11 +14,11 @@ export class ProfileService {
 
     constructor() {}
 
-    getUserSubscribedSubreddits(): Observable<Subreddit[]> {
+    getUserSubscribedSubreddits(): Observable<any[]> {
         const username = this.localStorageService.get(
             USERNAME_LOCAL_STORAGE_KEY
         );
-        return this.http.get<Subreddit[]>(
+        return this.http.get<any[]>(
             `${environment.HOST}/user/${username}/subreddits`
         );
     }

@@ -26,7 +26,14 @@ import { MAX_NUMBER_VALUE } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { SetupAccountService } from '../services/setup-account.service';
 import { deepCopy } from '../../shared/utils';
-import { Expense } from '../../shared/types';
+import {
+    HlmCardContentDirective,
+    HlmCardDescriptionDirective,
+    HlmCardDirective,
+} from '@spartan-ng/ui-card-helm';
+import { ThemeService } from '../../shared/services/theme.service';
+import { Expense } from '../models/AccountDetails';
+import { noDuplicateNames } from '../../shared/validators';
 
 @Component({
     selector: 'app-setup-expenses',
@@ -40,6 +47,9 @@ import { Expense } from '../../shared/types';
         HlmSelectImports,
         HlmIconComponent,
         HlmButtonDirective,
+        HlmCardContentDirective,
+        HlmCardDescriptionDirective,
+        HlmCardDirective,
     ],
     providers: [provideIcons({ lucideTrash2, lucidePlusCircle })],
     templateUrl: './setup-expenses.component.html',
@@ -49,9 +59,10 @@ export class SetupExpensesComponent {
     updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
-    Object = Object;
     setupAccountService = inject(SetupAccountService);
+    themeService = inject(ThemeService);
     maxCharacterLimit = 25;
+    theme = this.themeService.getTheme();
 
     expenseNameValidators = [
         Validators.required,
@@ -59,49 +70,90 @@ export class SetupExpensesComponent {
         Validators.pattern(/^[a-zA-Z0-9\s\(\)\-_]+$/),
     ];
     expenseAmountValidators = [
+        Validators.required,
         Validators.max(MAX_NUMBER_VALUE),
         Validators.min(0.01),
         Validators.pattern(/^\d+(\.\d{1,})?$/),
     ];
 
-    // expenses = deepCopy(this.setupAccountService.data.expenses);
+    expensesData = deepCopy(this.setupAccountService.data.expenses) ?? [];
 
-    form = this.fb.group({ expenses: this.fb.array([]) });
+    form = this.fb.group({
+        expenses: this.fb.array([]),
+    });
 
     constructor() {
-        this.addExpense();
-        console.log(this.expenses.at(0).value);
+        for (const expense of this.expensesData) {
+            this.addExpense(expense?.name, expense?.amount);
+        }
+
+        if (!this.expensesData.length) {
+            this.addExpense();
+        }
     }
 
     get expenses() {
         return this.form.controls['expenses'] as FormArray;
     }
 
-    addExpense() {
-        this.expenses?.push(
-            this.fb.group({
-                name: ['housing', this.expenseNameValidators],
-                amount: [0, this.expenseAmountValidators],
-            })
-        );
+    addExpense(name: string | null = null, amount: number | null = null) {
+        const newExpense = this.fb.group({
+            name: [name, this.expenseNameValidators],
+            amount: [amount, this.expenseAmountValidators],
+        });
+
+        this.expenses?.push(newExpense);
+
+        // reset formgroup to prevent 'required' error from activating on formcontrol creation
+        newExpense.markAsPristine();
+        newExpense.markAsUntouched();
+        newExpense.updateValueAndValidity();
     }
 
     deleteExpense(index: number): void {
         this.expenses?.removeAt(index);
     }
 
-    updateSectionFn(direction: 'previous' | 'next') {
-        if (direction === 'next') {
-            const expenses: Partial<Record<Expense, number>> = {};
+    expenseNameUpdated() {
+        const names: string[] = [];
 
-            for (const key of Object.keys(this.expenses.controls)) {
-                // expenses[key as Expense] = this.form.controls[key].value;
+        for (const control of this.expenses.controls) {
+            const name = control.value.name;
+            const nameFC = (control as FormGroup).controls['name'];
+
+            if (names.includes(name)) {
+                nameFC.setErrors({
+                    duplicateName: true,
+                });
+
+                const i = names.findIndex((n) => n?.localeCompare(name) === 0);
+
+                (this.expenses.at(i) as FormGroup).controls['name'].setErrors({
+                    duplicateName: true,
+                });
+            } else {
+                nameFC.updateValueAndValidity();
+                nameFC.setErrors(nameFC.errors);
             }
 
-            // this.setupAccountService.data.expenses = expenses;
-            console.log(this.setupAccountService.data);
+            names.push(name);
+        }
+    }
+
+    updateSectionFn(direction: 'previous' | 'next') {
+        if (direction === 'next') {
         }
 
+        const expenses: Expense[] = [];
+
+        for (let i = 0; i < this.expenses.length; i++) {
+            const name = this.expenses.at(i).value.name as string;
+            const amount = parseInt(this.expenses.at(i).value.amount);
+            expenses.push({ name, amount });
+        }
+
+        this.setupAccountService.data.expenses = expenses;
+        console.log(this.setupAccountService.data.expenses);
         this.updateSection.emit(direction);
     }
 }

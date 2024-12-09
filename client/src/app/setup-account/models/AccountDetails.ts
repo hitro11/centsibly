@@ -1,11 +1,8 @@
-export interface AccountDetails {
+export type AccountDetails = {
     currency: Currency;
     income: number;
-    expenses: {
-        name: string;
-        amount: number;
-    }[];
-}
+    expenses: Expense[];
+};
 
 export type Currency =
     | 'USD'
@@ -22,3 +19,8 @@ export type Currency =
     | 'MXN'
     | 'RUB'
     | 'ZAR';
+
+export type Expense = {
+    name: string;
+    amount: number;
+};

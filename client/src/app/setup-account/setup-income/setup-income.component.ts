@@ -14,6 +14,7 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import {
+    AMOUNT_REGEX,
     CURRENCIES,
     MAX_NUMBER_VALUE,
     REQUIRED_ERROR_MESSAGE,
@@ -59,7 +60,8 @@ export class SetupIncomeComponent {
             [
                 Validators.required,
                 Validators.maxLength(MAX_NUMBER_VALUE),
-                Validators.min(0),
+                Validators.min(1),
+                Validators.pattern(AMOUNT_REGEX),
             ],
         ],
     });
@@ -69,14 +71,12 @@ export class SetupIncomeComponent {
     }
 
     updateSectionFn(direction: 'previous' | 'next') {
-        if (direction === 'next') {
+        if (this.form.valid) {
             this.setupAccountService.data.currency = (this.currency?.value ??
-                'USD') as Currency;
+                'CAD') as Currency;
 
             this.setupAccountService.data.income =
                 this.income?.value ?? undefined;
-
-            console.log(this.setupAccountService.data);
         }
 
         this.updateSection.emit(direction);

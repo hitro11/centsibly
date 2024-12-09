@@ -14,10 +14,10 @@ export const CURRENCIES = [
     { label: 'HKD', value: 'HKD' },
     { label: 'NZD', value: 'NZD' },
     { label: 'INR', value: 'INR' },
-    { label: 'MXN', value: 'MXN' },
     { label: 'RUB', value: 'RUB' },
-    { label: 'ZAR', value: 'ZAR' },
 ];
 
 export const REQUIRED_ERROR_MESSAGE = 'This field is required';
 export const MAX_NUMBER_VALUE = 999999999;
+export const STRING_REGEX = /^[a-zA-Z0-9\s\(\)\-_]+$/;
+export const AMOUNT_REGEX = /^\d+(\.\d{1,})?$/;

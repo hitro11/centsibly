@@ -22,7 +22,11 @@ import {
     lucideTrash2,
     lucidePlusCircle,
 } from '@ng-icons/lucide';
-import { MAX_NUMBER_VALUE } from '../../shared/constants';
+import {
+    AMOUNT_REGEX,
+    MAX_NUMBER_VALUE,
+    STRING_REGEX,
+} from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { SetupAccountService } from '../services/setup-account.service';
 import { deepCopy } from '../../shared/utils';
@@ -67,13 +71,13 @@ export class SetupExpensesComponent {
     expenseNameValidators = [
         Validators.required,
         Validators.maxLength(this.maxCharacterLimit),
-        Validators.pattern(/^[a-zA-Z0-9\s\(\)\-_]+$/),
+        Validators.pattern(STRING_REGEX),
     ];
     expenseAmountValidators = [
         Validators.required,
         Validators.max(MAX_NUMBER_VALUE),
-        Validators.min(0.01),
-        Validators.pattern(/^\d+(\.\d{1,})?$/),
+        Validators.min(1),
+        Validators.pattern(AMOUNT_REGEX),
     ];
 
     expensesData = deepCopy(this.setupAccountService.data.expenses) ?? [];
@@ -141,19 +145,19 @@ export class SetupExpensesComponent {
     }
 
     updateSectionFn(direction: 'previous' | 'next') {
-        if (direction === 'next') {
+        if (this.form.valid) {
+            const expenses: Expense[] = [];
+
+            for (let i = 0; i < this.expenses.length; i++) {
+                const name = this.expenses.at(i).value.name as string;
+                const amount = parseInt(this.expenses.at(i).value.amount);
+                expenses.push({ name, amount });
+            }
+
+            this.setupAccountService.data.expenses = expenses;
+            console.log(this.setupAccountService.data.expenses);
         }
 
-        const expenses: Expense[] = [];
-
-        for (let i = 0; i < this.expenses.length; i++) {
-            const name = this.expenses.at(i).value.name as string;
-            const amount = parseInt(this.expenses.at(i).value.amount);
-            expenses.push({ name, amount });
-        }
-
-        this.setupAccountService.data.expenses = expenses;
-        console.log(this.setupAccountService.data.expenses);
         this.updateSection.emit(direction);
     }
 }

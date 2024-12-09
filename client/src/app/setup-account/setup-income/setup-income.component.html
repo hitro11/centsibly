@@ -1,9 +1,9 @@
 <p class="mt-8 text-center text-3xl">Income</p>
 
 <form class="mt-8" [formGroup]="form">
-    <label class="my-4 block" hlmLabel>Currency</label>
-    <brn-select class="inline-block" formControlName="currency">
-        <hlm-select-trigger class="w-24">
+    <label class="mb-1 block" hlmLabel>Currency</label>
+    <brn-select class="inline-block w-full" formControlName="currency">
+        <hlm-select-trigger class="">
             <hlm-select-value />
         </hlm-select-trigger>
         <hlm-select-content>
@@ -18,25 +18,25 @@
         <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
     }
 
-    <div class="mt-4 flex flex-row">
+    <div class="mt-8">
         <hlm-form-field class="mt-4">
-            <label hlmLabel>Monthly Income</label>
-
+            <label class="block" hlmLabel>Monthly Income</label>
             <input
                 formControlName="income"
-                class="w-44"
+                class="w-1/2"
                 hlmInput
                 type="number"
-                placeholder="$19.09"
+                step="1"
+                placeholder="$"
             />
             @if (income?.errors?.['required']) {
-                <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
+                <hlm-error>Invalid input</hlm-error>
             }
             @if (income?.errors?.['max']) {
                 <hlm-error>Income exceeded maximum value</hlm-error>
             }
             @if (income?.errors?.['min']) {
-                <hlm-error>Income cannot be less than 0</hlm-error>
+                <hlm-error>Income cannot be less than 1</hlm-error>
             }
 
             <!-- <hlm-hint>Monthly income</hlm-hint> -->

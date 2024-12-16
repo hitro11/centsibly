@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AccountInfo, AccountInfoSchema } from '../models/AccountDetails';
+import { AccountInfo, AccountInfoSchema } from 'utils/schemas';
 import { DeepPartial } from '../../shared/types';
-import { z } from 'zod';
-import { deepCopy } from '../../shared/utils';
 
 @Injectable({
     providedIn: 'root',

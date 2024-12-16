@@ -16,13 +16,13 @@ import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import {
     AMOUNT_REGEX,
     CURRENCIES,
-    MAX_NUMBER_VALUE,
     REQUIRED_ERROR_MESSAGE,
 } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { SetupAccountService } from '../services/setup-account.service';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideDollarSign } from '@ng-icons/lucide';
+import { MAX_NUMBER_VALUE} from 'utils/constants';
 
 @Component({
     selector: 'app-setup-income',
@@ -59,7 +59,7 @@ export class SetupIncomeComponent {
             this.setupAccountService.data.income,
             [
                 Validators.required,
-                Validators.maxLength(MAX_NUMBER_VALUE),
+                Validators.max(MAX_NUMBER_VALUE),
                 Validators.min(1),
                 Validators.pattern(AMOUNT_REGEX),
             ],

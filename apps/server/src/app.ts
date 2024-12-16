@@ -1,3 +1,6 @@
+import { MAX_NUMBER_VALUE } from 'utils';
+import { AccountInfo } from 'utils/schemas';
+
 /* Imports */
 import express, { type Express } from 'express';
 import cors from 'cors';
@@ -15,12 +18,13 @@ import { middleware } from 'supertokens-node/framework/express';
 import { errorHandler } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
-import { verifySession } from 'supertokens-node/recipe/session/framework/express';
 import { connectToDB, getDb } from './config/db.js';
-import { UserRepositoryService } from './api/repositories/user.repository.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 
 dotenv.config();
+
+console.log(MAX_NUMBER_VALUE);
+console.log(MAX_NUMBER_VALUE);
 
 supertokens.init({
     framework: 'express',
@@ -169,7 +173,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use('/api', router);
-app.use(errorHandler());
 
 // Set the application to trust the reverse proxy
 // app.set("trust proxy", true);
@@ -179,6 +182,8 @@ app.use(errorHandler());
 
 // Swagger UI
 // app.use(openAPIRouter);
+
+// app.use(errorHandler());
 
 app.listen(process.env.PORT, () => {
     const { NODE_ENV, HOST } = process.env;

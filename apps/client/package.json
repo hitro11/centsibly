@@ -13,6 +13,7 @@
     "private": true,
     "proxy": "http://localhost:4200/",
     "dependencies": {
+        "utils": "workspace:*",
         "@angular/animations": "^18.2.0",
         "@angular/cdk": "^18.2.14",
         "@angular/common": "^18.2.0",

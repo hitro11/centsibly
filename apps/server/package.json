@@ -14,11 +14,11 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "utils": "workspace:*",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
         "helmet": "^8.0.0",
-        "jsonwebtoken": "^9.0.2",
         "ky": "^1.7.2",
         "mongodb": "^6.10.0",
         "pino": "^9.5.0",

@@ -143,6 +143,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+      utils:
+        specifier: workspace:*
+        version: link:../../packages/utils
       zod:
         specifier: ^3.23.8
         version: 3.24.1
@@ -222,9 +225,6 @@ importers:
       helmet:
         specifier: ^8.0.0
         version: 8.0.0
-      jsonwebtoken:
-        specifier: ^9.0.2
-        version: 9.0.2
       ky:
         specifier: ^1.7.2
         version: 1.7.3
@@ -240,6 +240,9 @@ importers:
       supertokens-node:
         specifier: ^21.0.0
         version: 21.1.0(encoding@0.1.13)
+      utils:
+        specifier: workspace:*
+        version: link:../../packages/utils
       zod:
         specifier: ^3.23.8
         version: 3.24.1
@@ -264,6 +267,19 @@ importers:
         version: 10.9.2(@types/node@22.10.1)(typescript@5.7.2)
       typescript:
         specifier: ^5.6.3
+        version: 5.7.2
+
+  packages/utils:
+    dependencies:
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.1
+    devDependencies:
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.10.1
+      typescript:
+        specifier: ^5.7.2
         version: 5.7.2
 
 packages:
@@ -381,13 +397,6 @@ packages:
     peerDependencies:
       '@angular/common': ^18.0.0 || ^19.0.0
       '@angular/core': ^18.0.0 || ^19.0.0
-      rxjs: ^6.5.3 || ^7.4.0
-
-  '@angular/cdk@19.0.2':
-    resolution: {integrity: sha512-eDjHJJWpgnzC3pR6N0gCdh51Q1ffoh6mql06YSqprj005aNKBjmCMnpU4bPPzdGSkKsjwAZWGUNWg4RS+R+iZQ==}
-    peerDependencies:
-      '@angular/common': ^19.0.0 || ^20.0.0
-      '@angular/core': ^19.0.0 || ^20.0.0
       rxjs: ^6.5.3 || ^7.4.0
 
   '@angular/cli@18.2.12':
@@ -7188,7 +7197,7 @@ snapshots:
       watchpack: 2.4.1
       webpack: 5.94.0(esbuild@0.23.0)
       webpack-dev-middleware: 7.4.2(webpack@5.94.0(esbuild@0.23.0))
-      webpack-dev-server: 5.0.4(webpack@5.88.0)
+      webpack-dev-server: 5.0.4(webpack@5.97.1)
       webpack-merge: 6.0.1
       webpack-subresource-integrity: 5.1.0(webpack@5.94.0(esbuild@0.23.0))
     optionalDependencies:
@@ -7218,7 +7227,7 @@ snapshots:
       '@angular-devkit/architect': 0.1802.12(chokidar@3.6.0)
       rxjs: 7.8.1
       webpack: 5.94.0(esbuild@0.23.0)
-      webpack-dev-server: 5.0.4(webpack@5.88.0)
+      webpack-dev-server: 5.0.4(webpack@5.97.1)
     transitivePeerDependencies:
       - chokidar
 
@@ -7292,15 +7301,6 @@ snapshots:
       - terser
 
   '@angular/cdk@18.2.14(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)':
-    dependencies:
-      '@angular/common': 18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
-      '@angular/core': 18.2.13(rxjs@7.8.1)(zone.js@0.14.10)
-      rxjs: 7.8.1
-      tslib: 2.8.1
-    optionalDependencies:
-      parse5: 7.2.1
-
-  '@angular/cdk@19.0.2(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)':
     dependencies:
       '@angular/common': 18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
       '@angular/core': 18.2.13(rxjs@7.8.1)(zone.js@0.14.10)
@@ -9456,7 +9456,7 @@ snapshots:
 
   '@ngxpert/cmdk@1.0.0(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)':
     dependencies:
-      '@angular/cdk': 19.0.2(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/cdk': 18.2.14(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
       '@angular/common': 18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
       '@angular/core': 18.2.13(rxjs@7.8.1)(zone.js@0.14.10)
       '@ngneat/overview': 5.1.1(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))
@@ -15058,17 +15058,6 @@ snapshots:
 
   webidl-conversions@7.0.0: {}
 
-  webpack-dev-middleware@7.4.2(webpack@5.88.0):
-    dependencies:
-      colorette: 2.0.20
-      memfs: 4.15.0
-      mime-types: 2.1.35
-      on-finished: 2.4.1
-      range-parser: 1.2.1
-      schema-utils: 4.2.0
-    optionalDependencies:
-      webpack: 5.88.0
-
   webpack-dev-middleware@7.4.2(webpack@5.94.0(esbuild@0.23.0)):
     dependencies:
       colorette: 2.0.20
@@ -15091,7 +15080,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.97.1
 
-  webpack-dev-server@5.0.4(webpack@5.88.0):
+  webpack-dev-server@5.0.4(webpack@5.97.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -15121,10 +15110,10 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.4.2(webpack@5.88.0)
+      webpack-dev-middleware: 7.4.2(webpack@5.97.1)
       ws: 8.18.0
     optionalDependencies:
-      webpack: 5.88.0
+      webpack: 5.97.1
     transitivePeerDependencies:
       - bufferutil
       - debug

@@ -19,7 +19,7 @@ import {
     REQUIRED_ERROR_MESSAGE,
 } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { SetupAccountService } from '../services/setup-account.service';
+import { UserService } from '../services/user.service';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideDollarSign } from '@ng-icons/lucide';
 import { MAX_NUMBER_VALUE} from 'utils/constants';
@@ -46,17 +46,17 @@ export class SetupIncomeComponent {
     updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
-    setupAccountService = inject(SetupAccountService);
+    setupAccountService = inject(UserService);
     CURRENCIES = CURRENCIES;
     REQUIRED_ERROR_MESSAGE = REQUIRED_ERROR_MESSAGE;
 
     form = this.fb.group({
         currency: [
-            this.setupAccountService.data.currency,
+            this.setupAccountService.accountInfo.currency,
             [Validators.required],
         ],
         income: [
-            this.setupAccountService.data.income,
+            this.setupAccountService.accountInfo.income,
             [
                 Validators.required,
                 Validators.max(MAX_NUMBER_VALUE),
@@ -67,15 +67,14 @@ export class SetupIncomeComponent {
     });
 
     constructor() {
-        const v = this.form.value;
     }
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (this.form.valid) {
-            this.setupAccountService.data.currency = (this.currency?.value ??
+            this.setupAccountService.accountInfo.currency = (this.currency?.value ??
                 'CAD') as Currency;
 
-            this.setupAccountService.data.income =
+            this.setupAccountService.accountInfo.income =
                 this.income?.value ?? undefined;
         }
 

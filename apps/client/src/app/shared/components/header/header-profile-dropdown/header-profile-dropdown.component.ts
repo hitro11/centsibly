@@ -25,6 +25,7 @@ import {
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
 import { Router } from '@angular/router';
+import { UserService } from '../../../../setup-account/services/user.service';
 
 @Component({
     selector: 'app-header-profile-dropdown',
@@ -58,9 +59,10 @@ import { Router } from '@angular/router';
 export class HeaderProfileDropdownComponent {
     authService = inject(AuthenticationService);
     themeService = inject(ThemeService);
+    userService = inject(UserService);
     localStorageService = inject(LocalStorageService);
     theme = this.themeService.getTheme();
-    email = this.localStorageService.get('email') ?? 'test_user@test.com';
+    email = this.userService._email;
     isUserLoggedIn = this.authService.isUserLoggedIn();
     router = inject(Router);
 

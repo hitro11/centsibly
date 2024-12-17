@@ -1,20 +1,20 @@
 import {
   require_session
-} from "./chunk-OFP7FEGK.js";
+} from "./chunk-DCAB6CTW.js";
 import {
   require_dateProvider,
   require_postSuperTokensInitCallbacks
-} from "./chunk-S4MKJWPZ.js";
+} from "./chunk-AAK6N5TR.js";
 import {
   require_querier,
-  require_utils
-} from "./chunk-2U5ZTV54.js";
+  require_utils as require_utils2
+} from "./chunk-Z5ISHUDP.js";
 import {
   require_build,
   require_constants,
   require_sessionClaimValidatorStore,
-  require_utils as require_utils2
-} from "./chunk-VCHKITVJ.js";
+  require_utils
+} from "./chunk-AMLKBHRA.js";
 import {
   __commonJS,
   __spreadValues
@@ -75,7 +75,7 @@ var require_utils3 = __commonJS({
       value: true
     });
     exports.normaliseUserInput = void 0;
-    var utils_1 = require_utils();
+    var utils_1 = require_utils2();
     function normaliseUserInput(config) {
       var override = __assign({
         functions: function(originalImplementation) {
@@ -210,7 +210,7 @@ var require_recipeImplementation = __commonJS({
     });
     exports.getRecipeImplementation = void 0;
     var querier_1 = require_querier();
-    var utils_1 = require_utils2();
+    var utils_1 = require_utils();
     function getRecipeImplementation(recipeImpleInput) {
       var querier = new querier_1.default(recipeImpleInput.recipeId, recipeImpleInput.appInfo);
       return {
@@ -591,7 +591,7 @@ var require_recipe = __commonJS({
     var utils_1 = require_utils3();
     var recipeImplementation_1 = require_recipeImplementation();
     var supertokens_js_override_1 = require_build();
-    var utils_2 = require_utils2();
+    var utils_2 = require_utils();
     var emailVerificationClaim_1 = require_emailVerificationClaim();
     var postSuperTokensInitCallbacks_1 = require_postSuperTokensInitCallbacks();
     var Recipe = (
@@ -667,7 +667,7 @@ var require_emailverification = __commonJS({
     });
     exports.EmailVerificationClaimClass = exports.EmailVerificationClaim = exports.getTenantIdFromURL = exports.getEmailVerificationTokenFromURL = exports.isEmailVerified = exports.sendVerificationEmail = exports.verifyEmail = exports.init = void 0;
     var recipe_1 = require_recipe();
-    var utils_1 = require_utils2();
+    var utils_1 = require_utils();
     var emailVerificationClaim_1 = require_emailVerificationClaim();
     Object.defineProperty(exports, "EmailVerificationClaimClass", {
       enumerable: true,

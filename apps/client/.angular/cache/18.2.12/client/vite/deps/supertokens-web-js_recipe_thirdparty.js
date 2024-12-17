@@ -1,17 +1,17 @@
 import {
   require_authRecipe,
   require_recipe,
-  require_utils
-} from "./chunk-4IMWS6QO.js";
+  require_utils as require_utils2
+} from "./chunk-4DFJ3BKI.js";
 import {
   require_error,
   require_querier
-} from "./chunk-2U5ZTV54.js";
+} from "./chunk-Z5ISHUDP.js";
 import {
   require_build,
-  require_utils as require_utils2,
+  require_utils,
   require_windowHandler
-} from "./chunk-VCHKITVJ.js";
+} from "./chunk-AMLKBHRA.js";
 import {
   __commonJS
 } from "./chunk-3OV72XIM.js";
@@ -34,7 +34,7 @@ var require_utils3 = __commonJS({
       value: true
     });
     exports.normaliseUserInput = void 0;
-    var utils_1 = require_utils();
+    var utils_1 = require_utils2();
     function normaliseUserInput(config) {
       var override = __assign({
         functions: function(originalImplementation) {
@@ -179,7 +179,7 @@ var require_recipeImplementation = __commonJS({
     });
     exports.getRecipeImplementation = void 0;
     var querier_1 = require_querier();
-    var utils_1 = require_utils2();
+    var utils_1 = require_utils();
     var error_1 = require_error();
     var windowHandler_1 = require_windowHandler();
     function getRecipeImplementation(recipeImplInput) {
@@ -447,7 +447,7 @@ var require_recipe2 = __commonJS({
     var utils_1 = require_utils3();
     var supertokens_js_override_1 = require_build();
     var recipeImplementation_1 = require_recipeImplementation();
-    var utils_2 = require_utils2();
+    var utils_2 = require_utils();
     var authRecipe_1 = require_authRecipe();
     var Recipe = (
       /** @class */
@@ -628,7 +628,7 @@ var require_thirdparty = __commonJS({
       value: true
     });
     exports.signOut = exports.signInAndUp = exports.getAuthorisationURLWithQueryParamsAndSetState = exports.getStateAndOtherInfoFromStorage = exports.init = void 0;
-    var utils_1 = require_utils2();
+    var utils_1 = require_utils();
     var recipe_1 = require_recipe();
     var recipe_2 = require_recipe2();
     var RecipeWrapper = (

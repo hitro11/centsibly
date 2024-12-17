@@ -1,28 +1,30 @@
 {
-    "name": "utils",
+    "name": "@centsibly/utils",
+    "type": "module",
     "version": "0.1.0",
-    "description": "",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc",
         "dev": "tsc --watch"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "exports": {
+        ".": {
+            "types": "./src/index.ts",
+            "default": "./dist/index.js"
+        },
+        "./schemas": {
+            "types": "./src/schemas/schemas.ts",
+            "default": "./dist/schemas/schemas.js"
+        },
+        "./constants": {
+            "types": "./src/constants.ts",
+            "default": "./dist/constants.js"
+        }
+    },
     "dependencies": {
         "zod": "^3.23.8"
     },
     "devDependencies": {
         "@types/node": "^22.9.0",
         "typescript": "^5.7.2"
-    },
-    "main": "dist/index.js",
-    "source": "src/index.ts",
-    "types": "dist/index.ts",
-    "exports": {
-        ".": "./src/index.ts",
-        "./constants": "./src/constants.ts",
-        "./schemas": "./src/schemas/schemas.ts"
     }
 }

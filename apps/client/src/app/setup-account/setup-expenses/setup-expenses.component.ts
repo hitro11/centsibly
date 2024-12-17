@@ -28,7 +28,7 @@ import {
     STRING_REGEX,
 } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { SetupAccountService } from '../services/setup-account.service';
+import { UserService } from '../services/user.service';
 import { deepCopy } from '../../shared/utils';
 import {
     HlmCardContentDirective,
@@ -63,7 +63,7 @@ export class SetupExpensesComponent {
     updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
-    setupAccountService = inject(SetupAccountService);
+    setupAccountService = inject(UserService);
     themeService = inject(ThemeService);
     maxCharacterLimit = 25;
     theme = this.themeService.getTheme();
@@ -80,7 +80,7 @@ export class SetupExpensesComponent {
         Validators.pattern(AMOUNT_REGEX),
     ];
 
-    expensesData = deepCopy(this.setupAccountService.data.expenses) ?? [];
+    expensesData = deepCopy(this.setupAccountService.accountInfo.expenses) ?? [];
 
     form = this.fb.group({
         expenses: this.fb.array([]),
@@ -89,10 +89,6 @@ export class SetupExpensesComponent {
     constructor() {
         for (const expense of this.expensesData) {
             this.addExpense(expense?.name, expense?.amount);
-        }
-
-        if (!this.expensesData.length) {
-            this.addExpense();
         }
     }
 
@@ -154,7 +150,7 @@ export class SetupExpensesComponent {
                 expenses.push({ name, amount });
             }
 
-            this.setupAccountService.data.expenses = expenses;
+            this.setupAccountService.accountInfo.expenses = expenses;
         }
 
         if (direction === 'next') {

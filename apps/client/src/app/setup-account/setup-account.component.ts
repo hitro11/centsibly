@@ -34,7 +34,7 @@ export class SetupAccountComponent implements OnInit {
     fb = inject(FormBuilder);
     router = inject(Router);
     maxIncomeLength = 10;
-    currentSection = 1;
+    currentSection = 0;
     CURRENCIES = CURRENCIES;
 
     async ngOnInit(): Promise<void> {}

@@ -1,15 +1,15 @@
 import {
   require_authRecipe,
   require_recipe,
-  require_utils
-} from "./chunk-4IMWS6QO.js";
+  require_utils as require_utils2
+} from "./chunk-4DFJ3BKI.js";
 import {
   require_querier
-} from "./chunk-2U5ZTV54.js";
+} from "./chunk-Z5ISHUDP.js";
 import {
   require_build,
-  require_utils as require_utils2
-} from "./chunk-VCHKITVJ.js";
+  require_utils
+} from "./chunk-AMLKBHRA.js";
 import {
   __commonJS
 } from "./chunk-3OV72XIM.js";
@@ -32,7 +32,7 @@ var require_utils3 = __commonJS({
       value: true
     });
     exports.normaliseUserInput = void 0;
-    var utils_1 = require_utils();
+    var utils_1 = require_utils2();
     function normaliseUserInput(config) {
       var override = __assign({
         functions: function(originalImplementation) {
@@ -178,7 +178,7 @@ var require_recipeImplementation = __commonJS({
     exports.getRecipeImplementation = void 0;
     var querier_1 = require_querier();
     var recipe_1 = require_recipe();
-    var utils_1 = require_utils2();
+    var utils_1 = require_utils();
     function getRecipeImplementation(recipeImplInput) {
       var querier = new querier_1.default(recipeImplInput.recipeId, recipeImplInput.appInfo);
       return {
@@ -486,7 +486,7 @@ var require_recipe2 = __commonJS({
     var utils_1 = require_utils3();
     var recipeImplementation_1 = require_recipeImplementation();
     var supertokens_js_override_1 = require_build();
-    var utils_2 = require_utils2();
+    var utils_2 = require_utils();
     var authRecipe_1 = require_authRecipe();
     var Recipe = (
       /** @class */
@@ -557,7 +557,7 @@ var require_emailpassword = __commonJS({
     });
     exports.signOut = exports.getTenantIdFromURL = exports.getResetPasswordTokenFromURL = exports.doesEmailExist = exports.signIn = exports.signUp = exports.sendPasswordResetEmail = exports.submitNewPassword = exports.init = void 0;
     var recipe_1 = require_recipe2();
-    var utils_1 = require_utils2();
+    var utils_1 = require_utils();
     var RecipeWrapper = (
       /** @class */
       function() {

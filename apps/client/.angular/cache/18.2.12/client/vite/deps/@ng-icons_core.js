@@ -10,9 +10,7 @@ import {
   NgModule,
   Optional,
   SkipSelf,
-  firstValueFrom,
   inject,
-  isObservable,
   runInInjectionContext,
   setClassMetadata,
   ɵɵStandaloneFeature,
@@ -21,7 +19,11 @@ import {
   ɵɵdefineNgModule,
   ɵɵinject,
   ɵɵstyleProp
-} from "./chunk-IFZJIHJU.js";
+} from "./chunk-F45ESUFI.js";
+import {
+  firstValueFrom,
+  isObservable
+} from "./chunk-RB6QIL2V.js";
 import {
   __async,
   __spreadValues

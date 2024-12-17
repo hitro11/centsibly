@@ -1,0 +1,24 @@
+{
+  "name": "centsibly",
+  "version": "0.1.0",
+  "author": "",
+  "license": "ISC",
+  "description": "Make every cent count with Centsibly, an easy-to-use budgeting app!",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "preinstall": "npx only-allow pnpm",
+    "format": "prettier --write \"**/*.{ts}\""
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

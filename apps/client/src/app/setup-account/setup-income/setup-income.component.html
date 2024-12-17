@@ -1,0 +1,56 @@
+<p class="mt-8 text-center text-3xl">Income</p>
+
+<form class="mt-8" [formGroup]="form">
+    <label class="mb-1 block" hlmLabel>Currency</label>
+    <brn-select class="inline-block w-full" formControlName="currency">
+        <hlm-select-trigger class="">
+            <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+            @for (currency of CURRENCIES; track currency.value) {
+                <hlm-option [value]="currency.value">{{
+                    currency.label
+                }}</hlm-option>
+            }
+        </hlm-select-content>
+    </brn-select>
+    @if (currency?.errors?.['required']) {
+        <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
+    }
+
+    <div class="mt-8">
+        <hlm-form-field class="mt-4">
+            <label class="block" hlmLabel>Monthly Income</label>
+            <input
+                formControlName="income"
+                class="w-1/2"
+                hlmInput
+                type="number"
+                step="1"
+                placeholder="$"
+            />
+            @if (income?.errors?.['required']) {
+                <hlm-error>Invalid input</hlm-error>
+            }
+            @if (income?.errors?.['max']) {
+                <hlm-error>Income exceeded maximum value</hlm-error>
+            }
+            @if (income?.errors?.['min']) {
+                <hlm-error>Income cannot be less than 1</hlm-error>
+            }
+
+            <!-- <hlm-hint>Monthly income</hlm-hint> -->
+        </hlm-form-field>
+    </div>
+
+    <div class="mt-16 flex justify-between">
+        <button (click)="updateSectionFn('previous')" hlmBtn>Back</button>
+        <button
+            (click)="updateSectionFn('next')"
+            [disabled]="!form.valid"
+            hlmBtn
+        >
+            Continue
+        </button>
+    </div>
+</form>

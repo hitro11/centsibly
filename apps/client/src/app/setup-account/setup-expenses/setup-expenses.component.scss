@@ -1,0 +1,14 @@
+.delete {
+    filter: brightness(0) saturate(100%) invert(21%) sepia(51%) saturate(1710%)
+        hue-rotate(330deg) brightness(97%) contrast(95%);
+}
+
+.add {
+    filter: brightness(0) saturate(100%) invert(15%) sepia(18%) saturate(7298%)
+        hue-rotate(191deg) brightness(95%) contrast(99%);
+}
+
+.add-dark {
+    filter: brightness(0) saturate(100%) invert(28%) sepia(94%) saturate(1152%)
+        hue-rotate(187deg) brightness(102%) contrast(85%);
+}

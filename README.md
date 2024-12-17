@@ -29,28 +29,14 @@ git clone https://github.com/hitro11/centsibly.git
 cd centsibly
 ```
 
-2. Install server dependencies
+2. Install dependencies
 ```
-cd server
-npm install
-```
-
-3. Install client dependencies
-```
-cd ../client
-npm install
+pnpm install
 ```
 
-4. Start the server
+4. Start the application
 ```
-cd ../server
-npm run dev
-```
-
-5. Start the client server
-```
-cd ../client
-npm start
+turbo run dev
 ```
 
 6. Open a web browser and navigate to http://localhost:4200

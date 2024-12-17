@@ -18,9 +18,9 @@ import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import {
-    lucideBadgePlus,
     lucideTrash2,
     lucidePlusCircle,
+    lucideAlertTriangle
 } from '@ng-icons/lucide';
 import {
     AMOUNT_REGEX,
@@ -37,7 +37,7 @@ import {
 } from '@spartan-ng/ui-card-helm';
 import { ThemeService } from '../../shared/services/theme.service';
 import { Expense } from '../models/AccountDetails';
-import { noDuplicateNames } from '../../shared/validators';
+import { HlmAlertDirective, HlmAlertDescriptionDirective, HlmAlertIconDirective, HlmAlertTitleDirective } from '@spartan-ng/ui-alert-helm';
 
 @Component({
     selector: 'app-setup-expenses',
@@ -54,8 +54,12 @@ import { noDuplicateNames } from '../../shared/validators';
         HlmCardContentDirective,
         HlmCardDescriptionDirective,
         HlmCardDirective,
+        HlmAlertDirective,
+        HlmAlertDescriptionDirective,
+        HlmAlertIconDirective,
+        HlmAlertTitleDirective,
     ],
-    providers: [provideIcons({ lucideTrash2, lucidePlusCircle })],
+    providers: [provideIcons({ lucideTrash2, lucidePlusCircle, lucideAlertTriangle })],
     templateUrl: './setup-expenses.component.html',
     styleUrl: './setup-expenses.component.scss',
 })
@@ -63,7 +67,7 @@ export class SetupExpensesComponent {
     updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
-    setupAccountService = inject(UserService);
+    userService = inject(UserService);
     themeService = inject(ThemeService);
     maxCharacterLimit = 25;
     theme = this.themeService.getTheme();
@@ -80,10 +84,10 @@ export class SetupExpensesComponent {
         Validators.pattern(AMOUNT_REGEX),
     ];
 
-    expensesData = deepCopy(this.setupAccountService.accountInfo.expenses) ?? [];
+    expensesData = deepCopy(this.userService.accountInfo.expenses) ?? [];
 
     form = this.fb.group({
-        expenses: this.fb.array([]),
+        expenses: this.fb.array([], [Validators.required]),
     });
 
     constructor() {
@@ -93,7 +97,7 @@ export class SetupExpensesComponent {
     }
 
     get expenses() {
-        return this.form.controls['expenses'] as FormArray;
+        return this.form.controls['expenses'] as FormArray<any>;
     }
 
     addExpense(name: string | null = null, amount: number | null = null) {
@@ -140,6 +144,28 @@ export class SetupExpensesComponent {
         }
     }
 
+
+    expenseAmountUpdated() {
+        let totalExpenses = 0;
+        const income = this.userService.accountInfo.income ?? 0;
+
+        for (const control of this.expenses.controls) {
+            totalExpenses += control.value.amount;
+        }
+
+        if (totalExpenses > income) {
+            this.form.setErrors({
+                ...this.form.errors,
+                expensesGreaterThanIncome: true,
+            });
+
+        } else {
+            this.form.updateValueAndValidity();
+            this.form.setErrors(this.form.errors);
+        }
+    }
+
+
     async updateSectionFn(direction: 'previous' | 'next') {
         if (this.form.valid) {
             const expenses: Expense[] = [];
@@ -150,11 +176,11 @@ export class SetupExpensesComponent {
                 expenses.push({ name, amount });
             }
 
-            this.setupAccountService.accountInfo.expenses = expenses;
+            this.userService.accountInfo.expenses = expenses;
         }
 
         if (direction === 'next') {
-            await this.setupAccountService.onSetupFormSubmit();
+            await this.userService.onSetupFormSubmit();
         } else {
             this.updateSection.emit(direction);
         }

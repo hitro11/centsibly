@@ -6,6 +6,16 @@
 </p>
 
 <form class="mt-16" [formGroup]="form">
+    <div class="errors mb-8">
+        @if (form.errors?.['expensesGreaterThanIncome']) {
+            <div hlmAlert variant="destructive">
+                <hlm-icon class="mt-1" hlmAlertIcon name="lucideAlertTriangle" />
+                <!-- <h4 hlmAlertTitle>Unexpected Error</h4> -->
+                <p hlmAlertDesc>Total expenses cannot be greater than your income</p>
+            </div>
+        }
+    </div>
+
     <ng-container formArrayName="expenses">
         @for (expense of expenses.controls; track $index) {
             <section class="mb-8 p-6" hlmCard>
@@ -23,7 +33,7 @@
                                 hlmInput
                                 type="text"
                                 placeholder="Name"
-                                (keyup)="expenseNameUpdated()"
+                                (input)="expenseNameUpdated()"
                             />
                         </label>
 
@@ -51,6 +61,7 @@
                                 type="number"
                                 step="1"
                                 placeholder="$"
+                                (input)="expenseAmountUpdated()"
                             />
                         </label>
 

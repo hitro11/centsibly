@@ -18,7 +18,7 @@ Make sure you have the following installed on your machine:
 - Node.js (version 16 or higher)
 - Angular CLI (version 15 or higher)
 - Git
-- A package manager like npm or yarn
+- pnpm
 
 <br>
 

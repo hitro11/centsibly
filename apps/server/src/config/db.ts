@@ -19,7 +19,6 @@ export async function connectToDB() {
     try {
         await client.connect();
         database = client.db(DATABASE_NAME);
-        logger.info(`Connected to ${DATABASE_NAME} DB successfully!`);
     } catch (e) {
         logger.error(`Failed to connect to ${DATABASE_NAME} DB: `, e);
         throw e;

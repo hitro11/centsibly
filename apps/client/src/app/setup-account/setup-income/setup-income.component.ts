@@ -1,4 +1,3 @@
-import { Currency } from './../models/AccountDetails';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -22,7 +21,8 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { UserService } from '../services/user.service';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideDollarSign } from '@ng-icons/lucide';
-import { MAX_NUMBER_VALUE} from 'utils/constants';
+import { MAX_NUMBER_VALUE } from 'utils/constants';
+import { Currency } from 'utils/schemas/schemas';
 
 @Component({
     selector: 'app-setup-income',
@@ -66,13 +66,12 @@ export class SetupIncomeComponent {
         ],
     });
 
-    constructor() {
-    }
+    constructor() {}
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (this.form.valid) {
-            this.setupAccountService.accountInfo.currency = (this.currency?.value ??
-                'CAD') as Currency;
+            this.setupAccountService.accountInfo.currency = (this.currency
+                ?.value ?? 'CAD') as Currency;
 
             this.setupAccountService.accountInfo.income =
                 this.income?.value ?? undefined;

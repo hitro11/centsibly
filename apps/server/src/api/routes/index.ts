@@ -5,5 +5,5 @@ import { Router } from 'express';
 
 const indexRouter = Router();
 indexRouter.use('/auth', authRoutes);
-indexRouter.use('/user', verifySession(), userRoutes);
+indexRouter.use('/user', verifySession(), userRoutes); //todo: check function params
 export const router = indexRouter;

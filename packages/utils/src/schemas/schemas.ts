@@ -7,20 +7,13 @@ export const ExpenseSchema = z.object({
 });
 
 export const CurrencySchema = z.enum([
-    'USD',
-    'EUR',
-    'JPY',
-    'GBP',
     'CAD',
     'CNY',
-    'KRW',
-    'SGD',
-    'HKD',
-    'NZD',
+    'EUR',
+    'GBP',
     'INR',
-    'MXN',
-    'RUB',
-    'ZAR',
+    'JPY',
+    'USD',
 ]);
 
 export const AccountInfoSchema = z.object({

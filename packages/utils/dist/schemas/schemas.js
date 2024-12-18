@@ -5,20 +5,13 @@ export const ExpenseSchema = z.object({
     amount: z.number().int().min(1).max(MAX_NUMBER_VALUE),
 });
 export const CurrencySchema = z.enum([
-    'USD',
-    'EUR',
-    'JPY',
-    'GBP',
     'CAD',
     'CNY',
-    'KRW',
-    'SGD',
-    'HKD',
-    'NZD',
+    'EUR',
+    'GBP',
     'INR',
-    'MXN',
-    'RUB',
-    'ZAR',
+    'JPY',
+    'USD',
 ]);
 export const AccountInfoSchema = z.object({
     currency: CurrencySchema,

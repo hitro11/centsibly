@@ -14,11 +14,10 @@ export class UserService {
     accountInfo: DeepPartial<AccountInfo> = {
         currency: 'CAD',
     };
-    
 
     constructor(private httpClient: HttpClient) {
-        effect(async() => {
-            const email = (await this.getUserInfo() as any).emails[0];
+        effect(async () => {
+            const email = ((await this.getUserInfo()) as any).emails[0];
             this._email.set(email);
         });
     }
@@ -30,7 +29,6 @@ export class UserService {
     async onSetupFormSubmit(): Promise<void> {
         try {
             const data = this.accountInfo;
-            console.log(data);
             AccountInfoSchema.parse(data);
             await this.sendFormDataToBackend(data);
         } catch (error) {
@@ -38,13 +36,18 @@ export class UserService {
         }
     }
 
-
     async sendFormDataToBackend(body: unknown): Promise<unknown> {
-        return firstValueFrom(this.httpClient.post(`${environment.API_URL}/user/account-info`, body));
-    }
-    
-    async getUserInfo() {
-        return firstValueFrom(this.httpClient.get(`${environment.API_URL}/user/account-info`));
+        return firstValueFrom(
+            this.httpClient.post(
+                `${environment.API_URL}/user/account-info`,
+                body
+            )
+        );
     }
 
+    async getUserInfo() {
+        return firstValueFrom(
+            this.httpClient.get(`${environment.API_URL}/user/account-info`)
+        );
+    }
 }

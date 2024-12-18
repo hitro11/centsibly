@@ -19,7 +19,7 @@ import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { connectToDB, getDb } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
-import { ErrorHandler } from './api/middleware/error-handler.js';
+import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 
 dotenv.config();
 

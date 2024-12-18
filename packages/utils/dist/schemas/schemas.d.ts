@@ -9,9 +9,9 @@ export declare const ExpenseSchema: z.ZodObject<{
     name: string;
     amount: number;
 }>;
-export declare const CurrencySchema: z.ZodEnum<["USD", "EUR", "JPY", "GBP", "CAD", "CNY", "KRW", "SGD", "HKD", "NZD", "INR", "MXN", "RUB", "ZAR"]>;
+export declare const CurrencySchema: z.ZodEnum<["CAD", "CNY", "EUR", "GBP", "INR", "JPY", "USD"]>;
 export declare const AccountInfoSchema: z.ZodObject<{
-    currency: z.ZodEnum<["USD", "EUR", "JPY", "GBP", "CAD", "CNY", "KRW", "SGD", "HKD", "NZD", "INR", "MXN", "RUB", "ZAR"]>;
+    currency: z.ZodEnum<["CAD", "CNY", "EUR", "GBP", "INR", "JPY", "USD"]>;
     income: z.ZodNumber;
     expenses: z.ZodArray<z.ZodObject<{
         name: z.ZodString;
@@ -24,14 +24,14 @@ export declare const AccountInfoSchema: z.ZodObject<{
         amount: number;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
-    currency: "USD" | "EUR" | "JPY" | "GBP" | "CAD" | "CNY" | "KRW" | "SGD" | "HKD" | "NZD" | "INR" | "MXN" | "RUB" | "ZAR";
+    currency: "CAD" | "CNY" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;
         amount: number;
     }[];
 }, {
-    currency: "USD" | "EUR" | "JPY" | "GBP" | "CAD" | "CNY" | "KRW" | "SGD" | "HKD" | "NZD" | "INR" | "MXN" | "RUB" | "ZAR";
+    currency: "CAD" | "CNY" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;

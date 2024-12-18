@@ -3,6 +3,22 @@
         <div class="flex flex-row">
             <img class="w-[3.5rem]" [src]="logoPath" />
             <div class="flexExpand"></div>
+            <div class="mr-8">
+                <button
+                    variant="ghost"
+                    hlmBtn
+                    class="mt-1"
+                    (click)="themeService.toggleTheme()"
+                >
+                    <hlm-icon
+                        size="sm"
+                        name="{{
+                            theme() === 'dark' ? 'lucideMoon' : 'lucideSun'
+                        }}"
+                        class="scale-150"
+                    />
+                </button>
+            </div>
             <app-header-profile-dropdown></app-header-profile-dropdown>
         </div>
     </nav>

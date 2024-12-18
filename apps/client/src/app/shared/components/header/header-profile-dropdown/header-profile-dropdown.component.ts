@@ -58,10 +58,8 @@ import { UserService } from '../../../../setup-account/services/user.service';
 })
 export class HeaderProfileDropdownComponent {
     authService = inject(AuthenticationService);
-    themeService = inject(ThemeService);
     userService = inject(UserService);
     localStorageService = inject(LocalStorageService);
-    theme = this.themeService.getTheme();
     email = this.userService._email;
     isUserLoggedIn = this.authService.isUserLoggedIn();
     router = inject(Router);

@@ -37,20 +37,6 @@
             }
 
             <button
-                (click)="themeService.toggleTheme()"
-                hlmMenuItem
-                class="mt-2 hover:cursor-pointer"
-            >
-                <hlm-icon name="lucideMoon" hlmMenuIcon />
-                <span class="text-base"
-                    >Dark Mode:
-                    {{
-                        themeService.getTheme()() === 'dark' ? 'ON' : 'OFF'
-                    }}</span
-                >
-            </button>
-
-            <button
                 (click)="signInOrSignOut()"
                 hlmMenuItem
                 class="mt-2 hover:cursor-pointer"

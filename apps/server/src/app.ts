@@ -19,11 +19,9 @@ import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { connectToDB, getDb } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
+import { ErrorHandler } from './api/middleware/error-handler.js';
 
 dotenv.config();
-
-console.log(MAX_NUMBER_VALUE);
-console.log(MAX_NUMBER_VALUE);
 
 supertokens.init({
     framework: 'express',
@@ -182,7 +180,7 @@ app.use('/api', router);
 // Swagger UI
 // app.use(openAPIRouter);
 
-// app.use(errorHandler());
+app.use(ErrorHandler);
 
 app.listen(process.env.PORT, () => {
     const { NODE_ENV, HOST } = process.env;

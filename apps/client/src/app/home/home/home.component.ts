@@ -1,12 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { BudgetService } from '../../setup-account/services/budget/budget.service';
+import {
+    DoughnutController,
+    ArcElement,
+    Chart,
+    ChartItem,
+} from 'chart.js/auto';
+import { AccountInfo } from 'utils/schemas/schemas';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    standalone: true,
+    imports: [],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+    budgetService = inject(BudgetService);
+    data: any;
 
+    async ngOnInit() {
+        const budgetInfo: AccountInfo =
+            await this.budgetService.getUserAccount();
+
+        const income = budgetInfo.income;
+        const expenses = budgetInfo.expenses;
+
+        const surplus =
+            income -
+            expenses.reduce((total, current) => {
+                return total + current.amount;
+            }, 0);
+
+        this.data = {
+            labels: [...expenses.map((expense) => expense.name), 'Surplus'],
+            datasets: [
+                {
+                    data: [
+                        ...expenses.map((expense) => expense.amount),
+                        surplus,
+                    ],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                        '#398333',
+                    ],
+                    hoverOffset: 4,
+                },
+            ],
+        };
+
+        new Chart(document.getElementById('budgetSummary') as ChartItem, {
+            type: 'doughnut',
+            data: this.data,
+        });
+    }
 }

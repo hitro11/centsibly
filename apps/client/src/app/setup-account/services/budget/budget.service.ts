@@ -15,6 +15,8 @@ export class BudgetService {
         currency: 'CAD',
     };
 
+    constructor() {}
+
     async onSetupFormSubmit(): Promise<void> {
         try {
             const data = this.accountInfo;
@@ -33,7 +35,9 @@ export class BudgetService {
 
     async getUserAccount() {
         return firstValueFrom(
-            this.httpClient.get(`${environment.API_URL}/user/account`)
+            this.httpClient.get<AccountInfo>(
+                `${environment.API_URL}/user/account`
+            )
         );
     }
 }

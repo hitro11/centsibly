@@ -48,8 +48,11 @@ router.get('/email', async (req, res, next: NextFunction) => {
 
 router.get('/exists', async (req, res, next: NextFunction) => {
     try {
-        const userInfo = await UserController.doesAccountExist(req, res);
-        res.json(userInfo);
+        const doesAccountExist = await UserController.doesAccountExist(
+            req,
+            res
+        );
+        res.json({ doesAccountExist });
     } catch (error) {
         next(error);
     }

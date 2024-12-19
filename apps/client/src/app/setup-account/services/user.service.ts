@@ -39,4 +39,14 @@ export class UserService {
 
         return response.email;
     }
+
+    async doesAccountExist(): Promise<boolean> {
+        const response = await firstValueFrom(
+            this.httpClient.get<{ doesAccountExist: boolean }>(
+                `${environment.API_URL}/user/exists`
+            )
+        );
+
+        return response.doesAccountExist;
+    }
 }

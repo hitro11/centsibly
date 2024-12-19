@@ -44,6 +44,7 @@ import {
     HlmAlertTitleDirective,
 } from '@spartan-ng/ui-alert-helm';
 import { BudgetService } from '../services/budget/budget.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-setup-expenses',
@@ -77,6 +78,7 @@ export class SetupExpensesComponent {
     fb = inject(FormBuilder);
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
+    router = inject(Router);
     maxCharacterLimit = 25;
     theme = this.themeService.getTheme();
 
@@ -186,6 +188,7 @@ export class SetupExpensesComponent {
 
         if (direction === 'next') {
             await this.budgetService.onSetupFormSubmit();
+            this.router.navigate(['/home']);
         } else {
             this.updateSection.emit(direction);
         }

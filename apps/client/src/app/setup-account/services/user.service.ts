@@ -4,6 +4,7 @@ import { AccountInfo, AccountInfoSchema } from '@centsibly/utils/schemas';
 import { DeepPartial } from '../../shared/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import Session from 'supertokens-web-js/recipe/session';
 
 @Injectable({
     providedIn: 'root',
@@ -17,8 +18,10 @@ export class UserService {
 
     constructor(private httpClient: HttpClient) {
         effect(async () => {
-            const email = ((await this.getUserInfo()) as any).emails[0];
-            this._email.set(email);
+            if (await Session.doesSessionExist()) {
+                const email = ((await this.getUserInfo()) as any).emails[0];
+                this._email.set(email);
+            }
         });
     }
 

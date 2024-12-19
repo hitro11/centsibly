@@ -7,7 +7,7 @@ import { AccountInfo } from '@centsibly/utils/schemas';
 import { getDb } from '../../config/db.js';
 
 export class UserService {
-    static async setUserInfo(email: string, budgetInfo: AccountInfo) {
+    static async setAccount(email: string, budgetInfo: AccountInfo) {
         try {
             email = email.toLowerCase();
             logger.debug(email, budgetInfo);
@@ -39,13 +39,40 @@ export class UserService {
         }
     }
 
-    static async getUserInfo(req: unknown) {
+    static async getAccount(req: unknown) {
+        try {
+            const email = await this.getEmail(req);
+
+            if (!email) {
+                throw new Error('Unauthorized');
+            }
+
+            const accountsCollection = (await getDb()).collection('accounts');
+            const account = await accountsCollection.findOne({
+                email: email.toLowerCase(),
+            });
+            return account;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getAuthInfo(req: unknown) {
         try {
             const userid = (req as SessionRequest).session!.getUserId();
             return await supertokens.getUser(userid);
         } catch (error) {
-            logger.error(error);
             throw error;
         }
+    }
+
+    static async getEmail(req: unknown): Promise<string | null> {
+        const userInfo = await this.getAuthInfo(req);
+        return userInfo?.emails[0] ?? null;
+    }
+
+    static async doesAccountExist(req: unknown): Promise<boolean> {
+        const doesAccountExist = !!(await this.getAccount(req));
+        return doesAccountExist;
     }
 }

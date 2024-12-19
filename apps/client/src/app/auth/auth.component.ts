@@ -59,11 +59,12 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                         context.action === 'SUCCESS' &&
                         context.newSessionCreated
                     ) {
+                        // const email =
+
                         if (context.createdNewUser) {
-                            console.log('NEW USER');
                             return '/create-account';
                         }
-                        return context.redirectToPath ?? '/';
+                        return context.redirectToPath ?? '/home';
                     }
                     return undefined;
                 },

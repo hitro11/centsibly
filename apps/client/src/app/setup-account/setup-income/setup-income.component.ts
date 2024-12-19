@@ -23,6 +23,7 @@ import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideDollarSign } from '@ng-icons/lucide';
 import { MAX_NUMBER_VALUE } from 'utils/constants';
 import { Currency } from 'utils/schemas/schemas';
+import { BudgetService } from '../services/budget/budget.service';
 
 @Component({
     selector: 'app-setup-income',
@@ -46,17 +47,17 @@ export class SetupIncomeComponent {
     updateSection = output<'previous' | 'next'>();
 
     fb = inject(FormBuilder);
-    setupAccountService = inject(UserService);
+    budgetService = inject(BudgetService);
     CURRENCIES = CURRENCIES;
     REQUIRED_ERROR_MESSAGE = REQUIRED_ERROR_MESSAGE;
 
     form = this.fb.group({
         currency: [
-            this.setupAccountService.accountInfo.currency,
+            this.budgetService.accountInfo.currency,
             [Validators.required],
         ],
         income: [
-            this.setupAccountService.accountInfo.income,
+            this.budgetService.accountInfo.income,
             [
                 Validators.required,
                 Validators.max(MAX_NUMBER_VALUE),
@@ -70,10 +71,10 @@ export class SetupIncomeComponent {
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (this.form.valid) {
-            this.setupAccountService.accountInfo.currency = (this.currency
-                ?.value ?? 'CAD') as Currency;
+            this.budgetService.accountInfo.currency = (this.currency?.value ??
+                'CAD') as Currency;
 
-            this.setupAccountService.accountInfo.income =
+            this.budgetService.accountInfo.income =
                 this.income?.value ?? undefined;
         }
 

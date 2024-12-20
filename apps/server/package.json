@@ -7,6 +7,7 @@
         "dev": "npx tsx watch --clear-screen=false src/app.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc",
+        "start": "node -r ",
         "preinstall": "npx only-allow pnpm"
     },
     "keywords": [],

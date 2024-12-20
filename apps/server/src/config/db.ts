@@ -1,8 +1,8 @@
 import { Db, MongoClient, ServerApiVersion } from 'mongodb';
-import dotenv from 'dotenv';
 import { logger } from './logger.js';
 import { DATABASE_NAME } from './constants.js';
-dotenv.config();
+import { loadEnv } from '../../loadEnv.js';
+loadEnv();
 
 const client = new MongoClient(process.env.DB_CONNECTION_STRING, {
     serverApi: {
@@ -12,7 +12,6 @@ const client = new MongoClient(process.env.DB_CONNECTION_STRING, {
     },
 });
 
-type Collection = 'accounts' | 'posts' | 'communities';
 let database: Db;
 
 export async function connectToDB() {

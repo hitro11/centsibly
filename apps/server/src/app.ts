@@ -5,7 +5,6 @@ import express, { type Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import { logger } from './config/logger.js';
 import { router } from './api/routes/index.js';
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
@@ -16,11 +15,12 @@ import ThirdParty from 'supertokens-node/recipe/thirdparty';
 import { middleware } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
-import { connectToDB, getDb } from './config/db.js';
+import { connectToDB } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 
-dotenv.config();
+import { loadEnv } from '../loadEnv.js';
+loadEnv();
 
 supertokens.init({
     framework: 'express',
@@ -180,7 +180,7 @@ app.use('/api', router);
 
 app.use(ErrorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || '3000', () => {
     const { NODE_ENV, HOST } = process.env;
     logger.info(`Server (${NODE_ENV}) running on ${HOST}`);
 }).on('error', (err) => {

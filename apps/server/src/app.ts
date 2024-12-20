@@ -9,13 +9,11 @@ import dotenv from 'dotenv';
 import { logger } from './config/logger.js';
 import { router } from './api/routes/index.js';
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
-// import requestLogger from "@/common/middleware/requestLogger";
 import supertokens from 'supertokens-node';
 import Session from 'supertokens-node/recipe/session';
 import EmailPassword from 'supertokens-node/recipe/emailpassword';
 import ThirdParty from 'supertokens-node/recipe/thirdparty';
 import { middleware } from 'supertokens-node/framework/express';
-import { errorHandler } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
 import { connectToDB, getDb } from './config/db.js';
@@ -169,8 +167,8 @@ app.use(
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(middleware()); //todo: check function params
-app.use(morgan('short')); // request logging
+app.use(middleware() as any);
+app.use(morgan('tiny')); // request logging
 
 // Set the application to trust the reverse proxy
 // app.set("trust proxy", true);

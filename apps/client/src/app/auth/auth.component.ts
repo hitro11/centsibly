@@ -9,6 +9,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../setup-account/services/user.service';
 
 @Component({
     selector: 'app-auth',
@@ -19,6 +20,7 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthComponent implements OnDestroy, AfterViewInit {
     themeService = inject(ThemeService);
+    userService = inject(UserService);
     errorMessage = '';
 
     constructor(
@@ -59,11 +61,13 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                         context.action === 'SUCCESS' &&
                         context.newSessionCreated
                     ) {
-                        if (context.createdNewUser) {
-                            console.log('NEW USER');
+                        const doesAccountExist =
+                            await this.userService.doesAccountExist();
+
+                        if (!doesAccountExist) {
                             return '/create-account';
                         }
-                        return context.redirectToPath ?? '/';
+                        return context.redirectToPath ?? '/home';
                     }
                     return undefined;
                 },

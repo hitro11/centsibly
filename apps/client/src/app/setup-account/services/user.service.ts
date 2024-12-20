@@ -1,9 +1,8 @@
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { effect, Injectable, signal } from '@angular/core';
-import { AccountInfo, AccountInfoSchema } from '@centsibly/utils/schemas';
-import { DeepPartial } from '../../shared/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import Session from 'supertokens-web-js/recipe/session';
 
 @Injectable({
     providedIn: 'root',
@@ -11,14 +10,13 @@ import { environment } from '../../../../environments/environment';
 export class UserService {
     _email = signal('');
 
-    accountInfo: DeepPartial<AccountInfo> = {
-        currency: 'CAD',
-    };
-
     constructor(private httpClient: HttpClient) {
         effect(async () => {
-            const email = ((await this.getUserInfo()) as any).emails[0];
-            this._email.set(email);
+            if (await Session.doesSessionExist()) {
+                const email = await this.getUserEmail();
+                console.log(email);
+                this._email.set(email);
+            }
         });
     }
 
@@ -26,28 +24,29 @@ export class UserService {
         return this._email();
     }
 
-    async onSetupFormSubmit(): Promise<void> {
-        try {
-            const data = this.accountInfo;
-            AccountInfoSchema.parse(data);
-            await this.sendFormDataToBackend(data);
-        } catch (error) {
-            console.error(error);
-        }
+    async getUserAuthInfo(): Promise<unknown> {
+        return firstValueFrom(
+            this.httpClient.get(`${environment.API_URL}/user/auth-info`)
+        );
     }
 
-    async sendFormDataToBackend(body: unknown): Promise<unknown> {
-        return firstValueFrom(
-            this.httpClient.post(
-                `${environment.API_URL}/user/account-info`,
-                body
+    async getUserEmail(): Promise<string> {
+        const response = await firstValueFrom(
+            this.httpClient.get<{ email: string }>(
+                `${environment.API_URL}/user/email`
             )
         );
+
+        return response.email;
     }
 
-    async getUserInfo() {
-        return firstValueFrom(
-            this.httpClient.get(`${environment.API_URL}/user/account-info`)
+    async doesAccountExist(): Promise<boolean> {
+        const response = await firstValueFrom(
+            this.httpClient.get<{ doesAccountExist: boolean }>(
+                `${environment.API_URL}/user/exists`
+            )
         );
+
+        return response.doesAccountExist;
     }
 }

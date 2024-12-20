@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { MAX_NUMBER_VALUE } from '../constants';
+import { MAX_NUMBER_VALUE } from '../constants.js';
 export const ExpenseSchema = z.object({
     name: z.string(),
     amount: z.number().int().min(1).max(MAX_NUMBER_VALUE),

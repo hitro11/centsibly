@@ -3,12 +3,12 @@ import { AuthenticationService } from '../auth/services/authentication.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-    selector: 'app-home',
+    selector: 'app-landing-page',
     standalone: true,
     imports: [],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
+    templateUrl: './landing-page.component.html',
+    styleUrl: './landing-page.component.scss',
 })
-export class HomeComponent {
+export class LandingPageComponent {
     authService = inject(AuthenticationService);
 }

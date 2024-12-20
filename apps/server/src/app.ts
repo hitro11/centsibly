@@ -25,13 +25,13 @@ dotenv.config();
 supertokens.init({
     framework: 'express',
     supertokens: {
-        connectionURI: process.env.SUPERT0KENS_CONNECTION_URI,
-        apiKey: process.env.SUPERT0KENS_API_KEY,
+        connectionURI: process.env.SUPERT0KENS_CONNECTION_URI ?? '',
+        apiKey: process.env.SUPERT0KENS_API_KEY ?? '',
     },
     appInfo: {
         appName: 'Grove',
-        apiDomain: process.env.HOST,
-        websiteDomain: process.env.CLIENT_ORIGIN,
+        apiDomain: process.env.HOST ?? '',
+        websiteDomain: process.env.CLIENT_ORIGIN ?? '',
         apiBasePath: '/auth',
         websiteBasePath: '/auth',
     },
@@ -52,9 +52,11 @@ supertokens.init({
                             clients: [
                                 {
                                     clientId:
-                                        process.env.OAUTH_GOOGLE_CLIENT_ID,
+                                        process.env.OAUTH_GOOGLE_CLIENT_ID ??
+                                        '',
                                     clientSecret:
-                                        process.env.OAUTH_GOOGLE_CLIENT_SECRET,
+                                        process.env
+                                            .OAUTH_GOOGLE_CLIENT_SECRET ?? '',
                                 },
                             ],
                         },
@@ -65,9 +67,11 @@ supertokens.init({
                             clients: [
                                 {
                                     clientId:
-                                        process.env.OAUTH_GITHUB_CLIENT_ID,
+                                        process.env.OAUTH_GITHUB_CLIENT_ID ??
+                                        '',
                                     clientSecret:
-                                        process.env.OAUTH_GITHUB_CLIENT_SECRET,
+                                        process.env
+                                            .OAUTH_GITHUB_CLIENT_SECRET ?? '',
                                 },
                             ],
                         },
@@ -144,7 +148,7 @@ supertokens.init({
         Session.init(),
         Dashboard.init({
             admins: process.env.SUPERT0KENS_DASHBOARD_ADMIN
-                ? [process.env.SUPERT0KENS_DASHBOARD_ADMIN]
+                ? [process.env.SUPERT0KENS_DASHBOARD_ADMIN ?? '']
                 : undefined,
         }),
         UserRoles.init(),
@@ -180,10 +184,12 @@ app.use('/api', router);
 
 app.use(ErrorHandler);
 
-app.listen(process.env.PORT, () => {
-    const { NODE_ENV, HOST } = process.env;
-    logger.info(`Server (${NODE_ENV}) running on ${HOST}`);
-}).on('error', (err) => {
-    logger.error(err);
-    process.exit(1);
-});
+export default app;
+
+// app.listen(process.env.PORT, () => {
+//     const { NODE_ENV, HOST } = process.env;
+//     logger.info(`Server (${NODE_ENV}) running on ${HOST}`);
+// }).on('error', (err) => {
+//     logger.error(err);
+//     process.exit(1);
+// });

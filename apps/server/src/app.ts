@@ -29,7 +29,7 @@ supertokens.init({
         apiKey: process.env.SUPERT0KENS_API_KEY,
     },
     appInfo: {
-        appName: 'Grove',
+        appName: 'Centsibly',
         apiDomain: process.env.HOST,
         websiteDomain: process.env.CLIENT_ORIGIN,
         apiBasePath: '/auth',

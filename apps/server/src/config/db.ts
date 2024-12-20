@@ -4,7 +4,7 @@ import { logger } from './logger.js';
 import { DATABASE_NAME } from './constants.js';
 dotenv.config();
 
-const client = new MongoClient(process.env.DB_CONNECTION_STRING ?? '', {
+const client = new MongoClient(process.env.DB_CONNECTION_STRING, {
     serverApi: {
         version: ServerApiVersion.v1,
         strict: true,

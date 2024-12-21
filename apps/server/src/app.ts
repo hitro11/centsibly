@@ -168,32 +168,38 @@ app.use(
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["'self'"], // Instead of 'none', allow self as fallback
+            defaultSrc: ["'self'"],
             scriptSrc: [
                 "'self'",
                 'https://cdn.jsdelivr.net',
                 "'unsafe-inline'",
-            ], // Allow inline scripts
+            ],
             scriptSrcElem: [
                 "'self'",
                 'https://cdn.jsdelivr.net',
                 "'unsafe-inline'",
-            ], // Explicitly allow script elements
-            styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles
-            styleSrcElem: ["'self'", "'unsafe-inline'"], // Explicitly allow style elements
+            ],
+            styleSrc: ["'self'", 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
+            styleSrcElem: [
+                "'self'",
+                'https://cdn.jsdelivr.net',
+                "'unsafe-inline'",
+            ],
             imgSrc: [
                 "'self'",
                 'https://centsibly-server.onrender.com',
+                'https://cdn.jsdelivr.net',
                 'data:',
-            ], // Allow images from your domain and data URIs
-            connectSrc: ["'self'"], // Allow connections to your API
-            fontSrc: ["'self'", 'data:'], // Allow fonts
-            objectSrc: ["'none'"], // Recommended to disable objects
-            mediaSrc: ["'none'"], // Disable media if not needed
-            frameAncestors: ["'none'"], // Disable framing
-            formAction: ["'self'"], // Allow forms to submit to your domain
-            baseUri: ["'self'"], // Restrict base URI
-            manifestSrc: ["'self'"], // Allow manifest files
+                'blob:',
+            ],
+            connectSrc: ["'self'"],
+            fontSrc: ["'self'", 'data:'],
+            objectSrc: ["'none'"],
+            mediaSrc: ["'none'"],
+            frameAncestors: ["'none'"],
+            formAction: ["'self'"],
+            baseUri: ["'self'"],
+            manifestSrc: ["'self'"],
         },
     })
 );

@@ -184,6 +184,11 @@ app.use(morgan('tiny')); // request logging
 
 app.use('/api', router);
 
+// SPA catch-all route
+app.get('*', (req, res) => {
+    res.sendFile('index.html', { root: 'dist/your-app-name/' });
+});
+
 app.use(ErrorHandler);
 
 app.listen(process.env.PORT || '10000', () => {

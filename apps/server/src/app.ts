@@ -21,6 +21,7 @@ import UserRoles from 'supertokens-node/recipe/userroles';
 import { connectToDB } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
+import path from 'path';
 
 supertokens.init({
     framework: 'express',
@@ -182,11 +183,16 @@ app.use(morgan('tiny')); // request logging
 // Swagger UI
 // app.use(openAPIRouter);
 
+app.use(express.static(path.join(__dirname, 'dist/your-app-name')));
+logger.debug('dirname: ' + __dirname);
+logger.debug('dirname: ' + __dirname);
+logger.debug('dirname: ' + __dirname);
+
 app.use('/api', router);
 
 // SPA catch-all route
 app.get('*', (req, res) => {
-    res.sendFile('index.html', { root: 'dist/your-app-name/' });
+    res.sendFile(path.join(__dirname, 'dist/your-app-name/index.html'));
 });
 
 app.use(ErrorHandler);

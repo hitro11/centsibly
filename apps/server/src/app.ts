@@ -166,41 +166,8 @@ app.use(
 );
 
 app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: ["'self'"],
-            scriptSrc: [
-                "'self'",
-                'https://cdn.jsdelivr.net',
-                "'unsafe-inline'",
-            ],
-            scriptSrcElem: [
-                "'self'",
-                'https://cdn.jsdelivr.net',
-                "'unsafe-inline'",
-            ],
-            styleSrc: ["'self'", 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
-            styleSrcElem: [
-                "'self'",
-                'https://cdn.jsdelivr.net',
-                "'unsafe-inline'",
-            ],
-            imgSrc: [
-                "'self'",
-                'https://centsibly-server.onrender.com',
-                'https://cdn.jsdelivr.net',
-                'data:',
-                'blob:',
-            ],
-            connectSrc: ["'self'"],
-            fontSrc: ["'self'", 'data:'],
-            objectSrc: ["'none'"],
-            mediaSrc: ["'none'"],
-            frameAncestors: ["'none'"],
-            formAction: ["'self'"],
-            baseUri: ["'self'"],
-            manifestSrc: ["'self'"],
-        },
+    helmet({
+        contentSecurityPolicy: false,
     })
 );
 

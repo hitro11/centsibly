@@ -164,15 +164,40 @@ app.use(
         credentials: true,
     })
 );
+
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            'script-src': ["'self'", 'https://cdn.jsdelivr.net'],
-            'script-src-elem': ["'self'", 'https://cdn.jsdelivr.net'],
+            defaultSrc: ["'self'"], // Instead of 'none', allow self as fallback
+            scriptSrc: [
+                "'self'",
+                'https://cdn.jsdelivr.net',
+                "'unsafe-inline'",
+            ], // Allow inline scripts
+            scriptSrcElem: [
+                "'self'",
+                'https://cdn.jsdelivr.net',
+                "'unsafe-inline'",
+            ], // Explicitly allow script elements
+            styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles
+            styleSrcElem: ["'self'", "'unsafe-inline'"], // Explicitly allow style elements
+            imgSrc: [
+                "'self'",
+                'https://centsibly-server.onrender.com',
+                'data:',
+            ], // Allow images from your domain and data URIs
+            connectSrc: ["'self'"], // Allow connections to your API
+            fontSrc: ["'self'", 'data:'], // Allow fonts
+            objectSrc: ["'none'"], // Recommended to disable objects
+            mediaSrc: ["'none'"], // Disable media if not needed
+            frameAncestors: ["'none'"], // Disable framing
+            formAction: ["'self'"], // Allow forms to submit to your domain
+            baseUri: ["'self'"], // Restrict base URI
+            manifestSrc: ["'self'"], // Allow manifest files
         },
     })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(middleware() as any);

@@ -22,6 +22,9 @@ import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 import { loadEnv } from '../loadEnv.js';
 loadEnv();
 
+logger.debug(process.env.CLIENT_ORIGIN);
+logger.debug(process.env.HOST);
+
 supertokens.init({
     framework: 'express',
     supertokens: {

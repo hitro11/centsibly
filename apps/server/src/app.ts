@@ -164,7 +164,15 @@ app.use(
         credentials: true,
     })
 );
-app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            'script-src': ["'self'", 'https://cdn.jsdelivr.net'],
+            'script-src-elem': ["'self'", 'https://cdn.jsdelivr.net'],
+        },
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(middleware() as any);

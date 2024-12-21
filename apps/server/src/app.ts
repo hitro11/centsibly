@@ -183,11 +183,6 @@ app.use(morgan('tiny')); // request logging
 // Swagger UI
 // app.use(openAPIRouter);
 
-app.use(express.static(path.join(__dirname, 'dist/your-app-name')));
-logger.debug('dirname: ' + __dirname);
-logger.debug('dirname: ' + __dirname);
-logger.debug('dirname: ' + __dirname);
-
 app.use('/api', router);
 
 // SPA catch-all route

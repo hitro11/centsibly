@@ -22,9 +22,6 @@ import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 import { loadEnv } from '../loadEnv.js';
 loadEnv();
 
-logger.debug(process.env.CLIENT_ORIGIN);
-logger.debug(process.env.HOST);
-
 supertokens.init({
     framework: 'express',
     supertokens: {
@@ -183,7 +180,7 @@ app.use('/api', router);
 
 app.use(ErrorHandler);
 
-app.listen(process.env.PORT || '3000', () => {
+app.listen(process.env.PORT || '10000', () => {
     const { NODE_ENV, HOST } = process.env;
     logger.info(`Server (${NODE_ENV}) running on ${HOST}`);
 }).on('error', (err) => {

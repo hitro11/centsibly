@@ -1,6 +1,4 @@
 import { logger } from '../../config/logger.js';
-import { loadEnv } from '../../../loadEnv.js';
-loadEnv();
 import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
 import { AccountInfo } from '@centsibly/utils/schemas';

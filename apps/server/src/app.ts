@@ -1,6 +1,9 @@
+/* Imports */
+import { loadEnv } from '../loadEnv.js';
+loadEnv();
+
 import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
 
-/* Imports */
 import express, { type Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -18,9 +21,6 @@ import UserRoles from 'supertokens-node/recipe/userroles';
 import { connectToDB } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
-
-import { loadEnv } from '../loadEnv.js';
-loadEnv();
 
 supertokens.init({
     framework: 'express',

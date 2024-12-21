@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
 import { logger } from '../../config/logger.js';
-import { loadEnv } from '../../../loadEnv.js';
-loadEnv();
 import { AuthService } from '../services/auth-service.js';
 
 export class AuthController {

@@ -41,8 +41,6 @@ supertokens.init({
         EmailPassword.init({}),
 
         ThirdParty.init({
-            // We have provided you with development keys which you can use for testing.
-            // IMPORTANT: Please replace them with your own OAuth keys for production use.
             signInAndUpFeature: {
                 providers: [
                     {
@@ -54,19 +52,6 @@ supertokens.init({
                                         process.env.OAUTH_GOOGLE_CLIENT_ID,
                                     clientSecret:
                                         process.env.OAUTH_GOOGLE_CLIENT_SECRET,
-                                },
-                            ],
-                        },
-                    },
-                    {
-                        config: {
-                            thirdPartyId: 'github',
-                            clients: [
-                                {
-                                    clientId:
-                                        process.env.OAUTH_GITHUB_CLIENT_ID,
-                                    clientSecret:
-                                        process.env.OAUTH_GITHUB_CLIENT_SECRET,
                                 },
                             ],
                         },

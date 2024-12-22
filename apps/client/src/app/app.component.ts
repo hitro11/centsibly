@@ -16,7 +16,7 @@ import EmailVerification from 'supertokens-web-js/recipe/emailverification';
 
 SuperTokens.init({
     appInfo: {
-        appName: 'Grove',
+        appName: 'Centsibly',
         apiDomain: environment.SERVER_URL,
         apiBasePath: '/auth',
     },

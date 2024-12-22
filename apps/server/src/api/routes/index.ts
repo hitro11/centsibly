@@ -6,4 +6,4 @@ import { Router } from 'express';
 const indexRouter = Router();
 indexRouter.use('/auth', authRoutes);
 indexRouter.use('/user', verifySession() as any, userRoutes);
-export const router = indexRouter;
+export const router: Router = indexRouter;

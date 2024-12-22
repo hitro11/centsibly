@@ -5,14 +5,16 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { GoogleCallbackComponent } from './auth/callbacks/google-callback.component';
 import { GithubCallbackComponent } from './auth/callbacks/github-callback.component';
 import { SetupAccountComponent } from './setup-account/setup-account.component';
-import { isUserLoggedInGuard } from './routeGuards/isUserLoggedIn.guard';
+import { SignedInGuard } from './routeGuards/signed-in.guard';
 import { HomeComponent } from './home/home/home.component';
+import { AuthGuard } from './routeGuards/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
     {
         path: 'auth',
         component: AuthComponent,
+        canActivate: [AuthGuard],
         children: [
             { path: 'verify-email', component: VerifyEmailComponent },
             { path: 'callback/google', component: GoogleCallbackComponent },
@@ -22,11 +24,11 @@ export const routes: Routes = [
     {
         path: 'create-account',
         component: SetupAccountComponent,
-        canActivate: [isUserLoggedInGuard],
+        canActivate: [SignedInGuard],
     },
     {
         path: 'home',
         component: HomeComponent,
-        canActivate: [isUserLoggedInGuard],
+        canActivate: [SignedInGuard],
     },
 ];

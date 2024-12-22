@@ -1,8 +1,26 @@
 <header>
     <nav class="p-4">
         <div class="flex flex-row">
-            <img class="w-[3.5rem]" [src]="logoPath" />
+            <img
+                [routerLink]="''"
+                class="w-[3.5rem] cursor-pointer"
+                [src]="logoPath"
+            />
             <div class="flexExpand"></div>
+
+            @if (!isUserLoggedIn()) {
+                <div class="mr-8">
+                    <button
+                        variant="secondary"
+                        hlmBtn
+                        class="mt-1"
+                        [routerLink]="'/auth'"
+                    >
+                        Sign In
+                    </button>
+                </div>
+            }
+
             <div class="mr-8">
                 <button
                     variant="ghost"
@@ -19,7 +37,9 @@
                     />
                 </button>
             </div>
-            <app-header-profile-dropdown></app-header-profile-dropdown>
+            @if (isUserLoggedIn()) {
+                <app-header-profile-dropdown></app-header-profile-dropdown>
+            }
         </div>
     </nav>
 </header>

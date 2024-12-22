@@ -58,4 +58,4 @@ router.get('/exists', async (req, res, next: NextFunction) => {
     }
 });
 
-export const userRoutes = router;
+export const userRoutes: Router = router;

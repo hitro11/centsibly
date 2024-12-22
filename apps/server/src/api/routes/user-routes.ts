@@ -5,14 +5,17 @@ import { AccountInfoSchema } from '@centsibly/utils/schemas';
 
 const router = Router();
 
-router.get('/account', async (req, res, next: NextFunction) => {
-    try {
-        const userInfo = await UserController.getAccount(req, res);
-        res.json(userInfo);
-    } catch (error) {
-        next(error);
+router.get(
+    '/account',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userInfo = await UserController.getAccount(req, res);
+            res.json(userInfo);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 router.post(
     '/account',
@@ -28,14 +31,44 @@ router.post(
     }
 );
 
-router.get('/auth-info', async (req, res, next: NextFunction) => {
-    try {
-        const userInfo = await UserController.getAuthInfo(req, res);
-        res.json(userInfo);
-    } catch (error) {
-        next(error);
+router.get(
+    '/auth-info',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userInfo = await UserController.getAuthInfo(req, res);
+            res.json(userInfo);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
+
+router.get(
+    '/email',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const email = await UserController.getEmail(req, res);
+            res.json({ email });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+router.get(
+    '/exists',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const doesAccountExist = await UserController.doesAccountExist(
+                req,
+                res
+            );
+            res.json({ doesAccountExist });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 router.get('/email', async (req, res, next: NextFunction) => {
     try {
@@ -58,4 +91,4 @@ router.get('/exists', async (req, res, next: NextFunction) => {
     }
 });
 
-export const userRoutes = router;
+export const userRoutes: Router = router;

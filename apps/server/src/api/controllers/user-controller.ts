@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
 import { logger } from '../../config/logger.js';
-import dotenv from 'dotenv';
-dotenv.config();
 import { UserService } from '../services/user-service.js';
 import { AccountInfo } from '@centsibly/utils/schemas';
 

@@ -1,11 +1,11 @@
-import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
-
 /* Imports */
+import { loadEnv } from '../loadEnv.js';
+loadEnv();
+
 import express, { type Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import { logger } from './config/logger.js';
 import { router } from './api/routes/index.js';
 // import { openAPIRouter } from "@/api-docs/openAPIRouter";
@@ -16,11 +16,10 @@ import ThirdParty from 'supertokens-node/recipe/thirdparty';
 import { middleware } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
-import { connectToDB, getDb } from './config/db.js';
+import { connectToDB } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
-
-dotenv.config();
+import path from 'path';
 
 supertokens.init({
     framework: 'express',
@@ -29,7 +28,7 @@ supertokens.init({
         apiKey: process.env.SUPERT0KENS_API_KEY,
     },
     appInfo: {
-        appName: 'Grove',
+        appName: 'Centsibly',
         apiDomain: process.env.HOST,
         websiteDomain: process.env.CLIENT_ORIGIN,
         apiBasePath: '/auth',
@@ -164,10 +163,16 @@ app.use(
         credentials: true,
     })
 );
-app.use(helmet());
+
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+    })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(middleware());
+app.use(middleware() as any);
 app.use(morgan('tiny')); // request logging
 
 // Set the application to trust the reverse proxy
@@ -178,9 +183,14 @@ app.use(morgan('tiny')); // request logging
 
 app.use('/api', router);
 
+// SPA catch-all route
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/your-app-name/index.html'));
+});
+
 app.use(ErrorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || '10000', () => {
     const { NODE_ENV, HOST } = process.env;
     logger.info(`Server (${NODE_ENV}) running on ${HOST}`);
 }).on('error', (err) => {

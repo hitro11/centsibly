@@ -3,9 +3,8 @@
     "version": "0.1.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
         "dev": "ng serve",
-        "build": "ng build",
+        "build": "ng build --configuration=production",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "preinstall": "npx only-allow pnpm"

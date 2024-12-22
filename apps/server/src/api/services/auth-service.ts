@@ -1,6 +1,4 @@
 import { logger } from '../../config/logger.js';
-import dotenv from 'dotenv';
-dotenv.config();
 import { Request, Response } from 'express';
 import Session from 'supertokens-node/recipe/session';
 

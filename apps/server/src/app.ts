@@ -156,8 +156,6 @@ const app: Express = express();
 await connectToDB();
 
 // Middleware
-
-logger.debug('CLIENT_ORIGIN: ' + process.env.CLIENT_ORIGIN);
 app.use(
     cors({
         origin: process.env.CLIENT_ORIGIN,

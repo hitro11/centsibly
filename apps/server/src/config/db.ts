@@ -31,8 +31,6 @@ export async function getDb(): Promise<Db> {
 }
 
 function initializeClient() {
-    logger.debug('DB: DB_CONNECTION_STRING' + process.env.DB_CONNECTION_STRING);
-
     client = new MongoClient(process.env.DB_CONNECTION_STRING, {
         serverApi: {
             version: ServerApiVersion.v1,

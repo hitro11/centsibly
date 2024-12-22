@@ -81,9 +81,6 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                             providers: [
                                 (
                                     window as any
-                                ).supertokensUIThirdParty.Github.init(),
-                                (
-                                    window as any
                                 ).supertokensUIThirdParty.Google.init(),
                             ],
                         },

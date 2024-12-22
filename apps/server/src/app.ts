@@ -2,7 +2,7 @@
 import { loadEnv } from '../loadEnv.js';
 loadEnv();
 
-import express, { type Express } from 'express';
+import express, { Request, type Express, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -166,19 +166,19 @@ app.use(morgan('tiny')); // request logging
 // Swagger UI
 // app.use(openAPIRouter);
 
-app.use('/api', router);
-
-// SPA catch-all route
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/your-app-name/index.html'));
+// routes
+app.get('/health', (req: Request, res: Response) => {
+    res.status(200).send('OK');
 });
+
+app.use('/api', router);
 
 app.use(ErrorHandler);
 
 app.listen(process.env.PORT || '10000', () => {
     const { NODE_ENV, HOST } = process.env;
     logger.info(`Server (${NODE_ENV}) running on ${HOST}`);
-}).on('error', (err) => {
+}).on('error', (err: unknown) => {
     logger.error(err);
     process.exit(1);
 });

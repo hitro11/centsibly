@@ -2,8 +2,6 @@
 import { loadEnv } from '../loadEnv.js';
 loadEnv();
 
-import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
-
 import express, { type Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -158,6 +156,8 @@ const app: Express = express();
 await connectToDB();
 
 // Middleware
+
+logger.debug('CLIENT_ORIGIN: ' + process.env.CLIENT_ORIGIN);
 app.use(
     cors({
         origin: process.env.CLIENT_ORIGIN,

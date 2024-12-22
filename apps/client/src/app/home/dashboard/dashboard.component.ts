@@ -1,21 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { BudgetService } from '../../setup-account/services/budget/budget.service';
-import {
-    DoughnutController,
-    ArcElement,
-    Chart,
-    ChartItem,
-} from 'chart.js/auto';
+import { Chart, ChartItem } from 'chart.js/auto';
 import { AccountInfo } from 'utils/schemas/schemas';
 
 @Component({
-    selector: 'app-home',
+    selector: 'app-dashboard',
     standalone: true,
     imports: [],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
     budgetService = inject(BudgetService);
     data: any;
 

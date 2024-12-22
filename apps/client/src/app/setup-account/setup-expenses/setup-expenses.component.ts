@@ -188,7 +188,7 @@ export class SetupExpensesComponent {
 
         if (direction === 'next') {
             await this.budgetService.onSetupFormSubmit();
-            this.router.navigate(['/home']);
+            this.router.navigate(['/dashboard']);
         } else {
             this.updateSection.emit(direction);
         }

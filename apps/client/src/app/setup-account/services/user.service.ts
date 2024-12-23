@@ -14,7 +14,6 @@ export class UserService {
         effect(async () => {
             if (await Session.doesSessionExist()) {
                 const email = await this.getUserEmail();
-                console.log(email);
                 this._email.set(email);
             }
         });

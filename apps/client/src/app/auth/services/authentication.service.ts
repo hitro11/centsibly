@@ -20,7 +20,6 @@ export class AuthenticationService {
     constructor() {
         effect(async () => {
             const isLoggedIn = await Session.doesSessionExist();
-            console.log({ isLoggedIn });
             this.isLoggedInSignal.set(isLoggedIn);
         });
     }

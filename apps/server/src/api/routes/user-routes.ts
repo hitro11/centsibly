@@ -70,4 +70,25 @@ router.get(
     }
 );
 
+router.get('/email', async (req, res, next: NextFunction) => {
+    try {
+        const email = await UserController.getEmail(req, res);
+        res.json({ email });
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get('/exists', async (req, res, next: NextFunction) => {
+    try {
+        const doesAccountExist = await UserController.doesAccountExist(
+            req,
+            res
+        );
+        res.json({ doesAccountExist });
+    } catch (error) {
+        next(error);
+    }
+});
+
 export const userRoutes: Router = router;

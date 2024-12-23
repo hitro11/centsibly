@@ -12,8 +12,8 @@ import { AccountInfo } from 'utils/schemas/schemas';
     selector: 'app-home',
     standalone: true,
     imports: [],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss',
 })
 export class HomeComponent implements OnInit {
     budgetService = inject(BudgetService);

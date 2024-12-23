@@ -1,45 +1,27 @@
-@if (isUserLoggedIn()) {
-    <button [brnMenuTriggerFor]="menu">
-        <hlm-icon
-            size="xl"
-            name="lucideUserCircle"
-            class="scale-75 hover:cursor-pointer"
-        />
-    </button>
-} @else {
-    <button [brnMenuTriggerFor]="menu">
-        <hlm-icon
-            size="lg"
-            name="lucideMenu"
-            class="mt-2 hover:cursor-pointer"
-        />
-    </button>
-}
+<button [brnMenuTriggerFor]="menu">
+    <hlm-icon
+        size="xl"
+        name="lucideUserCircle"
+        class="scale-75 hover:cursor-pointer"
+    />
+</button>
 
 <ng-template #menu>
     <hlm-menu class="w-[15rem] dark:bg-[#181C1F]">
         <hlm-menu-group>
-            @if (isUserLoggedIn()) {
-                <button
-                    (click)="(true)"
-                    hlmMenuItem
-                    class="pb-5 pt-2 hover:cursor-pointer"
-                >
-                    <hlm-icon
-                        class=""
-                        size="xl"
-                        name="lucideUserCircle"
-                        hlmMenuIcon
-                    />
-                    <span class="ml-0 text-base">{{ email() }}</span>
-                </button>
-                <hlm-menu-separator class="mb-3" />
-            }
+            <button
+                (click)="(true)"
+                hlmMenuItem
+                class="py-3 hover:cursor-pointer"
+            >
+                <hlm-icon name="lucideUserCircle" hlmMenuIcon />
+                <span class="ml-0 text-base">{{ email() }}</span>
+            </button>
 
             <button
                 (click)="signInOrSignOut()"
                 hlmMenuItem
-                class="mt-2 hover:cursor-pointer"
+                class="py-3 hover:cursor-pointer"
             >
                 <hlm-icon
                     name="{{

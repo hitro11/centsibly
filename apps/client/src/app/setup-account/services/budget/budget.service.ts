@@ -35,15 +35,9 @@ export class BudgetService {
         );
     }
 
-    async getUserAccount() {
+    async getLatestBudget(): Promise<Budget | null> {
         return firstValueFrom(
-            this.httpClient.get<Budget>(`${environment.API_URL}/user/account`)
-        );
-    }
-
-    async getLatestBudget(): Promise<Budget> {
-        return firstValueFrom(
-            this.httpClient.get<Budget>(
+            this.httpClient.get<Budget | null>(
                 `${environment.API_URL}/budgets?latest=true`
             )
         );

@@ -10,7 +10,7 @@ import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../setup-account/services/user.service';
-import Session from 'supertokens-web-js/recipe/session';
+import { BudgetService } from '../setup-account/services/budget/budget.service';
 
 @Component({
     selector: 'app-auth',
@@ -22,6 +22,7 @@ import Session from 'supertokens-web-js/recipe/session';
 export class AuthComponent implements OnDestroy, AfterViewInit {
     themeService = inject(ThemeService);
     userService = inject(UserService);
+    budgetService = inject(BudgetService);
     errorMessage = '';
 
     constructor(
@@ -62,13 +63,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                         context.action === 'SUCCESS' &&
                         context.newSessionCreated
                     ) {
-                        const doesAccountExist =
-                            await this.userService.doesAccountExist();
-
-                        console.log({ doesAccountExist });
-                        console.log({ newUser: context.createdNewUser });
-
-                        if (!doesAccountExist && context.createdNewUser) {
+                        if (context.createdNewUser) {
                             return '/create-account';
                         }
                         return context.redirectToPath ?? '/dashboard';

@@ -1,5 +1,5 @@
 import { COLLECTIONS } from '../../config/constants.js';
-import { getDb } from '../../config/db.js';
+import { database } from '../../config/db.js';
 import { logger } from '../../config/logger.js';
 
 export class UserRepositoryService {
@@ -7,7 +7,7 @@ export class UserRepositoryService {
 
     static async setUsername(email: string, username: string) {
         try {
-            const db = await getDb();
+            const db = await database();
             await db.collection(COLLECTIONS.ACCOUNTS).insertOne({
                 email,
                 username,
@@ -20,7 +20,7 @@ export class UserRepositoryService {
 
     static async getUsername(email: string) {
         try {
-            const db = await getDb();
+            const db = await database();
             const doc = await db.collection(COLLECTIONS.ACCOUNTS).findOne({
                 email,
             });

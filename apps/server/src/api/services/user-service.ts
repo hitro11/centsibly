@@ -2,14 +2,16 @@ import { logger } from '../../config/logger.js';
 import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
 import { Budget } from '@centsibly/utils/schemas';
-import { getDb } from '../../config/db.js';
+import { database } from '../../config/db.js';
 
 export class UserService {
     static async setAccount(email: string, budgetInfo: Budget) {
         try {
             email = email.toLowerCase();
             logger.debug(email, budgetInfo);
-            const accountsCollection = (await getDb()).collection('accounts');
+            const accountsCollection = (await database()).collection(
+                'accounts'
+            );
 
             const isExistingAccount =
                 !!(await accountsCollection.countDocuments(
@@ -45,7 +47,9 @@ export class UserService {
                 throw new Error('Unauthorized');
             }
 
-            const accountsCollection = (await getDb()).collection('accounts');
+            const accountsCollection = (await database()).collection(
+                'accounts'
+            );
             const account = await accountsCollection.findOne({
                 email: email.toLowerCase(),
             });

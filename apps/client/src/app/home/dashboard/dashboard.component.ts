@@ -36,16 +36,17 @@ export class DashboardComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         try {
-            const budgetInfo = await this.getBudgetInfo();
+            const budget = await this.budgetService.getLatestBudget();
+            console.log(budget);
 
-            if (!budgetInfo) {
+            if (!budget) {
                 console.log('no budget set. Please set it');
                 // todo: set banner informing user they need to set a budget.
                 return;
             }
 
-            const income = budgetInfo.income;
-            const expenses = budgetInfo.expenses;
+            const income = budget.income;
+            const expenses = budget.expenses;
 
             const surplus =
                 income -
@@ -100,10 +101,6 @@ export class DashboardComponent implements OnInit {
         } catch (error) {
             console.log(error);
         }
-    }
-
-    async getBudgetInfo(): Promise<Budget> {
-        return await this.budgetService.getUserAccount();
     }
 
     isChart(chart: any): chart is Chart {

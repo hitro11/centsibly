@@ -1,9 +1,8 @@
 import { logger } from '../../config/logger.js';
-import supertokens from 'supertokens-node';
-import { SessionRequest } from 'supertokens-node/framework/express';
 import { Budget } from '@centsibly/utils/schemas';
 import { getDb } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
+import { WithId } from 'mongodb';
 
 export class BudgetService {
     static async addBudget(email: string, budget: Budget) {
@@ -44,19 +43,37 @@ export class BudgetService {
         }
     }
 
-    static async getBudget(email: string, month?: string): Promise<Budget[]> {
+    static async getBudget(email: string, month: string) {
         try {
             const budgetsCollection = (await getDb()).collection(
                 COLLECTIONS.BUDGETS
             );
 
-            const budget = await budgetsCollection.find({
+            const budget = await budgetsCollection.findOne({
                 email: email.toLowerCase(),
                 month,
             });
 
-            return [] as Budget[];
-            // return budget as Budget[];
+            return budget ?? null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async getAllBudgets(email: string) {
+        try {
+            const budgetsCollection = (await getDb()).collection(
+                COLLECTIONS.BUDGETS
+            );
+
+            const budgets = await budgetsCollection
+                .find({
+                    email: email.toLowerCase(),
+                })
+                .toArray();
+
+            logger.debug(budgets);
+            return budgets;
         } catch (error) {
             throw error;
         }

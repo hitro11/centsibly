@@ -3,37 +3,45 @@ import { logger } from '../../config/logger.js';
 import { UserService } from '../services/user-service.js';
 import { BudgetService } from '../services/budget.service.js';
 import { Budget } from '@centsibly/utils/schemas';
+import { getCurrentMonth } from '@centsibly/utils/utils';
 
 export class BudgetController {
-    static async addBudget(req: unknown, budget: Budget) {
+    static async addBudget(req: Request) {
         try {
-            const userInfo = await UserService.getAuthInfo(req);
+            const email = await UserService.getEmail(req);
 
-            if (!userInfo) {
-                throw new Error('user information not found');
+            if (!email) {
+                throw new Error('Email not found');
             }
 
-            const email = userInfo.emails[0];
-
+            const budget = req.body;
             return await BudgetService.addBudget(email, budget);
         } catch (error) {
             throw error;
         }
     }
 
-    static async getAccount(req: Request, res: Response) {
-        return await UserService.getAccount(req);
-    }
+    static async getBudgets(req: Request) {
+        try {
+            const email = await UserService.getEmail(req);
 
-    static async getAuthInfo(req: Request, res: Response) {
-        return await UserService.getAuthInfo(req);
-    }
+            if (!email) {
+                throw new Error('Email not found');
+            }
 
-    static async getEmail(req: Request, res: Response) {
-        return await UserService.getEmail(req);
-    }
+            let month = null;
 
-    static async doesAccountExist(req: Request, res: Response) {
-        return await UserService.doesAccountExist(req);
+            if (req.query.latest) {
+                month = getCurrentMonth();
+            } else if (req.query.month) {
+                month = req.query.month as string;
+            }
+
+            return month
+                ? await BudgetService.getBudget(email, month)
+                : await BudgetService.getAllBudgets(email);
+        } catch (error) {
+            throw error;
+        }
     }
 }

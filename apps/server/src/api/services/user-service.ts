@@ -65,8 +65,17 @@ export class UserService {
     }
 
     static async getEmail(req: unknown): Promise<string | null> {
-        const userInfo = await this.getAuthInfo(req);
-        return userInfo?.emails[0] ?? null;
+        try {
+            const userInfo = await this.getAuthInfo(req);
+
+            if (!userInfo) {
+                throw new Error('user information not found');
+            }
+
+            return userInfo?.emails[0] ?? null;
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async doesAccountExist(req: unknown): Promise<boolean> {

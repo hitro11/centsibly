@@ -3,34 +3,8 @@ import { logger } from './logger.js';
 import { DATABASE_NAME } from './constants.js';
 
 let client: MongoClient;
-let database: Db;
 
-export async function connectToDB() {
-    if (!client) {
-        initializeClient();
-    }
-
-    try {
-        await client.connect();
-        database = client.db(DATABASE_NAME);
-    } catch (e) {
-        logger.error(`Failed to connect to ${DATABASE_NAME} DB: `, e);
-        throw e;
-    }
-}
-
-export async function getDb(): Promise<Db> {
-    try {
-        if (!database) {
-            await connectToDB();
-        }
-        return database;
-    } catch (e) {
-        throw e;
-    }
-}
-
-function initializeClient() {
+async function initDBclient(): Promise<void> {
     client = new MongoClient(process.env.DB_CONNECTION_STRING, {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -38,4 +12,36 @@ function initializeClient() {
             deprecationErrors: true,
         },
     });
+}
+
+export async function connectToDBclient(): Promise<void> {
+    try {
+        if (!client) {
+            await initDBclient();
+        }
+
+        await client.connect();
+    } catch (error) {}
+}
+
+export async function database(): Promise<Db> {
+    try {
+        if (!client) {
+            await connectToDBclient();
+        }
+
+        return client.db(DATABASE_NAME);
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function pingDB(): Promise<boolean> {
+    try {
+        const db = await database();
+        const resp = await db.command({ ping: 1 });
+        return resp.ok === 1 ? true : false;
+    } catch (error) {
+        throw error;
+    }
 }

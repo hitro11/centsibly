@@ -1,6 +1,6 @@
 import { logger } from '../../config/logger.js';
 import { Budget } from '@centsibly/utils/schemas';
-import { getDb } from '../../config/db.js';
+import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
 import { WithId } from 'mongodb';
 
@@ -9,7 +9,7 @@ export class BudgetService {
         try {
             email = email.toLowerCase();
             logger.debug(email, budget);
-            const budgetsCollection = (await getDb()).collection(
+            const budgetsCollection = (await database()).collection(
                 COLLECTIONS.BUDGETS
             );
 
@@ -45,7 +45,7 @@ export class BudgetService {
 
     static async getBudget(email: string, month: string) {
         try {
-            const budgetsCollection = (await getDb()).collection(
+            const budgetsCollection = (await database()).collection(
                 COLLECTIONS.BUDGETS
             );
 
@@ -62,7 +62,7 @@ export class BudgetService {
 
     static async getAllBudgets(email: string) {
         try {
-            const budgetsCollection = (await getDb()).collection(
+            const budgetsCollection = (await database()).collection(
                 COLLECTIONS.BUDGETS
             );
 

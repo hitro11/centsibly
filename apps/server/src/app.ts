@@ -21,7 +21,7 @@ import ThirdParty from 'supertokens-node/recipe/thirdparty';
 import { middleware } from 'supertokens-node/framework/express';
 import Dashboard from 'supertokens-node/recipe/dashboard';
 import UserRoles from 'supertokens-node/recipe/userroles';
-import { connectToDB } from './config/db.js';
+import { connectToDBclient, pingDB } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 import path from 'path';
@@ -142,8 +142,8 @@ supertokens.init({
 
 const app: Express = express();
 
-// db
-await connectToDB();
+// database
+await connectToDBclient();
 
 // Middleware
 app.use(
@@ -172,8 +172,9 @@ app.use(morgan('tiny')); // request logging
 // app.use(openAPIRouter);
 
 // routes
-app.get('/health', (req: Request, res: Response) => {
-    res.status(200).send('OK');
+app.get('/health', async (req: Request, res: Response) => {
+    const result = await pingDB();
+    res.status(200).send({ result });
 });
 
 app.use('/api', router);

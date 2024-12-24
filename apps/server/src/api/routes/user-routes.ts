@@ -1,7 +1,7 @@
 import { Router, Response, Request, NextFunction } from 'express';
 import { UserController } from '../controllers/user-controller.js';
 import { validateData } from '../middleware/validation.middleware.js';
-import { AccountInfoSchema } from '@centsibly/utils/schemas';
+import { BudgetSchema } from '@centsibly/utils/schemas';
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.get(
 
 router.post(
     '/account',
-    validateData(AccountInfoSchema),
+    validateData(BudgetSchema),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const accountInfo = req.body;

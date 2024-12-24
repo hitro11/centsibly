@@ -28,10 +28,9 @@ export class HeaderComponent {
     authService: AuthenticationService = inject(AuthenticationService);
     isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
     router = inject(Router);
+    isUserVerified = false;
 
-    constructor() {}
-
-    async signIn() {
-        this.router.navigate(['/auth']);
+    async ngOnInit() {
+        this.isUserVerified = await this.authService.isUserEmailVerified();
     }
 }

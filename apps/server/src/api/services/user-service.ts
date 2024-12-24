@@ -1,11 +1,11 @@
 import { logger } from '../../config/logger.js';
 import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
-import { AccountInfo } from '@centsibly/utils/schemas';
+import { Budget } from '@centsibly/utils/schemas';
 import { getDb } from '../../config/db.js';
 
 export class UserService {
-    static async setAccount(email: string, budgetInfo: AccountInfo) {
+    static async setAccount(email: string, budgetInfo: Budget) {
         try {
             email = email.toLowerCase();
             logger.debug(email, budgetInfo);

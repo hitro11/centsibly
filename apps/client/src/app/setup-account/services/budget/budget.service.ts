@@ -1,6 +1,7 @@
 import { firstValueFrom } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
-import { AccountInfo, AccountInfoSchema } from '@centsibly/utils/schemas';
+import { Budget, BudgetSchema } from '@centsibly/utils/schemas';
+import { getMonth } from '@centsibly/utils/utils';
 import { DeepPartial } from '../../../shared/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
@@ -11,7 +12,7 @@ import { environment } from '../../../../../environments/environment';
 export class BudgetService {
     httpClient = inject(HttpClient);
 
-    accountInfo: DeepPartial<AccountInfo> = {
+    initialBudget: DeepPartial<Budget> = {
         currency: 'CAD',
     };
 
@@ -19,25 +20,24 @@ export class BudgetService {
 
     async onSetupFormSubmit(): Promise<void> {
         try {
-            const data = this.accountInfo;
-            AccountInfoSchema.parse(data);
-            await this.sendFormDataToBackend(data);
+            const data = this.initialBudget;
+            data.month = getMonth();
+            BudgetSchema.parse(data);
+            await this.addBudget(data);
         } catch (error) {
             console.error(error);
         }
     }
 
-    async sendFormDataToBackend(body: unknown): Promise<unknown> {
+    async addBudget(body: unknown): Promise<unknown> {
         return firstValueFrom(
-            this.httpClient.post(`${environment.API_URL}/user/account`, body)
+            this.httpClient.post(`${environment.API_URL}/budget`, body)
         );
     }
 
     async getUserAccount() {
         return firstValueFrom(
-            this.httpClient.get<AccountInfo>(
-                `${environment.API_URL}/user/account`
-            )
+            this.httpClient.get<Budget>(`${environment.API_URL}/user/account`)
         );
     }
 }

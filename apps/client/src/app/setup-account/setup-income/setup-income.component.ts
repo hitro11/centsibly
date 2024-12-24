@@ -53,11 +53,11 @@ export class SetupIncomeComponent {
 
     form = this.fb.group({
         currency: [
-            this.budgetService.accountInfo.currency,
+            this.budgetService.initialBudget.currency,
             [Validators.required],
         ],
         income: [
-            this.budgetService.accountInfo.income,
+            this.budgetService.initialBudget.income,
             [
                 Validators.required,
                 Validators.max(MAX_NUMBER_VALUE),
@@ -71,10 +71,10 @@ export class SetupIncomeComponent {
 
     updateSectionFn(direction: 'previous' | 'next') {
         if (this.form.valid) {
-            this.budgetService.accountInfo.currency = (this.currency?.value ??
+            this.budgetService.initialBudget.currency = (this.currency?.value ??
                 'CAD') as Currency;
 
-            this.budgetService.accountInfo.income =
+            this.budgetService.initialBudget.income =
                 this.income?.value ?? undefined;
         }
 

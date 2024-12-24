@@ -6,7 +6,7 @@ import {
     Chart,
     ChartItem,
 } from 'chart.js/auto';
-import { AccountInfo } from 'utils/schemas/schemas';
+import { Budget } from 'utils/schemas/schemas';
 
 @Component({
     selector: 'app-home',
@@ -20,8 +20,7 @@ export class HomeComponent implements OnInit {
     data: any;
 
     async ngOnInit() {
-        const budgetInfo: AccountInfo =
-            await this.budgetService.getUserAccount();
+        const budgetInfo: Budget = await this.budgetService.getUserAccount();
 
         const income = budgetInfo.income;
         const expenses = budgetInfo.expenses;

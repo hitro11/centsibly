@@ -18,6 +18,10 @@
         "./constants": {
             "types": "./src/constants.ts",
             "default": "./dist/constants.js"
+        },
+        "./utils": {
+            "types": "./src/utils/utils.ts",
+            "default": "./dist/utils/utils.js"
         }
     },
     "dependencies": {

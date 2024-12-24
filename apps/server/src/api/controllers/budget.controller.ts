@@ -1,17 +1,21 @@
 import { Request, Response } from 'express';
 import { logger } from '../../config/logger.js';
 import { UserService } from '../services/user-service.js';
+import { BudgetService } from '../services/budget.service.js';
 import { Budget } from '@centsibly/utils/schemas';
 
-export class UserController {
-    static async setAccount(req: unknown, budget: Budget) {
+export class BudgetController {
+    static async addBudget(req: unknown, budget: Budget) {
         try {
             const userInfo = await UserService.getAuthInfo(req);
+
             if (!userInfo) {
                 throw new Error('user information not found');
             }
+
             const email = userInfo.emails[0];
-            return await UserService.setAccount(email, budget);
+
+            return await BudgetService.addBudget(email, budget);
         } catch (error) {
             throw error;
         }

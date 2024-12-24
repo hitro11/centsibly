@@ -10,6 +10,7 @@ import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../setup-account/services/user.service';
+import Session from 'supertokens-web-js/recipe/session';
 
 @Component({
     selector: 'app-auth',
@@ -64,7 +65,10 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                         const doesAccountExist =
                             await this.userService.doesAccountExist();
 
-                        if (!doesAccountExist) {
+                        console.log({ doesAccountExist });
+                        console.log({ newUser: context.createdNewUser });
+
+                        if (!doesAccountExist && context.createdNewUser) {
                             return '/create-account';
                         }
                         return context.redirectToPath ?? '/dashboard';

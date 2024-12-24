@@ -91,7 +91,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                     this.themeService.getTheme()() === 'dark'
                         ? `
         [data-supertokens~=container] {
-          --palette-background: 25, 25, 25;
+          --palette-background: 28, 27, 34;
           --palette-inputBackground: 20, 20, 20;
           --palette-inputBorder: 41, 41, 41;
           --palette-textTitle: 200, 200, 200;
@@ -107,13 +107,33 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
           color: rgb(200, 200, 200);
           border: 1px solid lightgrey;
         }
-        [data-supertokens~="button"][data-supertokens~="providerButton"],
-        [data-supertokens~="superTokensBranding"] {
-          background-color: rgb(40, 40, 40);
-          color: rgb(169, 169, 169);
+		[data-supertokens~="button"] {
+			background-color: #87c3f7;
+			color: #042643;
         }
+        [data-supertokens~="button"][data-supertokens~="providerButton"] {
+          background-color: rgb(28, 27, 34);
+          color: white;
+        }
+		[data-supertokens~="superTokensBranding"] {
+			color: rgb(28, 27, 34);
+			background-color: rgb(28, 27, 34);
+		}
+		[data-supertokens~="link"] {
+			color: #7789EC;
+		}
         `
-                        : '',
+                        : `
+		
+		[data-supertokens~="superTokensBranding"] {
+			color: white;
+			background-color: white;
+		}
+		[data-supertokens~="button"] {
+			background-color: #87c3f7;
+			color: #042643;
+        }
+		`,
             });
         };
         this.renderer.appendChild(this.document.body, script);

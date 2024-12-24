@@ -1,11 +1,11 @@
 import { logger } from '../../config/logger.js';
 import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
-import { AccountInfo } from '@centsibly/utils/schemas';
+import { Budget } from '@centsibly/utils/schemas';
 import { getDb } from '../../config/db.js';
 
 export class UserService {
-    static async setAccount(email: string, budgetInfo: AccountInfo) {
+    static async setAccount(email: string, budgetInfo: Budget) {
         try {
             email = email.toLowerCase();
             logger.debug(email, budgetInfo);
@@ -65,8 +65,17 @@ export class UserService {
     }
 
     static async getEmail(req: unknown): Promise<string | null> {
-        const userInfo = await this.getAuthInfo(req);
-        return userInfo?.emails[0] ?? null;
+        try {
+            const userInfo = await this.getAuthInfo(req);
+
+            if (!userInfo) {
+                throw new Error('user information not found');
+            }
+
+            return userInfo?.emails[0] ?? null;
+        } catch (error) {
+            throw error;
+        }
     }
 
     static async doesAccountExist(req: unknown): Promise<boolean> {

@@ -14,7 +14,7 @@ export const routes: Routes = [
     {
         path: 'auth',
         component: AuthComponent,
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         children: [
             { path: 'verify-email', component: VerifyEmailComponent },
             { path: 'callback/google', component: GoogleCallbackComponent },

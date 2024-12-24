@@ -2,7 +2,12 @@
 import { loadEnv } from '../loadEnv.js';
 loadEnv();
 
-import express, { Request, type Express, Response } from 'express';
+import express, {
+    Request,
+    type Express,
+    Response,
+    RequestHandler,
+} from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -157,7 +162,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(middleware() as any);
+app.use(middleware() as RequestHandler);
 app.use(morgan('tiny')); // request logging
 
 // Set the application to trust the reverse proxy

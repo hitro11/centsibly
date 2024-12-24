@@ -10,7 +10,7 @@ export declare const ExpenseSchema: z.ZodObject<{
     amount: number;
 }>;
 export declare const CurrencySchema: z.ZodEnum<["CAD", "CNY", "EUR", "GBP", "INR", "JPY", "USD"]>;
-export declare const AccountInfoSchema: z.ZodObject<{
+export declare const BudgetSchema: z.ZodObject<{
     currency: z.ZodEnum<["CAD", "CNY", "EUR", "GBP", "INR", "JPY", "USD"]>;
     income: z.ZodNumber;
     expenses: z.ZodArray<z.ZodObject<{
@@ -23,6 +23,7 @@ export declare const AccountInfoSchema: z.ZodObject<{
         name: string;
         amount: number;
     }>, "many">;
+    month: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     currency: "CAD" | "CNY" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
@@ -30,6 +31,7 @@ export declare const AccountInfoSchema: z.ZodObject<{
         name: string;
         amount: number;
     }[];
+    month: string;
 }, {
     currency: "CAD" | "CNY" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
@@ -37,7 +39,8 @@ export declare const AccountInfoSchema: z.ZodObject<{
         name: string;
         amount: number;
     }[];
+    month: string;
 }>;
-export type AccountInfo = z.infer<typeof AccountInfoSchema>;
+export type Budget = z.infer<typeof BudgetSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;

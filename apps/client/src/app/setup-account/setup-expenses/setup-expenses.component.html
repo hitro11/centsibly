@@ -1,4 +1,4 @@
-<p class="text-center text-4xl">Expenses</p>
+<p class="mt-8 text-center text-4xl">Expenses</p>
 
 <p class="mt-12 text-center">
     Enter your expenses for a typical month below. Each expense must have a
@@ -9,9 +9,15 @@
     <div class="errors mb-8">
         @if (form.errors?.['expensesGreaterThanIncome']) {
             <div hlmAlert variant="destructive">
-                <hlm-icon class="mt-1" hlmAlertIcon name="lucideAlertTriangle" />
+                <hlm-icon
+                    class="mt-1"
+                    hlmAlertIcon
+                    name="lucideAlertTriangle"
+                />
                 <!-- <h4 hlmAlertTitle>Unexpected Error</h4> -->
-                <p hlmAlertDesc>Total expenses cannot be greater than your income</p>
+                <p hlmAlertDesc>
+                    Total expenses cannot be greater than your income
+                </p>
             </div>
         }
     </div>

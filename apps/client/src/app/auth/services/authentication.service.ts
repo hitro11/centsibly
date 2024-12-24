@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
-import { Observable } from 'rxjs';
 import { StandardHTTPresponse } from '../../shared/models/Http';
+import EmailVerification from 'supertokens-web-js/recipe/emailverification';
 
 @Injectable({
     providedIn: 'root',
@@ -35,8 +35,6 @@ export class AuthenticationService {
         this.isLoggedInSignal.set(false);
     }
 
-    test() {}
-
     async getUserId(): Promise<string> {
         if (await Session.doesSessionExist()) {
             return Session.getUserId();
@@ -65,5 +63,15 @@ export class AuthenticationService {
             `${environment.API_URL}/user/setUsername`,
             { username }
         );
+    }
+
+    async isUserEmailVerified(): Promise<boolean> {
+        try {
+            const isVerified = await EmailVerification.isEmailVerified();
+            return isVerified.status === 'OK' && isVerified.isVerified;
+        } catch (error) {
+            console.error('Error checking email verification status:', error);
+            return false;
+        }
     }
 }

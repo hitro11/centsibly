@@ -1,4 +1,4 @@
-<p class="mt-8 text-center text-3xl">Income</p>
+<p class="mt-8 text-center text-4xl">Budget</p>
 
 <form class="mt-8" [formGroup]="form">
     <label class="mb-1 block" hlmLabel>Currency</label>
@@ -20,10 +20,10 @@
 
     <div class="mt-8">
         <hlm-form-field class="mt-4">
-            <label class="block" hlmLabel>Monthly Income</label>
+            <label class="block" hlmLabel>Budget</label>
             <input
                 formControlName="income"
-                class="w-1/2"
+                class="w-1/2 md:w-1/4 lg:w-1/6"
                 hlmInput
                 type="number"
                 step="1"
@@ -33,13 +33,11 @@
                 <hlm-error>Invalid input</hlm-error>
             }
             @if (income?.errors?.['max']) {
-                <hlm-error>Income exceeded maximum value</hlm-error>
+                <hlm-error>Budget exceeded maximum value</hlm-error>
             }
             @if (income?.errors?.['min']) {
-                <hlm-error>Income cannot be less than 1</hlm-error>
+                <hlm-error>Budget cannot be less than 1</hlm-error>
             }
-
-            <!-- <hlm-hint>Monthly income</hlm-hint> -->
         </hlm-form-field>
     </div>
 

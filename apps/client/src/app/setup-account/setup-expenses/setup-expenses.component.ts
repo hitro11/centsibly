@@ -94,7 +94,7 @@ export class SetupExpensesComponent {
         Validators.pattern(AMOUNT_REGEX),
     ];
 
-    expensesData = deepCopy(this.budgetService.accountInfo.expenses) ?? [];
+    expensesData = deepCopy(this.budgetService.initialBudget.expenses) ?? [];
 
     form = this.fb.group({
         expenses: this.fb.array([], [Validators.required]),
@@ -156,7 +156,7 @@ export class SetupExpensesComponent {
 
     expenseAmountUpdated() {
         let totalExpenses = 0;
-        const income = this.budgetService.accountInfo.income ?? 0;
+        const income = this.budgetService.initialBudget.income ?? 0;
 
         for (const control of this.expenses.controls) {
             totalExpenses += control.value.amount;
@@ -183,7 +183,7 @@ export class SetupExpensesComponent {
                 expenses.push({ name, amount });
             }
 
-            this.budgetService.accountInfo.expenses = expenses;
+            this.budgetService.initialBudget.expenses = expenses;
         }
 
         if (direction === 'next') {

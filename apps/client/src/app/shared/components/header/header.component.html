@@ -37,7 +37,7 @@
                     />
                 </button>
             </div>
-            @if (isUserLoggedIn()) {
+            @if (isUserLoggedIn() && isUserVerified) {
                 <app-header-profile-dropdown></app-header-profile-dropdown>
             }
         </div>

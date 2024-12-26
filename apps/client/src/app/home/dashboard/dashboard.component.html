@@ -1,7 +1,22 @@
-<div class="">
+<div class="mt-8 flex min-h-[calc(100dvh-81px-48px)] flex-col">
     <h1 class="text-center text-5xl">Dashboard</h1>
-    <canvas
-        class="!m-auto !mt-32 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
-        id="budgetSummary"
-    ></canvas>
+    <div class="flex-1">
+        <div class="">
+            <canvas
+                class="!m-auto !mt-24 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
+                id="budgetSummary"
+            ></canvas>
+        </div>
+    </div>
+
+    <div class="mb-2 mr-2 flex flex-row justify-end">
+        <button
+            class="scale-150 border-black dark:border-white"
+            hlmBtn
+            size="icon"
+            variant="outline"
+        >
+            <hlm-icon size="xl" name="lucidePlus" />
+        </button>
+    </div>
 </div>

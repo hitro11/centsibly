@@ -21,7 +21,12 @@
             <label for="category" class="mr-4 mt-2 w-24 text-left" hlmLabel
                 >Category</label
             >
-            <brn-select id="category" placeholder="" class="w-full flex-1">
+            <brn-select
+                formControlName="category"
+                id="category"
+                placeholder=""
+                class="w-full flex-1"
+            >
                 <hlm-select-trigger class="w-full flex-1">
                     <hlm-select-value />
                 </hlm-select-trigger>
@@ -50,6 +55,6 @@
             />
         </hlm-form-field>
 
-        <button class="mt-14" hlmBtn>Submit</button>
+        <button (click)="onSubmit()" class="mt-14" hlmBtn>Submit</button>
     </form>
 </div>

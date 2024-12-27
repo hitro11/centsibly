@@ -1,4 +1,4 @@
-import { CURRENCIES } from '../shared/constants';
+import { CURRENCIES } from '@centsibly/utils/constants';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';

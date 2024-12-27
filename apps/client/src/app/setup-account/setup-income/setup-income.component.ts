@@ -12,15 +12,16 @@ import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
-import {
-    AMOUNT_REGEX,
-    CURRENCIES,
-    REQUIRED_ERROR_MESSAGE,
-} from '../../shared/constants';
+import { REQUIRED_ERROR_MESSAGE } from '../../shared/constants';
+
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideDollarSign } from '@ng-icons/lucide';
-import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
+import {
+    MAX_NUMBER_VALUE,
+    AMOUNT_REGEX,
+    CURRENCIES,
+} from '@centsibly/utils/constants';
 import { Currency } from 'utils/schemas/schemas';
 import { BudgetService } from '../services/budget/budget.service';
 

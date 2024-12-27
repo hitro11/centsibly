@@ -8,7 +8,7 @@ import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AMOUNT_REGEX } from '../../shared/constants';
+import { AMOUNT_REGEX } from '@centsibly/utils/constants';
 import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
 
 @Component({
@@ -46,5 +46,9 @@ export class AddTransactionComponent {
 
     toTitleCase(text: string) {
         return toTitleCase(text);
+    }
+
+    onSubmit() {
+        console.log('valid: ' + this.form.valid);
     }
 }

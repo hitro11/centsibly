@@ -1,7 +1,7 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { BudgetService } from '../../setup-account/services/budget/budget.service';
 import { Chart, ChartItem } from 'chart.js/auto';
-import { toTitleCase } from '../../shared/utils';
+import { getColorsForSummaryChart, toTitleCase } from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
@@ -22,6 +22,8 @@ import {
 
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { Budget, Expense } from 'utils/schemas/schemas';
+import { dateToReadableText, getCurrentMonthandYear } from 'utils/utils/utils';
+import { CHART_COLOR_SURPLUS } from '../../shared/constants';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
@@ -45,6 +47,8 @@ export class DashboardComponent implements OnInit {
     theme = this.themeService.getTheme();
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
     expenses: Expense[] = [];
+    month = getCurrentMonthandYear();
+    monthasReadableText = dateToReadableText(this.month);
 
     constructor() {
         effect(() => {
@@ -63,25 +67,7 @@ export class DashboardComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         try {
-            // const budget = await this.budgetService.getLatestBudget();
-            // console.log(budget);
-
-            const budget: Budget = {
-                email: 'hitrosmurf@gmail.com',
-                month: '2024-12',
-                currency: 'CAD',
-                income: 4000,
-                expenses: [
-                    {
-                        name: 'rent',
-                        amount: 2000,
-                    },
-                    {
-                        name: 'groceries',
-                        amount: 200,
-                    },
-                ],
-            };
+            const budget = await this.budgetService.getCurrentBudget();
 
             if (!budget) {
                 console.log('no budget set. Please set it');
@@ -119,11 +105,12 @@ export class DashboardComponent implements OnInit {
                                     surplus,
                                 ],
                                 backgroundColor: [
-                                    'rgb(255, 99, 132)',
-                                    'rgb(54, 162, 235)',
-                                    'rgb(255, 205, 86)',
-                                    '#398333',
+                                    ...this.expenses.map((expense, i) =>
+                                        getColorsForSummaryChart(i)
+                                    ),
+                                    CHART_COLOR_SURPLUS,
                                 ],
+                                borderColor: '#1c1b22',
                                 hoverOffset: 4,
                             },
                         ],

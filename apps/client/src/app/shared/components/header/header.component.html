@@ -8,12 +8,12 @@
             />
             <div class="flexExpand"></div>
 
-            @if (!isUserLoggedIn()) {
+            @if (!isUserLoggedIn() && router.url !== '/auth') {
                 <div class="mr-8">
                     <button
-                        variant="secondary"
                         hlmBtn
-                        class="mt-1"
+                        variant="outline"
+                        class="mt-1 border-black dark:border-white"
                         [routerLink]="'/auth'"
                     >
                         Sign In

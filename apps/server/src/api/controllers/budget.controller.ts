@@ -3,7 +3,7 @@ import { logger } from '../../config/logger.js';
 import { UserService } from '../services/user-service.js';
 import { BudgetService } from '../services/budget.service.js';
 import { Budget } from '@centsibly/utils/schemas';
-import { getCurrentMonth } from '@centsibly/utils/utils';
+import { getCurrentMonthandYear } from '@centsibly/utils/utils';
 
 export class BudgetController {
     static async addBudget(req: Request) {
@@ -32,7 +32,7 @@ export class BudgetController {
             let month = null;
 
             if (req.query.latest) {
-                month = getCurrentMonth();
+                month = getCurrentMonthandYear();
             } else if (req.query.month) {
                 month = req.query.month as string;
             }

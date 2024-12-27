@@ -101,8 +101,12 @@ export class SetupExpensesComponent {
     });
 
     constructor() {
-        for (const expense of this.expensesData) {
-            this.addExpense(expense?.name, expense?.amount);
+        if (!this.expensesData.length) {
+            this.addExpense();
+        } else {
+            for (const expense of this.expensesData) {
+                this.addExpense(expense?.name, expense?.amount);
+            }
         }
     }
 

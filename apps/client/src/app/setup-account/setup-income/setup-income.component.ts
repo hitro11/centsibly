@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    effect,
-    EventEmitter,
-    inject,
-    Input,
-    output,
-} from '@angular/core';
+import { Component, inject, Input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
@@ -16,7 +9,7 @@ import { REQUIRED_ERROR_MESSAGE } from '../../shared/constants';
 
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
-import { lucideDollarSign } from '@ng-icons/lucide';
+import { lucideDollarSign, lucideInfo } from '@ng-icons/lucide';
 import {
     MAX_NUMBER_VALUE,
     AMOUNT_REGEX,
@@ -24,6 +17,15 @@ import {
 } from '@centsibly/utils/constants';
 import { Currency } from 'utils/schemas/schemas';
 import { BudgetService } from '../services/budget/budget.service';
+import {
+    BrnPopoverComponent,
+    BrnPopoverContentDirective,
+    BrnPopoverTriggerDirective,
+} from '@spartan-ng/ui-popover-brain';
+import {
+    HlmPopoverCloseDirective,
+    HlmPopoverContentDirective,
+} from '@spartan-ng/ui-popover-helm';
 
 @Component({
     selector: 'app-setup-income',
@@ -36,9 +38,14 @@ import { BudgetService } from '../services/budget/budget.service';
         BrnSelectImports,
         HlmSelectImports,
         HlmButtonDirective,
+        BrnPopoverComponent,
+        BrnPopoverContentDirective,
+        BrnPopoverTriggerDirective,
+        HlmPopoverCloseDirective,
+        HlmPopoverContentDirective,
         HlmIconComponent,
     ],
-    providers: [provideIcons({ lucideDollarSign })],
+    providers: [provideIcons({ lucideDollarSign, lucideInfo })],
     templateUrl: './setup-income.component.html',
     styleUrl: './setup-income.component.scss',
 })

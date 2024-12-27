@@ -7,7 +7,6 @@ export const ExpenseSchema = z.object({
 });
 export const CurrencySchema = z.enum([
     'CAD',
-    'CNY',
     'EUR',
     'GBP',
     'INR',

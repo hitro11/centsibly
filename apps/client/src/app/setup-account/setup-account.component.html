@@ -1,27 +1,45 @@
-<div class="m-auto mt-16 md:w-[60%] lg:w-[40%]">
-    @if (currentSection === 0) {
-        <div class="">
-            <h2 class="${hlmH2} mt-6 text-center text-4xl">
-                Welcome to Centsibly!
-            </h2>
-            <p class="mt-12 text-center text-xl">
-                Let's set up your budget in a few easy steps
-            </p>
-        </div>
+<div class="m-auto flex min-h-[calc(100dvh-81px-48px)] border-0">
+    <div class="m-auto lg:w-[40%]">
+        @if (currentSection === 0) {
+            <section
+                class="flex w-full max-w-[100vw] flex-col justify-center px-4 py-8"
+            >
+                <div>
+                    <h2 class="${hlmH2} text-center text-4xl">
+                        Welcome to Centsibly!
+                    </h2>
+                    <p class="mt-20 text-center text-lg lg:text-xl">
+                        Let's set up your budget in a few easy steps
+                    </p>
+                    <p class="text-white dark:text-[#1c1b22]">
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                    </p>
+                    <div class="mt-16 flex justify-center">
+                        <button (click)="updateSection('next')" hlmBtn>
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </section>
+        }
 
-        <div class="mt-16 flex justify-center">
-            <button (click)="updateSection('next')" hlmBtn>Next</button>
-        </div>
-    }
-
-    @if (currentSection === 1) {
-        <app-setup-income
-            (updateSection)="updateSection($event)"
-        ></app-setup-income>
-    }
-    @if (currentSection === 2) {
-        <app-setup-expenses
-            (updateSection)="updateSection($event)"
-        ></app-setup-expenses>
-    }
+        @if (currentSection === 1) {
+            <section
+                class="flex w-full max-w-[100vw] flex-col justify-center px-4 py-8"
+            >
+                <app-setup-income
+                    (updateSection)="updateSection($event)"
+                ></app-setup-income>
+            </section>
+        }
+        @if (currentSection === 2) {
+            <section
+                class="flex w-full max-w-[100vw] flex-col justify-center px-4 py-8"
+            >
+                <app-setup-expenses
+                    (updateSection)="updateSection($event)"
+                ></app-setup-expenses>
+            </section>
+        }
+    </div>
 </div>

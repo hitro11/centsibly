@@ -12,10 +12,10 @@ export declare const ExpenseSchema: z.ZodObject<{
     amount: number;
     actual?: number | undefined;
 }>;
-export declare const CurrencySchema: z.ZodEnum<["CAD", "CNY", "EUR", "GBP", "INR", "JPY", "USD"]>;
+export declare const CurrencySchema: z.ZodEnum<["CAD", "EUR", "GBP", "INR", "JPY", "USD"]>;
 export declare const BudgetSchema: z.ZodObject<{
     email: z.ZodString;
-    currency: z.ZodEnum<["CAD", "CNY", "EUR", "GBP", "INR", "JPY", "USD"]>;
+    currency: z.ZodEnum<["CAD", "EUR", "GBP", "INR", "JPY", "USD"]>;
     income: z.ZodNumber;
     expenses: z.ZodArray<z.ZodObject<{
         name: z.ZodString;
@@ -33,7 +33,7 @@ export declare const BudgetSchema: z.ZodObject<{
     month: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     email: string;
-    currency: "USD" | "EUR" | "JPY" | "GBP" | "CAD" | "CNY" | "INR";
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;
@@ -43,7 +43,7 @@ export declare const BudgetSchema: z.ZodObject<{
     month: string;
 }, {
     email: string;
-    currency: "USD" | "EUR" | "JPY" | "GBP" | "CAD" | "CNY" | "INR";
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;

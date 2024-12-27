@@ -18,10 +18,9 @@ import {
     REQUIRED_ERROR_MESSAGE,
 } from '../../shared/constants';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { UserService } from '../services/user.service';
 import { HlmIconComponent, provideIcons } from '@spartan-ng/ui-icon-helm';
 import { lucideDollarSign } from '@ng-icons/lucide';
-import { MAX_NUMBER_VALUE } from 'utils/constants';
+import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
 import { Currency } from 'utils/schemas/schemas';
 import { BudgetService } from '../services/budget/budget.service';
 

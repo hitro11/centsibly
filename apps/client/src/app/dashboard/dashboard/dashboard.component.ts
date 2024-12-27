@@ -7,10 +7,34 @@ import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
 import { lucidePlus, lucidePlusCircle } from '@ng-icons/lucide';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import {
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogDescriptionDirective,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+} from '@spartan-ng/ui-dialog-helm';
+import {
+    BrnDialogContentDirective,
+    BrnDialogTriggerDirective,
+} from '@spartan-ng/ui-dialog-brain';
+
+import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
+import { Budget, Expense } from 'utils/schemas/schemas';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [HlmButtonDirective, HlmIconComponent],
+    imports: [
+        HlmButtonDirective,
+        HlmIconComponent,
+        AddTransactionComponent,
+        HlmDialogComponent,
+        HlmDialogContentComponent,
+        HlmDialogHeaderComponent,
+        BrnDialogContentDirective,
+        BrnDialogTriggerDirective,
+    ],
     providers: [provideIcons({ lucidePlus, lucidePlusCircle })],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
@@ -20,6 +44,7 @@ export class DashboardComponent implements OnInit {
     themeService = inject(ThemeService);
     theme = this.themeService.getTheme();
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
+    expenses: Expense[] = [];
 
     constructor() {
         effect(() => {
@@ -41,8 +66,7 @@ export class DashboardComponent implements OnInit {
             // const budget = await this.budgetService.getLatestBudget();
             // console.log(budget);
 
-            const budget = {
-                _id: '676a12c1b6ec0f6154dfd221',
+            const budget: Budget = {
                 email: 'hitrosmurf@gmail.com',
                 month: '2024-12',
                 currency: 'CAD',
@@ -66,11 +90,11 @@ export class DashboardComponent implements OnInit {
             }
 
             const income = budget.income;
-            const expenses = budget.expenses;
+            this.expenses = budget.expenses;
 
             const surplus =
                 income -
-                expenses.reduce((total, current) => {
+                this.expenses.reduce((total, current) => {
                     return total + current.amount;
                 }, 0);
 
@@ -80,7 +104,7 @@ export class DashboardComponent implements OnInit {
                     type: 'doughnut',
                     data: {
                         labels: [
-                            ...expenses.map(
+                            ...this.expenses.map(
                                 (expense) =>
                                     `${toTitleCase(expense.name)}: $${expense.amount}`
                             ),
@@ -89,7 +113,7 @@ export class DashboardComponent implements OnInit {
                         datasets: [
                             {
                                 data: [
-                                    ...expenses.map(
+                                    ...this.expenses.map(
                                         (expense) => expense.amount
                                     ),
                                     surplus,

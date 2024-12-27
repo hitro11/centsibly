@@ -1,6 +1,6 @@
 import { firstValueFrom } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
-import { Budget, BudgetSchema } from '@centsibly/utils/schemas';
+import { Budget, BudgetSchema, Expense } from '@centsibly/utils/schemas';
 import { getCurrentMonth } from '@centsibly/utils/utils';
 import { DeepPartial } from '../../../shared/types';
 import { HttpClient } from '@angular/common/http';
@@ -30,16 +30,26 @@ export class BudgetService {
     }
 
     async addBudget(body: unknown): Promise<unknown> {
-        return firstValueFrom(
-            this.httpClient.post(`${environment.API_URL}/budget`, body)
-        );
+        try {
+            return firstValueFrom(
+                this.httpClient.post(`${environment.API_URL}/budget`, body)
+            );
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 
-    async getLatestBudget(): Promise<Budget | null> {
-        return firstValueFrom(
-            this.httpClient.get<Budget | null>(
-                `${environment.API_URL}/budgets?latest=true`
-            )
-        );
+    async getCurrentBudget(): Promise<Budget | null> {
+        try {
+            return firstValueFrom(
+                this.httpClient.get<Budget | null>(
+                    `${environment.API_URL}/budgets?latest=true`
+                )
+            );
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 }

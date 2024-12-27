@@ -24,7 +24,8 @@ import UserRoles from 'supertokens-node/recipe/userroles';
 import { connectToDBclient, pingDB } from './config/db.js';
 import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
-import path from 'path';
+import cron from 'node-cron';
+import ky from 'ky';
 
 supertokens.init({
     framework: 'express',
@@ -163,7 +164,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(middleware() as RequestHandler);
-app.use(morgan('tiny')); // request logging
+app.use(morgan('common')); // request logging
 
 // Set the application to trust the reverse proxy
 // app.set("trust proxy", true);
@@ -173,8 +174,13 @@ app.use(morgan('tiny')); // request logging
 
 // routes
 app.get('/health', async (req: Request, res: Response) => {
-    const result = await pingDB();
-    res.status(200).send({ result });
+     const result = 'OK';
+     res.status(200).send({ result }); 
+});
+
+// access backend route periodically to prevent idle spindown
+cron.schedule('*/11 * * * *', async () => {
+    await ky.get(`${process.env.HOST}/health`);
 });
 
 app.use('/api', router);

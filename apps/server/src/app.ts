@@ -174,14 +174,12 @@ app.use(morgan('common')); // request logging
 
 // routes
 app.get('/health', async (req: Request, res: Response) => {
-    // const result = await pingDB();
-    const result = 'OK';
-    res.status(200).send({ result });
+     const result = 'OK';
+     res.status(200).send({ result }); 
 });
 
 // access backend route periodically to prevent idle spindown
 cron.schedule('*/11 * * * *', async () => {
-    logger.debug('health check to prevent spindown');
     await ky.get(`${process.env.HOST}/health`);
 });
 

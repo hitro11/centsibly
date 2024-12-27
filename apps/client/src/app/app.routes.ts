@@ -6,8 +6,7 @@ import { GoogleCallbackComponent } from './auth/callbacks/google-callback.compon
 import { GithubCallbackComponent } from './auth/callbacks/github-callback.component';
 import { SetupAccountComponent } from './setup-account/setup-account.component';
 import { SignedInGuard } from './routeGuards/signed-in.guard';
-import { DashboardComponent } from './home/dashboard/dashboard.component';
-import { AuthGuard } from './routeGuards/auth.guard';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },

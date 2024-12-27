@@ -3,6 +3,7 @@ import { MAX_NUMBER_VALUE } from '../constants.js';
 export const ExpenseSchema = z.object({
     name: z.string(),
     amount: z.number().int().min(1).max(MAX_NUMBER_VALUE),
+    actual: z.number().int().min(1).max(MAX_NUMBER_VALUE).optional(),
 });
 export const CurrencySchema = z.enum([
     'CAD',
@@ -14,6 +15,7 @@ export const CurrencySchema = z.enum([
     'USD',
 ]);
 export const BudgetSchema = z.object({
+    email: z.string().email(),
     currency: CurrencySchema,
     income: z.number().int().min(1).max(MAX_NUMBER_VALUE),
     expenses: z.array(ExpenseSchema),

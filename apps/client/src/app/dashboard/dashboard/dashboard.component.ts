@@ -1,15 +1,43 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { BudgetService } from '../../setup-account/services/budget/budget.service';
 import { Chart, ChartItem } from 'chart.js/auto';
-import { Budget } from 'utils/schemas/schemas';
-import { toTitleCase } from '../../shared/utils';
+import { getColorsForSummaryChart, toTitleCase } from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';
-import { DeepPartial } from '../../shared/types';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
+import { provideIcons } from '@ng-icons/core';
+import { lucidePlus, lucidePlusCircle } from '@ng-icons/lucide';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import {
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogDescriptionDirective,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+} from '@spartan-ng/ui-dialog-helm';
+import {
+    BrnDialogContentDirective,
+    BrnDialogTriggerDirective,
+} from '@spartan-ng/ui-dialog-brain';
 
+import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
+import { Budget, Expense } from 'utils/schemas/schemas';
+import { dateToReadableText, getCurrentMonthandYear } from 'utils/utils/utils';
+import { CHART_COLOR_SURPLUS } from '../../shared/constants';
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [],
+    imports: [
+        HlmButtonDirective,
+        HlmIconComponent,
+        AddTransactionComponent,
+        HlmDialogComponent,
+        HlmDialogContentComponent,
+        HlmDialogHeaderComponent,
+        BrnDialogContentDirective,
+        BrnDialogTriggerDirective,
+    ],
+    providers: [provideIcons({ lucidePlus, lucidePlusCircle })],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
 })
@@ -18,6 +46,9 @@ export class DashboardComponent implements OnInit {
     themeService = inject(ThemeService);
     theme = this.themeService.getTheme();
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
+    expenses: Expense[] = [];
+    month = getCurrentMonthandYear();
+    monthasReadableText = dateToReadableText(this.month);
 
     constructor() {
         effect(() => {
@@ -36,8 +67,7 @@ export class DashboardComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         try {
-            const budget = await this.budgetService.getLatestBudget();
-            console.log(budget);
+            const budget = await this.budgetService.getCurrentBudget();
 
             if (!budget) {
                 console.log('no budget set. Please set it');
@@ -46,11 +76,11 @@ export class DashboardComponent implements OnInit {
             }
 
             const income = budget.income;
-            const expenses = budget.expenses;
+            this.expenses = budget.expenses;
 
             const surplus =
                 income -
-                expenses.reduce((total, current) => {
+                this.expenses.reduce((total, current) => {
                     return total + current.amount;
                 }, 0);
 
@@ -60,7 +90,7 @@ export class DashboardComponent implements OnInit {
                     type: 'doughnut',
                     data: {
                         labels: [
-                            ...expenses.map(
+                            ...this.expenses.map(
                                 (expense) =>
                                     `${toTitleCase(expense.name)}: $${expense.amount}`
                             ),
@@ -69,17 +99,18 @@ export class DashboardComponent implements OnInit {
                         datasets: [
                             {
                                 data: [
-                                    ...expenses.map(
+                                    ...this.expenses.map(
                                         (expense) => expense.amount
                                     ),
                                     surplus,
                                 ],
                                 backgroundColor: [
-                                    'rgb(255, 99, 132)',
-                                    'rgb(54, 162, 235)',
-                                    'rgb(255, 205, 86)',
-                                    '#398333',
+                                    ...this.expenses.map((expense, i) =>
+                                        getColorsForSummaryChart(i)
+                                    ),
+                                    CHART_COLOR_SURPLUS,
                                 ],
+                                borderColor: '#1c1b22',
                                 hoverOffset: 4,
                             },
                         ],

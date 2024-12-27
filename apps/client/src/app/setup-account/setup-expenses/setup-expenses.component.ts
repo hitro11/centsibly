@@ -22,21 +22,21 @@ import {
     lucidePlusCircle,
     lucideAlertTriangle,
 } from '@ng-icons/lucide';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { UserService } from '../services/user.service';
+import { deepCopy } from '../../shared/utils';
 import {
     AMOUNT_REGEX,
     MAX_NUMBER_VALUE,
     STRING_REGEX,
-} from '../../shared/constants';
-import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { UserService } from '../services/user.service';
-import { deepCopy } from '../../shared/utils';
+} from '@centsibly/utils/constants';
 import {
     HlmCardContentDirective,
     HlmCardDescriptionDirective,
     HlmCardDirective,
 } from '@spartan-ng/ui-card-helm';
 import { ThemeService } from '../../shared/services/theme.service';
-import { Expense } from '../models/AccountDetails';
+import { Expense } from '@centsibly/utils/schemas';
 import {
     HlmAlertDirective,
     HlmAlertDescriptionDirective,

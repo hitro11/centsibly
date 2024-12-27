@@ -2,7 +2,7 @@
     <nav class="p-4">
         <div class="flex flex-row">
             <img
-                [routerLink]="''"
+                [routerLink]="isUserLoggedIn() ? '/dashboard' : ''"
                 class="w-[3.5rem] cursor-pointer"
                 [src]="logoPath"
             />

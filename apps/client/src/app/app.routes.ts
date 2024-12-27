@@ -21,7 +21,7 @@ export const routes: Routes = [
         ],
     },
     {
-        path: 'create-account',
+        path: 'setup-budget',
         component: SetupAccountComponent,
         canActivate: [SignedInGuard],
     },

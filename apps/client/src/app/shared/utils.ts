@@ -24,3 +24,7 @@ export function getColorsForSummaryChart(i: number): string {
         '#' + (((1 << 24) * Math.random()) | 0).toString(16).padStart(6, '0')
     );
 }
+
+export function setLabelColor(theme: string): string {
+    return theme === 'dark' ? '#fff' : '#000';
+}

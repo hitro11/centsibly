@@ -1,0 +1,29 @@
+.custom-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.color-box {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border-radius: 3px;
+}
+
+.legend-label {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.legend-item.hidden {
+    opacity: 0.5;
+}

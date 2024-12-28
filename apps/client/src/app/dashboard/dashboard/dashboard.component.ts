@@ -1,7 +1,11 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { BudgetService } from '../../setup-account/services/budget/budget.service';
 import { Chart, ChartItem } from 'chart.js/auto';
-import { getColorsForSummaryChart, toTitleCase } from '../../shared/utils';
+import {
+    getColorsForSummaryChart,
+    setLabelColor,
+    toTitleCase,
+} from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
@@ -24,6 +28,8 @@ import { AddTransactionComponent } from '../add-transaction/add-transaction.comp
 import { Budget, Expense } from 'utils/schemas/schemas';
 import { dateToReadableText, getCurrentMonthandYear } from 'utils/utils/utils';
 import { CHART_COLOR_SURPLUS } from '../../shared/constants';
+import { ExpenseCategorySummaryComponent } from './expense-category-summary/expense-category-summary.component';
+
 @Component({
     selector: 'app-dashboard',
     standalone: true,
@@ -36,6 +42,7 @@ import { CHART_COLOR_SURPLUS } from '../../shared/constants';
         HlmDialogHeaderComponent,
         BrnDialogContentDirective,
         BrnDialogTriggerDirective,
+        ExpenseCategorySummaryComponent,
     ],
     providers: [provideIcons({ lucidePlus, lucidePlusCircle })],
     templateUrl: './dashboard.component.html',
@@ -59,7 +66,7 @@ export class DashboardComponent implements OnInit {
                 this.summaryChart.options?.plugins?.legend?.labels?.color
             ) {
                 this.summaryChart.options.plugins.legend.labels.color =
-                    this.setLabelColor(currentTheme);
+                    setLabelColor(currentTheme);
                 this.summaryChart.update();
             }
         });
@@ -122,7 +129,8 @@ export class DashboardComponent implements OnInit {
                                 align: 'center',
                                 labels: {
                                     padding: 25,
-                                    color: this.setLabelColor(this.theme()),
+                                    color: setLabelColor(this.theme()),
+                                    usePointStyle: true,
                                 },
                             },
                         },
@@ -139,9 +147,5 @@ export class DashboardComponent implements OnInit {
             this.summaryChart.options?.plugins?.legend?.labels?.color !==
             undefined
         );
-    }
-
-    setLabelColor(theme: string): string {
-        return theme === 'dark' ? '#fff' : '#000';
     }
 }

@@ -13,3 +13,4 @@ export const CHART_COLORS = [
 ];
 
 export const CHART_COLOR_SURPLUS = '#98FF98';
+export const CHART_COLOR_SPENT = '#00ADEF';

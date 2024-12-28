@@ -6,9 +6,9 @@ export const AuthGuard: CanActivateFn = async (route, state) => {
     const router = inject(Router);
 
     if (await Session.doesSessionExist()) {
-        router.navigate(['/dashboard']);
-        return false;
+        return true;
     }
 
-    return true;
+    const redirectTo = route.data['redirectTo'] || '/auth';
+    return router.parseUrl(redirectTo);
 };

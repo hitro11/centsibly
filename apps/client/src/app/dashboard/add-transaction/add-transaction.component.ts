@@ -7,10 +7,18 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+    AbstractControl,
+    FormBuilder,
+    ReactiveFormsModule,
+    ValidationErrors,
+    ValidatorFn,
+    Validators,
+} from '@angular/forms';
 import { AMOUNT_REGEX } from '@centsibly/utils/constants';
 import { MAX_NUMBER_VALUE } from '@centsibly/utils/constants';
-
+import { zodValidator } from '../../shared/validators';
+import { TransactionSchema } from '@centsibly/utils/schemas';
 @Component({
     selector: 'app-add-transaction',
     standalone: true,
@@ -31,16 +39,20 @@ export class AddTransactionComponent {
     fb = inject(FormBuilder);
 
     form = this.fb.group({
-        type: ['expense', Validators.required],
-        category: [null, Validators.required],
-        amount: [
+        type: [
+            { value: 'expense', disabled: true },
+            [Validators.required, zodValidator(TransactionSchema.shape.type)],
+        ],
+        category: [
             null,
             [
                 Validators.required,
-                Validators.max(MAX_NUMBER_VALUE),
-                Validators.min(1),
-                Validators.pattern(AMOUNT_REGEX),
+                zodValidator(TransactionSchema.shape.category),
             ],
+        ],
+        amount: [
+            null,
+            [Validators.required, zodValidator(TransactionSchema.shape.amount)],
         ],
     });
 
@@ -48,7 +60,17 @@ export class AddTransactionComponent {
         return toTitleCase(text);
     }
 
-    onSubmit() {
-        console.log('valid: ' + this.form.valid);
+    onSubmit() {}
+
+    expenseAmountValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const value = control.value;
+            return value
+                ? null
+                : {
+                      amountTooHigh:
+                          'Expense amount cannot be greater than the total allocation for the expense type',
+                  };
+        };
     }
 }

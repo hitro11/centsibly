@@ -1,4 +1,5 @@
 export declare const MAX_NUMBER_VALUE = 999999999999;
+export declare const MIN_NUMBER_VALUE = 1;
 export declare const CURRENCIES: readonly [{
     readonly label: "CAD";
     readonly value: "CAD";

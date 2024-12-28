@@ -1,36 +1,36 @@
-<div class="px-4 py-8">
-    <h1 class="text-2xl">New Transaction</h1>
+<div class="text-left">
+    <h2 class="mt-4 text-2xl">New Transaction</h2>
 
     <form class="mt-12" [formGroup]="form">
-        <hlm-form-field class="mt-4 flex items-center gap-4">
-            <label for="type" class="mr-4 mt-2 w-24 text-left" hlmLabel
-                >Type</label
-            >
-            <brn-select id="type" class="w-full flex-1" formControlName="type">
-                <hlm-select-trigger class="w-full flex-1">
+        <hlm-form-field class="mt-8">
+            <div class="mb-2">
+                <label for="type" class="" hlmLabel>Type</label>
+            </div>
+            <brn-select id="type" class="w-full" formControlName="type">
+                <hlm-select-trigger class="w-full">
                     <hlm-select-value />
                 </hlm-select-trigger>
-                <hlm-select-content class="w-full flex-1">
+                <hlm-select-content class="w-full">
                     <hlm-option value="expense">Expense</hlm-option>
                     <hlm-option value="income">Income</hlm-option>
                 </hlm-select-content>
             </brn-select>
         </hlm-form-field>
 
-        <hlm-form-field class="mt-8 flex items-center gap-4">
-            <label for="category" class="mr-4 mt-2 w-24 text-left" hlmLabel
-                >Category</label
-            >
+        <hlm-form-field class="mt-8">
+            <div class="mb-2">
+                <label for="category" class="" hlmLabel>Category</label>
+            </div>
             <brn-select
                 formControlName="category"
                 id="category"
                 placeholder=""
-                class="w-full flex-1"
+                class="w-full"
             >
-                <hlm-select-trigger class="w-full flex-1">
+                <hlm-select-trigger class="w-full">
                     <hlm-select-value />
                 </hlm-select-trigger>
-                <hlm-select-content class="w-full flex-1">
+                <hlm-select-content class="w-full">
                     @for (expense of expenses(); track expense.name) {
                         <hlm-option [value]="expense.name">{{
                             toTitleCase(expense.name)
@@ -38,23 +38,47 @@
                     }
                 </hlm-select-content>
             </brn-select>
+
+            <div class="w-full">
+                @let category = this.form.controls['category'];
+                @if (category.errors?.['zodError'] && category.touched) {
+                    <hlm-error>{{
+                        this.form.get('type')?.errors?.['zodError']
+                    }}</hlm-error>
+                }
+            </div>
         </hlm-form-field>
 
-        <hlm-form-field class="mt-8 flex items-center gap-4">
-            <label for="amount" class="mr-4 mt-2 w-24 text-left" hlmLabel
-                >Amount</label
-            >
+        <hlm-form-field class="mt-8">
+            <div class="mb-2">
+                <label for="amount" class="w-full" hlmLabel>Amount</label>
+            </div>
             <input
-                class="flex-1"
                 id="amount"
                 formControlName="amount"
-                class="lg:w-1/4"
+                class=""
                 hlmInput
                 type="number"
                 step="0.01"
             />
+
+            <div class="w-full">
+                @let amount = this.form.controls['amount'];
+                @if (amount?.errors?.['zodError'] && amount.touched) {
+                    <hlm-error>{{
+                        this.form.get('amount')?.errors?.['zodError']
+                    }}</hlm-error>
+                }
+            </div>
         </hlm-form-field>
 
-        <button (click)="onSubmit()" class="mt-14" hlmBtn>Submit</button>
+        <button
+            (click)="onSubmit()"
+            [disabled]="!form.valid"
+            class="mt-14"
+            hlmBtn
+        >
+            Submit
+        </button>
     </form>
 </div>

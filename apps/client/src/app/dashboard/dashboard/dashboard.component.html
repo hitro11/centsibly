@@ -1,51 +1,65 @@
 <div class="mt-8 flex min-h-[calc(100dvh-81px-48px)] flex-col">
-    <h1 class="text-center text-4xl lg:text-5xl">{{ monthasReadableText }}</h1>
+    @if (!budgetExists()) {
+        <div hlmAlert>
+            <hlm-icon hlmAlertIcon name="lucideAlertTriangle" class="mt-1.5" />
+            <h4 class="mb-4 text-xl">Budget Not Found</h4>
+            <span hlmAlertDesc class="text-md">
+                Please create one
+                <a class="text-blue-500" routerLink="/setup-budget">here</a>.
+            </span>
+        </div>
+    } @else {
+        <h1 class="text-center text-4xl lg:text-5xl">
+            {{ monthasReadableText }}
+        </h1>
 
-    <div class="mb-12 mt-16 flex-1 lg:mt-24">
-        <div>
-            <h1 class="text-center text-3xl lg:text-4xl">Summary</h1>
-            <div class="">
-                <canvas
-                    class="!m-auto !mt-6 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
-                    id="budgetSummary"
-                ></canvas>
+        <div class="mb-12 mt-16 flex-1 lg:mt-24">
+            <div>
+                <h1 class="text-center text-3xl lg:text-4xl">Summary</h1>
+                <div class="">
+                    <canvas
+                        #budgetSummary
+                        class="!m-auto !mt-6 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
+                        id="budgetSummary"
+                    ></canvas>
+                </div>
+            </div>
+
+            <div class="mt-24 lg:mt-24">
+                <h1 class="ml-4 text-center text-3xl lg:text-4xl">Expenses</h1>
+            </div>
+
+            <div class="mt-8 flex flex-row flex-wrap justify-center lg:mt-4">
+                @for (expense of expenses; track $index) {
+                    <div class="mt-8 w-full md:w-[50%] lg:w-[25%]">
+                        <app-expense-category-summary
+                            [expense]="expense"
+                        ></app-expense-category-summary>
+                    </div>
+                }
             </div>
         </div>
 
-        <div class="mt-24 lg:mt-24">
-            <h1 class="ml-4 text-center text-3xl lg:text-4xl">Expenses</h1>
-        </div>
+        <hlm-dialog>
+            <div class="mb-4 mr-2 flex flex-row justify-end">
+                <button
+                    class="scale-[150%] border-black dark:border-white"
+                    hlmBtn
+                    brnDialogTrigger
+                    size="icon"
+                    variant="outline"
+                >
+                    <hlm-icon size="xl" name="lucidePlus" />
+                </button>
+            </div>
 
-        <div class="mt-8 flex flex-row flex-wrap justify-center lg:mt-4">
-            @for (expense of expenses; track $index) {
-                <div class="mt-8 w-full md:w-[50%] lg:w-[25%]">
-                    <app-expense-category-summary
-                        [expense]="expense"
-                    ></app-expense-category-summary>
-                </div>
-            }
-        </div>
-    </div>
-
-    <hlm-dialog>
-        <div class="mb-4 mr-2 flex flex-row justify-end">
-            <button
-                class="scale-[150%] border-black dark:border-white"
-                hlmBtn
-                brnDialogTrigger
-                size="icon"
-                variant="outline"
-            >
-                <hlm-icon size="xl" name="lucidePlus" />
-            </button>
-        </div>
-
-        <hlm-dialog-content *brnDialogContent="let ctx">
-            <hlm-dialog-header>
-                <app-add-transaction
-                    [expenses]="expenses"
-                ></app-add-transaction>
-            </hlm-dialog-header>
-        </hlm-dialog-content>
-    </hlm-dialog>
+            <hlm-dialog-content *brnDialogContent="let ctx">
+                <hlm-dialog-header>
+                    <app-add-transaction
+                        [expenses]="expenses"
+                    ></app-add-transaction>
+                </hlm-dialog-header>
+            </hlm-dialog-content>
+        </hlm-dialog>
+    }
 </div>

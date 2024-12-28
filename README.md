@@ -4,9 +4,9 @@ Make every cent count with Centsibly - a modern, easy-to-use budgeting app! Whet
 <br>
 
 ## Features
-- Establish a monthly budget and set goals for each expense category.
+- Establish a monthly budget and set goals for each expense category
 - Track monthly expenses to monitor spending within each budget category
-- Generate monthly income and expense reports to see how your money is being used.
+- Generate monthly income and expense reports to see how your money is being used
 
 <br>
 

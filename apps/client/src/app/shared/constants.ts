@@ -4,11 +4,11 @@ export const REQUIRED_ERROR_MESSAGE = 'This field is required';
 export const CHART_COLORS = [
     '#00ADEF',
     '#B0E0E6',
-    '#4682B4',
+    '#b7a9eb',
     '#7FFFD4',
     '#5F9EA0',
-    '#b7a9eb',
     '#D8BFD8',
+    '#4682B4',
     '#48BF91',
 ];
 

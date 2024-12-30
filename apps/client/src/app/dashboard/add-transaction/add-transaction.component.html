@@ -1,5 +1,12 @@
 <div class="text-left">
-    <h2 class="mt-4 text-2xl">New Transaction</h2>
+    @if (transactionSubmittedSuccessfully) {
+        <div hlmAlert class="mt-8 border-green-800">
+            <!-- <hlm-icon hlmAlertIcon name=" " /> -->
+            <h4 hlmAlertTitle>Transaction Submitted!</h4>
+        </div>
+    }
+
+    <h2 class="mt-8 text-center text-2xl">New Transaction</h2>
 
     <form class="mt-12" [formGroup]="form">
         <hlm-form-field class="mt-8">
@@ -26,6 +33,7 @@
                 id="category"
                 placeholder=""
                 class="w-full"
+                (focusout)="onFormFieldBlur('category')"
             >
                 <hlm-select-trigger class="w-full">
                     <hlm-select-value />
@@ -60,6 +68,7 @@
                 hlmInput
                 type="number"
                 step="0.01"
+                (focusout)="onFormFieldBlur('amount')"
             />
 
             <div class="w-full">
@@ -74,7 +83,7 @@
 
         <button
             (click)="onSubmit()"
-            [disabled]="!form.valid"
+            [disabled]="form.invalid || !form.dirty"
             class="mt-14"
             hlmBtn
         >

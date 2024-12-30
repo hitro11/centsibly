@@ -2,7 +2,6 @@ import { logger } from '../../config/logger.js';
 import { Budget } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
-import { WithId } from 'mongodb';
 
 export class BudgetService {
     static async addBudget(email: string, budget: Budget) {

@@ -1,10 +1,10 @@
+import { httpResponse } from '@centsibly/utils/schemas';
 import Session from 'supertokens-web-js/recipe/session';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
-import { StandardHTTPresponse } from '../../shared/models/Http';
 import EmailVerification from 'supertokens-web-js/recipe/emailverification';
 
 @Injectable({
@@ -59,7 +59,7 @@ export class AuthenticationService {
     }
 
     setUsername(username: string) {
-        return this.http.post<StandardHTTPresponse>(
+        return this.http.post<httpResponse>(
             `${environment.API_URL}/user/setUsername`,
             { username }
         );

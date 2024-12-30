@@ -48,3 +48,9 @@ export type Budget = z.infer<typeof BudgetSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;
+
+// non schema types
+export type httpResponse = {
+    code: string;
+    message: unknown;
+};

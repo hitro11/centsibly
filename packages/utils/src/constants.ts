@@ -1,6 +1,7 @@
 import { CurrencySchema } from './schemas/schemas';
 
 export const MAX_NUMBER_VALUE = 999999999999;
+export const MIN_NUMBER_VALUE = 1;
 
 export const CURRENCIES = [
     { label: 'CAD', value: 'CAD' },

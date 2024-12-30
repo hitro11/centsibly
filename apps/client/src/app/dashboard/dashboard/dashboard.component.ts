@@ -59,6 +59,7 @@ import { RouterModule } from '@angular/router';
         HlmDialogComponent,
         HlmDialogContentComponent,
         HlmDialogHeaderComponent,
+        HlmDialogFooterComponent,
         BrnDialogContentDirective,
         BrnDialogTriggerDirective,
         ExpenseCategorySummaryComponent,

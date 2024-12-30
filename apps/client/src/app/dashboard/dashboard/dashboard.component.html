@@ -42,26 +42,32 @@
             </div>
         </div>
 
-        <hlm-dialog>
-            <div class="mb-4 mr-2 flex flex-row justify-end">
-                <button
-                    class="scale-[150%] border-black dark:border-white"
-                    hlmBtn
-                    brnDialogTrigger
-                    size="icon"
-                    variant="outline"
-                >
-                    <hlm-icon size="xl" name="lucidePlus" />
-                </button>
-            </div>
+        <div class="fixed bottom-6 right-6 z-50">
+            <hlm-dialog>
+                <div class="mb-4 mr-2 flex flex-row justify-end">
+                    <button
+                        class="scale-[125%] shadow-lg dark:bg-gray-800"
+                        hlmBtn
+                        brnDialogTrigger
+                        size="icon"
+                        variant="outline"
+                    >
+                        <hlm-icon size="xl" name="lucidePlus" />
+                    </button>
+                </div>
 
-            <hlm-dialog-content *brnDialogContent="let ctx">
-                <hlm-dialog-header>
-                    <app-add-transaction
-                        [expenses]="expenses"
-                    ></app-add-transaction>
-                </hlm-dialog-header>
-            </hlm-dialog-content>
-        </hlm-dialog>
+                <hlm-dialog-content
+                    *brnDialogContent="let ctx"
+                    class="w-[calc(100vw-2rem)]"
+                >
+                    <hlm-dialog-header>
+                        <app-add-transaction
+                            [expenses]="expenses"
+                        ></app-add-transaction>
+                    </hlm-dialog-header>
+                    <hlm-dialog-footer></hlm-dialog-footer>
+                </hlm-dialog-content>
+            </hlm-dialog>
+        </div>
     }
 </div>

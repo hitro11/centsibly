@@ -1,10 +1,20 @@
 import { z } from 'zod';
-import { MAX_NUMBER_VALUE } from '../constants.js';
+import { MAX_NUMBER_VALUE, MIN_NUMBER_VALUE } from '../constants.js';
+
+// error mesasges
+const MIN_AMOUNT_ERROR_MESSAGE = `Amount must be greater than ${MIN_NUMBER_VALUE}`;
+const MAX_AMOUNT_ERROR_MESSAGE = `Amount must be less than ${MAX_NUMBER_VALUE}`;
+
+// Schemas
+const dollarAmountZod = z
+    .number({ message: 'Invalid input' })
+    .min(MIN_NUMBER_VALUE, MIN_AMOUNT_ERROR_MESSAGE)
+    .max(MAX_NUMBER_VALUE, MAX_AMOUNT_ERROR_MESSAGE);
 
 export const ExpenseSchema = z.object({
     name: z.string(),
-    amount: z.number().int().min(1).max(MAX_NUMBER_VALUE),
-    actual: z.number().int().min(1).max(MAX_NUMBER_VALUE).optional(),
+    amount: dollarAmountZod,
+    actual: dollarAmountZod.optional(),
 });
 
 export const CurrencySchema = z.enum([
@@ -17,9 +27,9 @@ export const CurrencySchema = z.enum([
 ]);
 
 export const BudgetSchema = z.object({
-    email: z.string().email(),
+    email: z.string().email('Invalid email'),
     currency: CurrencySchema,
-    income: z.number().int().min(1).max(MAX_NUMBER_VALUE),
+    income: dollarAmountZod,
     expenses: z.array(ExpenseSchema),
     month: z
         .string()
@@ -27,6 +37,20 @@ export const BudgetSchema = z.object({
         .regex(/^\d{4}-(0[1-9]|1[0-2])$/),
 });
 
+export const TransactionSchema = z.object({
+    type: z.enum(['expense', 'income'], { message: 'Please sleect a type' }),
+    category: z.string({ message: 'Please sleect a category' }).min(1),
+    amount: dollarAmountZod,
+});
+
+// Types
 export type Budget = z.infer<typeof BudgetSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;
+export type Transaction = z.infer<typeof TransactionSchema>;
+
+// non schema types
+export type httpResponse = {
+    code: string;
+    message: unknown;
+};

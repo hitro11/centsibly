@@ -1,5 +1,3 @@
-import { CurrencySchema } from './schemas/schemas';
-
 export const MAX_NUMBER_VALUE = 999999999999;
 export const MIN_NUMBER_VALUE = 1;
 

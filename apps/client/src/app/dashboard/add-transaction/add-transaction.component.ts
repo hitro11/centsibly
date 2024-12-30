@@ -19,6 +19,8 @@ import { TransactionSchema } from '@centsibly/utils/schemas';
 import { provideIcons } from '@ng-icons/core';
 import { lucideCheckCircle } from '@ng-icons/lucide';
 import { timer } from 'rxjs';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+
 @Component({
     selector: 'app-add-transaction',
     standalone: true,
@@ -32,7 +34,7 @@ import { timer } from 'rxjs';
         ReactiveFormsModule,
         CommonModule,
         HlmAlertDirective,
-        HlmAlertTitleDirective,
+        HlmSpinnerComponent,
     ],
     templateUrl: './add-transaction.component.html',
     styleUrl: './add-transaction.component.scss',
@@ -41,7 +43,9 @@ export class AddTransactionComponent implements OnInit {
     expenses = input.required<Expense[]>();
     fb = inject(FormBuilder);
     transactionService = inject(TransactionService);
-    transactionSubmittedSuccessfully = true;
+    submissionStatus: 'none' | 'loading' | 'submitted' | 'submittedWithError' =
+        'none';
+    submissionError = '';
 
     ngOnInit(): void {}
 
@@ -71,8 +75,9 @@ export class AddTransactionComponent implements OnInit {
                 console.error('input not valid: ', result.error);
                 return;
             } else if (result.success) {
+                this.submissionStatus = 'loading';
                 await this.transactionService.postTransactions(result.data);
-                this.transactionSubmittedSuccessfully = true;
+                this.submissionStatus = 'submitted';
 
                 this.form.reset(
                     {
@@ -89,11 +94,13 @@ export class AddTransactionComponent implements OnInit {
                 this.form.controls['category'].setErrors(null);
                 this.form.controls['amount'].setErrors(null);
 
-                timer(1500).subscribe(() => {
-                    this.transactionSubmittedSuccessfully = false;
+                timer(2000).subscribe(() => {
+                    this.submissionStatus = 'none';
                 });
             }
         } catch (error) {
+            this.submissionStatus = 'submittedWithError';
+            this.submissionError = JSON.stringify(error);
             console.error(error);
         }
     }

@@ -56,7 +56,10 @@
                     </button>
                 </div>
 
-                <hlm-dialog-content *brnDialogContent="let ctx" class="w-full">
+                <hlm-dialog-content
+                    *brnDialogContent="let ctx"
+                    class="w-[calc(100vw-2rem)]"
+                >
                     <hlm-dialog-header>
                         <app-add-transaction
                             [expenses]="expenses"

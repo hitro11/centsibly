@@ -1,11 +1,4 @@
 <div class="text-left">
-    @if (transactionSubmittedSuccessfully) {
-        <div hlmAlert class="mt-8 border-green-800">
-            <!-- <hlm-icon hlmAlertIcon name=" " /> -->
-            <h4 hlmAlertTitle>Transaction Submitted!</h4>
-        </div>
-    }
-
     <h2 class="mt-8 text-center text-2xl">New Transaction</h2>
 
     <form class="mt-12" [formGroup]="form">
@@ -64,7 +57,7 @@
             <input
                 id="amount"
                 formControlName="amount"
-                class=""
+                class="w-full"
                 hlmInput
                 type="number"
                 step="0.01"
@@ -81,13 +74,31 @@
             </div>
         </hlm-form-field>
 
-        <button
-            (click)="onSubmit()"
-            [disabled]="form.invalid || !form.dirty"
-            class="mt-14"
-            hlmBtn
-        >
-            Submit
-        </button>
+        <div class="flex flex-row justify-center">
+            <button
+                (click)="onSubmit()"
+                [disabled]="form.invalid || !form.dirty"
+                class="mt-14 w-full"
+                hlmBtn
+            >
+                @if (submissionStatus === 'loading') {
+                    <hlm-spinner />
+                } @else {
+                    Submit
+                }
+            </button>
+        </div>
     </form>
+
+    @if (submissionStatus === 'submitted') {
+        <div hlmAlert class="mt-6 border-green-600 bg-green-600 p-1">
+            <p hlmAlertDesc class="">Transaction Submitted!</p>
+        </div>
+    }
+
+    @if (submissionStatus === 'submittedWithError') {
+        <div hlmAlert class="mt-6 border-red-600 p-1 px-2">
+            <p hlmAlertDesc class="">Error: {{ submissionError }}</p>
+        </div>
+    }
 </div>

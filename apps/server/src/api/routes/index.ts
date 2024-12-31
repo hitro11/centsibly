@@ -11,7 +11,7 @@ indexRouter.use('/auth', authRoutes);
 indexRouter.use('/user', verifySession() as RequestHandler, userRoutes);
 indexRouter.use('/budgets', verifySession() as RequestHandler, budgetRoutes);
 indexRouter.use(
-    '/transaction',
+    '/transactions',
     verifySession() as RequestHandler,
     transactionRoutes
 );

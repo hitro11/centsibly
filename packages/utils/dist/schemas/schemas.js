@@ -36,3 +36,4 @@ export const TransactionSchema = z.object({
     category: z.string({ message: 'Please sleect a category' }).min(1),
     amount: dollarAmountZod,
 });
+export const TransactionArraySchema = z.array(TransactionSchema);

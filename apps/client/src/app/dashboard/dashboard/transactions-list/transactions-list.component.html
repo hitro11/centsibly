@@ -1,0 +1,21 @@
+<hlm-table class="w-full min-w-[100%]">
+    <hlm-trow>
+        <hlm-th class="flex-1 justify-center">Category</hlm-th>
+        <hlm-th class="flex-1 justify-center">Amount</hlm-th>
+        <hlm-th class="flex-1 justify-center">Type</hlm-th>
+    </hlm-trow>
+
+    @for (transaction of transactions; track $index) {
+        <hlm-trow>
+            <hlm-td class="flex-1 justify-center">{{
+                transaction.category
+            }}</hlm-td>
+            <hlm-td class="flex-1 justify-center"
+                >${{ transaction.amount }}</hlm-td
+            >
+            <hlm-td class="flex-1 justify-center">{{
+                transaction.type
+            }}</hlm-td>
+        </hlm-trow>
+    }
+</hlm-table>

@@ -1,4 +1,4 @@
-import { httpResponse } from '@centsibly/utils/schemas';
+import { HTTPresponse } from '@centsibly/utils/schemas';
 import Session from 'supertokens-web-js/recipe/session';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -59,7 +59,7 @@ export class AuthenticationService {
     }
 
     setUsername(username: string) {
-        return this.http.post<httpResponse>(
+        return this.http.post<HTTPresponse>(
             `${environment.API_URL}/user/setUsername`,
             { username }
         );

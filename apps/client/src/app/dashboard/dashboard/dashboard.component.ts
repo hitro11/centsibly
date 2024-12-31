@@ -26,10 +26,8 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import {
     HlmDialogComponent,
     HlmDialogContentComponent,
-    HlmDialogDescriptionDirective,
     HlmDialogFooterComponent,
     HlmDialogHeaderComponent,
-    HlmDialogTitleDirective,
 } from '@spartan-ng/ui-dialog-helm';
 import {
     BrnDialogContentDirective,
@@ -37,7 +35,7 @@ import {
 } from '@spartan-ng/ui-dialog-brain';
 
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
-import { Budget, Expense } from 'utils/schemas/schemas';
+import { Expense, Transaction } from 'utils/schemas/schemas';
 import { dateToReadableText, getCurrentMonthandYear } from 'utils/utils/utils';
 import { CHART_COLOR_SURPLUS } from '../../shared/constants';
 import { ExpenseCategorySummaryComponent } from './expense-category-summary/expense-category-summary.component';
@@ -45,9 +43,12 @@ import {
     HlmAlertDescriptionDirective,
     HlmAlertDirective,
     HlmAlertIconDirective,
-    HlmAlertTitleDirective,
 } from '@spartan-ng/ui-alert-helm';
 import { RouterModule } from '@angular/router';
+import { TransactionsListComponent } from './transactions-list/transactions-list.component';
+import { TransactionService } from '../services/transaction.service';
+import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
+import { BrnSeparatorComponent } from '@spartan-ng/ui-separator-brain';
 
 @Component({
     selector: 'app-dashboard',
@@ -67,6 +68,9 @@ import { RouterModule } from '@angular/router';
         HlmAlertDirective,
         HlmAlertIconDirective,
         RouterModule,
+        TransactionsListComponent,
+        HlmSeparatorDirective,
+        BrnSeparatorComponent,
     ],
     providers: [
         provideIcons({ lucidePlus, lucidePlusCircle, lucideAlertTriangle }),
@@ -79,12 +83,14 @@ export class DashboardComponent implements OnInit {
 
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
+    transactionsService = inject(TransactionService);
     theme = this.themeService.getTheme();
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
     expenses: Expense[] = [];
     month = getCurrentMonthandYear();
     monthasReadableText = dateToReadableText(this.month);
     budgetExists = signal(true);
+    transactions: Transaction[] = [];
 
     constructor() {
         effect(() => {
@@ -103,6 +109,7 @@ export class DashboardComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         try {
+            await this.refreshTransactionsList();
             const budget = await this.budgetService.getCurrentBudget();
             if (!budget) {
                 console.log('no budget set. Please set it');
@@ -170,5 +177,9 @@ export class DashboardComponent implements OnInit {
             this.summaryChart.options?.plugins?.legend?.labels?.color !==
             undefined
         );
+    }
+
+    async refreshTransactionsList() {
+        this.transactions = await this.transactionsService.getTransactions();
     }
 }

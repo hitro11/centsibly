@@ -13,8 +13,47 @@
             {{ monthasReadableText }}
         </h1>
 
-        <div class="mb-12 mt-16 flex-1 lg:mt-24">
-            <div>
+        <div class="flex-1">
+            <div class="mt-20">
+                <h1 class="ml-4 text-center text-3xl lg:mt-24 lg:text-4xl">
+                    Expenses
+                </h1>
+
+                <div
+                    class="mt-4 flex flex-row flex-wrap justify-center gap-4 lg:mt-4"
+                >
+                    @for (expense of expenses; track $index) {
+                        <div class="mt-8 w-full md:w-[50%] lg:w-[25%]">
+                            <app-expense-category-summary
+                                [expense]="expense"
+                            ></app-expense-category-summary>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <brn-separator hlmSeparator />
+            </div>
+
+            <div class="mt-8">
+                <h1 class="ml-4 text-center text-3xl lg:mt-24 lg:text-4xl">
+                    Transactions
+                </h1>
+
+                <div class="mt-4 flex flex-row justify-center">
+                    <app-transactions-list
+                        class="flex-1"
+                        [transactions]="transactions"
+                    ></app-transactions-list>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <brn-separator hlmSeparator />
+            </div>
+
+            <div class="mt-12">
                 <h1 class="text-center text-3xl lg:text-4xl">Summary</h1>
                 <div class="">
                     <canvas
@@ -23,22 +62,6 @@
                         id="budgetSummary"
                     ></canvas>
                 </div>
-            </div>
-
-            <div class="mt-24 lg:mt-24">
-                <h1 class="ml-4 text-center text-3xl lg:text-4xl">Expenses</h1>
-            </div>
-
-            <div
-                class="mt-8 flex flex-row flex-wrap justify-center gap-4 lg:mt-4"
-            >
-                @for (expense of expenses; track $index) {
-                    <div class="mt-8 w-full md:w-[50%] lg:w-[25%]">
-                        <app-expense-category-summary
-                            [expense]="expense"
-                        ></app-expense-category-summary>
-                    </div>
-                }
             </div>
         </div>
 
@@ -63,6 +86,7 @@
                     <hlm-dialog-header>
                         <app-add-transaction
                             [expenses]="expenses"
+                            (transactionPostedEvent)="refreshTransactionsList()"
                         ></app-add-transaction>
                     </hlm-dialog-header>
                     <hlm-dialog-footer></hlm-dialog-footer>

@@ -1,8 +1,9 @@
 import { logger } from '../../config/logger.js';
-import { Transaction } from '@centsibly/utils/schemas';
+import { Transaction, YearMonth } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
 import { getCurrentMonthandYear } from '@centsibly/utils/utils';
+import { FindCursor, WithId, Document } from 'mongodb';
 
 export class TransactionService {
     static async addTransaction(email: string, transaction: Transaction) {
@@ -27,20 +28,35 @@ export class TransactionService {
         }
     }
 
-    // static async getBudget(email: string, month: string) {
-    //     try {
-    //         const budgetsCollection = (await database()).collection(
-    //             COLLECTIONS.BUDGETS
-    //         );
+    /**
+     * @param {string} email
+     * @param {YearMonth} from from date
+     * @param {YearMonth} [to] to date. If not specified, it is the current month
+     * @return {Promise<FindCursor<WithId<Transaction>>>}
+     */
+    static async getTransactions(
+        email: string,
+        from: YearMonth,
+        to?: YearMonth
+    ): Promise<WithId<Transaction>[]> {
+        try {
+            const transactionCollection = (
+                await database()
+            ).collection<Transaction>(COLLECTIONS.TRANSACTIONS);
 
-    //         const budget = await budgetsCollection.findOne({
-    //             email: email.toLowerCase(),
-    //             month,
-    //         });
+            const transactions = await transactionCollection
+                .find({
+                    email: email.toLowerCase(),
+                    month: {
+                        $gte: from,
+                        $lte: to ?? from,
+                    },
+                })
+                ?.toArray();
 
-    //         return budget ?? null;
-    //     } catch (error) {
-    //         throw error;
-    //     }
-    // }
+            return transactions ?? null;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

@@ -1,5 +1,12 @@
 import { TransactionService } from './../services/transaction.service';
-import { Component, inject, input, OnInit } from '@angular/core';
+import {
+    Component,
+    inject,
+    input,
+    OnDestroy,
+    OnInit,
+    output,
+} from '@angular/core';
 import { Expense } from 'utils/schemas/schemas';
 import { BrnSelectImports } from '@spartan-ng/ui-select-brain';
 import { HlmSelectImports } from '@spartan-ng/ui-select-helm';
@@ -39,13 +46,16 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
     templateUrl: './add-transaction.component.html',
     styleUrl: './add-transaction.component.scss',
 })
-export class AddTransactionComponent implements OnInit {
+export class AddTransactionComponent implements OnInit, OnDestroy {
     expenses = input.required<Expense[]>();
+    transactionPostedEvent = output<void>();
+
     fb = inject(FormBuilder);
     transactionService = inject(TransactionService);
     submissionStatus: 'none' | 'loading' | 'submitted' | 'submittedWithError' =
         'none';
     submissionError = '';
+    transactionPosted = false;
 
     ngOnInit(): void {}
 
@@ -78,6 +88,7 @@ export class AddTransactionComponent implements OnInit {
                 this.submissionStatus = 'loading';
                 await this.transactionService.postTransactions(result.data);
                 this.submissionStatus = 'submitted';
+                this.transactionPosted = true;
 
                 this.form.reset(
                     {
@@ -102,6 +113,12 @@ export class AddTransactionComponent implements OnInit {
             this.submissionStatus = 'submittedWithError';
             this.submissionError = JSON.stringify(error);
             console.error(error);
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.transactionPosted) {
+            this.transactionPostedEvent.emit();
         }
     }
 }

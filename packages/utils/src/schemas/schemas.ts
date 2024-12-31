@@ -43,6 +43,8 @@ export const TransactionSchema = z.object({
     amount: dollarAmountZod,
 });
 
+export const TransactionArraySchema = z.array(TransactionSchema);
+
 // Types
 export type Budget = z.infer<typeof BudgetSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
@@ -50,7 +52,12 @@ export type Expense = z.infer<typeof ExpenseSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;
 
 // non schema types
-export type httpResponse = {
-    code: string;
-    message: unknown;
+export type HTTPresponse = {
+    status: 'success' | 'error';
+    data: unknown;
+    error: null | unknown;
+    stack: null | unknown;
 };
+
+export type YearMonth =
+    `${2}${0}${number}${number}-${'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12'}`;

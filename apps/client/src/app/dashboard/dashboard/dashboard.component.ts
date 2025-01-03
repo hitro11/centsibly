@@ -36,7 +36,7 @@ import {
 
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
 import { Expense, Transaction } from 'utils/schemas/schemas';
-import { dateToReadableText, getCurrentMonthandYear } from 'utils/utils/utils';
+import { dateToReadableText, getCurrentYearMonth } from 'utils/utils/utils';
 import { CHART_COLOR_SURPLUS } from '../../shared/constants';
 import { ExpenseCategorySummaryComponent } from './expense-category-summary/expense-category-summary.component';
 import {
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
     theme = this.themeService.getTheme();
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
     expenses: Expense[] = [];
-    month = getCurrentMonthandYear();
+    month = getCurrentYearMonth();
     monthasReadableText = dateToReadableText(this.month);
     budgetExists = signal(true);
     transactions: Transaction[] = [];

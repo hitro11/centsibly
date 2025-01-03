@@ -182,4 +182,10 @@ export class DashboardComponent implements OnInit {
     async refreshTransactionsList() {
         this.transactions = await this.transactionsService.getTransactions();
     }
+
+    async refreshBudget() {
+        this.expenses =
+            ((await this.budgetService.getCurrentBudget()) ?? {}).expenses ??
+            [];
+    }
 }

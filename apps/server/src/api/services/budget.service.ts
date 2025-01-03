@@ -1,5 +1,5 @@
 import { logger } from '../../config/logger.js';
-import { Budget, YearMonth } from '@centsibly/utils/schemas';
+import { Budget, Transaction, YearMonth } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
 import { WithId } from 'mongodb';
@@ -104,5 +104,45 @@ export class BudgetService {
         } catch (error) {
             throw error;
         }
+    }
+
+    static async updateBudgetActualsAfterTransaction(
+        email: string,
+        transactions: Transaction[]
+    ) {
+        try {
+            const budget = (await this.getLatestBudget(email))[0];
+
+            const budgetsCollection = (await database()).collection<Budget>(
+                COLLECTIONS.BUDGETS
+            );
+
+            for (const transaction of transactions) {
+                const i = budget.expenses.findIndex(
+                    (expense) => transaction.category === expense.name
+                );
+
+                const update =
+                    'actual' in budget.expenses[i]
+                        ? {
+                              $inc: {
+                                  [`expenses.${i}.actual`]: transaction.amount,
+                              },
+                          }
+                        : {
+                              $set: {
+                                  [`expenses.${i}.actual`]: transaction.amount,
+                              },
+                          };
+
+                await budgetsCollection.updateOne(
+                    {
+                        email: email.toLowerCase(),
+                        month: getCurrentYearMonth(),
+                    },
+                    update
+                );
+            }
+        } catch (error) {}
     }
 }

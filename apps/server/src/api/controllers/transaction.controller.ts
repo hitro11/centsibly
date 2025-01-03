@@ -4,6 +4,7 @@ import { UserService } from '../services/user-service.js';
 import { TransactionService } from '../services/transaction.service.server.js';
 import { getCurrentYearMonth } from '@centsibly/utils/utils';
 import { YearMonth } from '@centsibly/utils/schemas';
+import { BudgetService } from '../services/budget.service.js';
 
 export class TransactionController {
     static async addTransaction(req: Request) {
@@ -15,7 +16,10 @@ export class TransactionController {
             }
 
             const transaction = req.body;
-            return await TransactionService.addTransaction(email, transaction);
+            await TransactionService.addTransaction(email, transaction);
+            await BudgetService.updateBudgetActualsAfterTransaction(email, [
+                transaction,
+            ]);
         } catch (error) {
             throw error;
         }

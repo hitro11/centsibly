@@ -48,7 +48,8 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 })
 export class AddTransactionComponent implements OnInit, OnDestroy {
     expenses = input.required<Expense[]>();
-    transactionPostedEvent = output<void>();
+    transactionSubmitted = output<void>();
+    dialogClosed = output<void>();
 
     fb = inject(FormBuilder);
     transactionService = inject(TransactionService);
@@ -117,8 +118,10 @@ export class AddTransactionComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.dialogClosed.emit();
+
         if (this.transactionPosted) {
-            this.transactionPostedEvent.emit();
+            this.transactionSubmitted.emit();
         }
     }
 }

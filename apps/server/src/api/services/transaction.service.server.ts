@@ -2,7 +2,7 @@ import { logger } from '../../config/logger.js';
 import { Transaction, YearMonth } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
-import { getCurrentMonthandYear } from '@centsibly/utils/utils';
+import { getCurrentYearMonth } from '@centsibly/utils/utils';
 import { FindCursor, WithId, Document } from 'mongodb';
 
 export class TransactionService {
@@ -15,7 +15,7 @@ export class TransactionService {
 
             const doc = {
                 email,
-                month: getCurrentMonthandYear(),
+                month: getCurrentYearMonth(),
                 amount: transaction.amount,
                 category: transaction.category,
                 type: transaction.type,
@@ -32,7 +32,7 @@ export class TransactionService {
      * @param {string} email
      * @param {YearMonth} from from date
      * @param {YearMonth} [to] to date. If not specified, it is the current month
-     * @return {Promise<FindCursor<WithId<Transaction>>>}
+     * @return {Promise<WithId<Transaction>>}
      */
     static async getTransactions(
         email: string,

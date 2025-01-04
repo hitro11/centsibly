@@ -18,3 +18,4 @@ export declare const CURRENCIES: readonly [{
 }];
 export declare const STRING_REGEX: RegExp;
 export declare const AMOUNT_REGEX: RegExp;
+//# sourceMappingURL=constants.d.ts.map

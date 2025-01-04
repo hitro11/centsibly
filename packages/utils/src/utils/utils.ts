@@ -1,8 +1,10 @@
 import { HTTPresponse, YearMonth } from '../../src/schemas/schemas.js';
 
-export function getCurrentMonthandYear(): YearMonth {
+export function getCurrentYearMonth(): YearMonth {
     const date = new Date();
-    return `${date.getFullYear()}-${date.getMonth() + 1}` as YearMonth;
+    const month = date.getMonth() + 1;
+    const dateMonth = month > 9 ? month : `0${month}`;
+    return `${date.getFullYear()}-${dateMonth}` as YearMonth;
 }
 
 /**

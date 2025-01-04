@@ -86,7 +86,8 @@
                     <hlm-dialog-header>
                         <app-add-transaction
                             [expenses]="expenses"
-                            (transactionPostedEvent)="refreshTransactionsList()"
+                            (transactionSubmitted)="refreshTransactionsList()"
+                            (dialogClosed)="refreshBudget()"
                         ></app-add-transaction>
                     </hlm-dialog-header>
                     <hlm-dialog-footer></hlm-dialog-footer>

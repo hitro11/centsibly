@@ -3,14 +3,10 @@
     "type": "module",
     "version": "0.1.0",
     "scripts": {
-        "build": "tsc",
-        "dev": "tsc --watch"
+        "build": "npx tsc",
+        "dev": "npx tsc --watch"
     },
     "exports": {
-        ".": {
-            "types": "./src/index.ts",
-            "default": "./dist/index.js"
-        },
         "./schemas": {
             "types": "./src/schemas/schemas.ts",
             "default": "./dist/schemas/schemas.js"
@@ -29,6 +25,6 @@
     },
     "devDependencies": {
         "@types/node": "^22.9.0",
-        "typescript": "^5.7.2"
+        "typescript": "~5.5.2"
     }
 }

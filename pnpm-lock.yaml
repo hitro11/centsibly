@@ -292,6 +292,9 @@ importers:
 
   packages/utils:
     dependencies:
+      typescript:
+        specifier: ~5.5.2
+        version: 5.5.4
       zod:
         specifier: ^3.23.8
         version: 3.24.1
@@ -299,9 +302,6 @@ importers:
       '@types/node':
         specifier: ^22.9.0
         version: 22.10.4
-      typescript:
-        specifier: ^5.7.2
-        version: 5.7.2
 
 packages:
 
@@ -7274,7 +7274,7 @@ snapshots:
       watchpack: 2.4.1
       webpack: 5.94.0(esbuild@0.23.0)
       webpack-dev-middleware: 7.4.2(webpack@5.94.0(esbuild@0.23.0))
-      webpack-dev-server: 5.0.4(webpack@5.88.0)
+      webpack-dev-server: 5.0.4(webpack@5.97.1)
       webpack-merge: 6.0.1
       webpack-subresource-integrity: 5.1.0(webpack@5.94.0(esbuild@0.23.0))
     optionalDependencies:
@@ -7304,7 +7304,7 @@ snapshots:
       '@angular-devkit/architect': 0.1802.12(chokidar@3.6.0)
       rxjs: 7.8.1
       webpack: 5.94.0(esbuild@0.23.0)
-      webpack-dev-server: 5.0.4(webpack@5.88.0)
+      webpack-dev-server: 5.0.4(webpack@5.97.1)
     transitivePeerDependencies:
       - chokidar
 
@@ -15202,17 +15202,6 @@ snapshots:
 
   webidl-conversions@7.0.0: {}
 
-  webpack-dev-middleware@7.4.2(webpack@5.88.0):
-    dependencies:
-      colorette: 2.0.20
-      memfs: 4.15.3
-      mime-types: 2.1.35
-      on-finished: 2.4.1
-      range-parser: 1.2.1
-      schema-utils: 4.3.0
-    optionalDependencies:
-      webpack: 5.88.0
-
   webpack-dev-middleware@7.4.2(webpack@5.94.0(esbuild@0.23.0)):
     dependencies:
       colorette: 2.0.20
@@ -15235,7 +15224,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.97.1
 
-  webpack-dev-server@5.0.4(webpack@5.88.0):
+  webpack-dev-server@5.0.4(webpack@5.97.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -15265,10 +15254,10 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.4.2(webpack@5.88.0)
+      webpack-dev-middleware: 7.4.2(webpack@5.97.1)
       ws: 8.18.0
     optionalDependencies:
-      webpack: 5.88.0
+      webpack: 5.97.1
     transitivePeerDependencies:
       - bufferutil
       - debug

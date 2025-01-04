@@ -90,11 +90,6 @@ export class ExpenseCategorySummaryComponent
                 ],
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: 0,
-                },
                 plugins: {
                     legend: {
                         display: false,
@@ -159,6 +154,32 @@ export class ExpenseCategorySummaryComponent
             ).generateLabels(this.chart);
         }
 
+        // total legend item
+        const legendItem = document.createElement('div');
+        legendItem.className = 'legend-item';
+        legendItem.style.display = 'flex';
+        legendItem.style.flexDirection = 'flex-row';
+
+        const boxSpan = document.createElement('span');
+        boxSpan.style.borderColor = items[0].strokeStyle;
+        boxSpan.style.borderWidth = items[0].lineWidth + 'px';
+        boxSpan.style.display = 'inline-block';
+        boxSpan.style.flexShrink = '0';
+        boxSpan.style.height = '20px';
+        boxSpan.style.marginRight = '10px';
+        boxSpan.style.width = '20px';
+        boxSpan.style.borderRadius = '50%';
+
+        const textContainer = document.createElement('p');
+        textContainer.style.color = items[0].fontColor;
+        textContainer.style.margin = '0';
+        textContainer.style.padding = '0';
+        textContainer.textContent = `Total: ${this.expense().amount}`;
+
+        legendItem.appendChild(boxSpan);
+        legendItem.appendChild(textContainer);
+        legendContainer.appendChild(legendItem);
+
         items.forEach((item: any, i: number) => {
             const legendItem = document.createElement('div');
             legendItem.className = 'legend-item';
@@ -185,7 +206,6 @@ export class ExpenseCategorySummaryComponent
 
             legendItem.appendChild(boxSpan);
             legendItem.appendChild(textContainer);
-
             legendContainer.appendChild(legendItem);
         });
     }

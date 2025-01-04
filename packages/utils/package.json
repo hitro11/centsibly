@@ -3,7 +3,7 @@
     "type": "module",
     "version": "0.1.0",
     "scripts": {
-        "build": "npx tsc",
+        "build": "tsc",
         "dev": "npx tsc --watch"
     },
     "exports": {

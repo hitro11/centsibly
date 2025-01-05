@@ -26,6 +26,7 @@ import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 import cron from 'node-cron';
 import ky from 'ky';
+import { BudgetService } from './api/services/budget.service.js';
 
 supertokens.init({
     framework: 'express',
@@ -174,13 +175,17 @@ app.use(morgan('common')); // request logging
 
 // routes
 app.get('/health', async (req: Request, res: Response) => {
-     const result = 'OK';
-     res.status(200).send({ result }); 
+    const result = 'OK';
+    res.status(200).send({ result });
 });
 
 // access backend route periodically to prevent idle spindown
 cron.schedule('*/11 * * * *', async () => {
     await ky.get(`${process.env.HOST}/health`);
+});
+
+cron.schedule('0 0 1 * *', async () => {
+    await BudgetService.createBudgetsForNewMonth();
 });
 
 app.use('/api', router);

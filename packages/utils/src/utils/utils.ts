@@ -7,6 +7,20 @@ export function getCurrentYearMonth(): YearMonth {
     return `${date.getFullYear()}-${dateMonth}` as YearMonth;
 }
 
+export function getPreviousYearMonth(): YearMonth {
+    const date = new Date();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    if (month === 1) {
+        month = 12;
+        year = year - 1;
+    }
+
+    month = month > 9 ? month : Number(`0${month}`);
+    return `${year}-${month}` as YearMonth;
+}
+
 /**
  * @param {YearMonth}  date - YYYY-MM.
  * @returns {string} eg: Dec 2024

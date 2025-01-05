@@ -2,8 +2,11 @@ import { logger } from '../../config/logger.js';
 import { Budget, Transaction, YearMonth } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
-import { WithId } from 'mongodb';
-import { getCurrentYearMonth } from '@centsibly/utils/utils';
+import { Collection, WithId } from 'mongodb';
+import {
+    getCurrentYearMonth,
+    getPreviousYearMonth,
+} from '@centsibly/utils/utils';
 
 export class BudgetService {
     static async addBudget(email: string, budget: Budget): Promise<void> {
@@ -144,5 +147,35 @@ export class BudgetService {
                 );
             }
         } catch (error) {}
+    }
+
+    static async createBudgetsForNewMonth(): Promise<void> {
+        logger.info('createBudgetsForNewMonth()');
+
+        const budgetsCollection = (await database()).collection<Budget>(
+            COLLECTIONS.BUDGETS
+        );
+
+        const budgetsToBeCloned = await budgetsCollection
+            .find({
+                month: getPreviousYearMonth(),
+            })
+            .toArray();
+
+        const newBudgets = [];
+
+        for (const budget of budgetsToBeCloned) {
+            const { _id, ...newBudget } = budget;
+
+            newBudgets.push({
+                ...newBudget,
+                expenses: budget.expenses.map((expense) => {
+                    return { ...expense, actual: 0 };
+                }),
+                month: getCurrentYearMonth(),
+            });
+        }
+
+        budgetsCollection.insertMany(newBudgets, { ordered: true });
     }
 }

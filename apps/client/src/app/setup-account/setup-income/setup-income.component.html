@@ -1,77 +1,84 @@
-<div class="">
-    <h1 class="w-full text-center text-4xl">Budget</h1>
+<div class="m-auto flex min-h-[calc(100dvh-81px-48px)] border-0">
+    <div class="m-auto w-[calc(100dvw-6rem)] lg:w-[calc(100dvw)]">
+        <h1 class="text-center text-4xl">Budget</h1>
 
-    <p class="text-white dark:text-[#1c1b22]">
-        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    </p>
+        <form class="mt-14 w-full" [formGroup]="form">
+            <div class="flex w-full flex-row justify-center">
+                <hlm-form-field class="w-full">
+                    <label class="mb-1 block w-full" hlmLabel>Currency</label>
+                    <brn-select
+                        class="inline-block w-full"
+                        formControlName="currency"
+                    >
+                        <hlm-select-trigger class="w-full">
+                            <hlm-select-value />
+                        </hlm-select-trigger>
+                        <hlm-select-content class="w-full">
+                            @for (
+                                currency of CURRENCIES;
+                                track currency.value
+                            ) {
+                                <hlm-option [value]="currency.value">{{
+                                    currency.label
+                                }}</hlm-option>
+                            }
+                        </hlm-select-content>
+                    </brn-select>
+                    @if (currency?.errors?.['required']) {
+                        <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
+                    }
+                </hlm-form-field>
+            </div>
 
-    <form class="mt-8 w-full" [formGroup]="form">
-        <div class="flex w-full flex-row justify-center">
-            <hlm-form-field class="w-full">
-                <label class="mb-1 block w-1/2" hlmLabel>Currency</label>
-                <brn-select
-                    class="inline-block w-1/2"
-                    formControlName="currency"
+            <div class="mt-16 flex w-full flex-row justify-center">
+                <hlm-form-field class="w-full">
+                    <div class="flex w-full flex-row">
+                        <label class="block" hlmLabel>Monthly Budget</label>
+                        <brn-popover class="ml-3 mt-1">
+                            <button
+                                brnPopoverTrigger
+                                variant="outline"
+                                size="icon"
+                            >
+                                <hlm-icon size="sm" name="lucideInfo" />
+                            </button>
+                            <div hlmPopoverContent *brnPopoverContent="let ctx">
+                                This is your total monthly income
+                            </div>
+                        </brn-popover>
+                    </div>
+                    <input
+                        formControlName="income"
+                        class="w-full"
+                        hlmInput
+                        type="number"
+                        step="1"
+                        placeholder="$"
+                    />
+                    @if (income?.errors?.['required']) {
+                        <hlm-error>Invalid input</hlm-error>
+                    }
+                    @if (income?.errors?.['max']) {
+                        <hlm-error>Budget exceeded maximum value</hlm-error>
+                    }
+                    @if (income?.errors?.['min']) {
+                        <hlm-error>Budget cannot be less than 1</hlm-error>
+                    }
+                </hlm-form-field>
+            </div>
+
+            <div class="mt-16 flex w-full justify-between">
+                <button (click)="updateSectionFn('previous')" hlmBtn>
+                    Back
+                </button>
+                <button
+                    (click)="updateSectionFn('next')"
+                    [disabled]="!form.valid"
+                    hlmBtn
                 >
-                    <hlm-select-trigger class="w-full">
-                        <hlm-select-value />
-                    </hlm-select-trigger>
-                    <hlm-select-content class="w-full">
-                        @for (currency of CURRENCIES; track currency.value) {
-                            <hlm-option [value]="currency.value">{{
-                                currency.label
-                            }}</hlm-option>
-                        }
-                    </hlm-select-content>
-                </brn-select>
-                @if (currency?.errors?.['required']) {
-                    <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
-                }
-            </hlm-form-field>
-        </div>
-
-        <div class="mt-16 flex w-full flex-row justify-center">
-            <hlm-form-field class="w-full">
-                <div class="flex flex-row">
-                    <label class="block" hlmLabel>Monthly Budget</label>
-                    <brn-popover class="ml-3 mt-1">
-                        <button brnPopoverTrigger variant="outline" size="icon">
-                            <hlm-icon size="sm" name="lucideInfo" />
-                        </button>
-                        <div hlmPopoverContent *brnPopoverContent="let ctx">
-                            This is your total monthly income
-                        </div>
-                    </brn-popover>
-                </div>
-                <input
-                    formControlName="income"
-                    class=""
-                    hlmInput
-                    type="number"
-                    step="1"
-                    placeholder="$"
-                />
-                @if (income?.errors?.['required']) {
-                    <hlm-error>Invalid input</hlm-error>
-                }
-                @if (income?.errors?.['max']) {
-                    <hlm-error>Budget exceeded maximum value</hlm-error>
-                }
-                @if (income?.errors?.['min']) {
-                    <hlm-error>Budget cannot be less than 1</hlm-error>
-                }
-            </hlm-form-field>
-        </div>
-
-        <div class="mt-16 flex w-full justify-between">
-            <button (click)="updateSectionFn('previous')" hlmBtn>Back</button>
-            <button
-                (click)="updateSectionFn('next')"
-                [disabled]="!form.valid"
-                hlmBtn
-            >
-                Continue
-            </button>
-        </div>
-    </form>
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

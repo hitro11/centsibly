@@ -4,6 +4,7 @@
     "version": "0.1.0",
     "scripts": {
         "build": "tsc",
+        "lint": "eslint .",
         "dev": "npx tsc --watch"
     },
     "exports": {
@@ -25,5 +26,7 @@
         "typescript": "~5.5.2",
         "@types/node": "^22.9.0"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@centsibly/esint-config": "workspace:*"
+    }
 }

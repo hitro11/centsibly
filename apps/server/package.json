@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "npx tsx watch --clear-screen=false src/app.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint .",
         "build": "tsc --declaration",
         "start": "node dist/src/app.js",
         "preinstall": "npx only-allow pnpm"
@@ -38,6 +39,7 @@
     },
     "devDependencies": {
         "prettier": "^3.4.1",
-        "ts-node": "^10.9.2"
+        "ts-node": "^10.9.2",
+        "@centsibly/esint-config": "workspace:*"
     }
 }

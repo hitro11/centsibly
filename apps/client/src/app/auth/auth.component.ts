@@ -64,7 +64,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                         context.newSessionCreated
                     ) {
                         if (context.createdNewUser) {
-                            return '/create-account';
+                            return '/setup-budget';
                         }
                         return context.redirectToPath ?? '/dashboard';
                     }

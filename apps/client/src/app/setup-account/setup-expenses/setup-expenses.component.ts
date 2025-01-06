@@ -178,7 +178,11 @@ export class SetupExpensesComponent {
     }
 
     async updateSectionFn(direction: 'previous' | 'next') {
-        if (this.form.valid) {
+        try {
+            if (!this.form.valid && direction === 'next') {
+                return;
+            }
+
             const expenses: Expense[] = [];
 
             for (let i = 0; i < this.expenses.length; i++) {
@@ -188,13 +192,15 @@ export class SetupExpensesComponent {
             }
 
             this.budgetService.initialBudget.expenses = expenses;
-        }
 
-        if (direction === 'next') {
-            await this.budgetService.onSetupFormSubmit();
-            this.router.navigate(['/dashboard']);
-        } else {
-            this.updateSection.emit(direction);
+            if (direction === 'next') {
+                await this.budgetService.onSetupFormSubmit();
+                this.router.navigate(['/dashboard']);
+            } else {
+                this.updateSection.emit(direction);
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 }

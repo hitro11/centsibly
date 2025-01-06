@@ -8,14 +8,6 @@ import { Router } from '@angular/router';
 import { SetupIncomeComponent } from './setup-income/setup-income.component';
 import { SetupExpensesComponent } from './setup-expenses/setup-expenses.component';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import {
-    HlmCardContentDirective,
-    HlmCardDescriptionDirective,
-    HlmCardDirective,
-    HlmCardFooterDirective,
-    HlmCardHeaderDirective,
-    HlmCardTitleDirective,
-} from '@spartan-ng/ui-card-helm';
 
 @Component({
     selector: 'app-setup-account',
@@ -27,12 +19,6 @@ import {
         SetupIncomeComponent,
         SetupExpensesComponent,
         HlmButtonDirective,
-        HlmCardContentDirective,
-        HlmCardDescriptionDirective,
-        HlmCardDirective,
-        HlmCardFooterDirective,
-        HlmCardHeaderDirective,
-        HlmCardTitleDirective,
     ],
     templateUrl: './setup-account.component.html',
     styleUrl: './setup-account.component.scss',

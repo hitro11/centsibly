@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import path from 'path';
-import { logger } from './src/config/logger.js';
 
 export const loadEnv = () => {
     dotenv.config();

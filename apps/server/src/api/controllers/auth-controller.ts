@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { logger } from '../../config/logger.js';
 import { AuthService } from '../services/auth-service.js';
 
 export class AuthController {

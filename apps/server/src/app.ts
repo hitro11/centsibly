@@ -70,7 +70,7 @@ supertokens.init({
                     return {
                         ...originalImplementation,
                         signInUp: async function (input) {
-                            let existingUsers =
+                            const existingUsers =
                                 await supertokens.listUsersByAccountInfo(
                                     input.tenantId,
                                     {

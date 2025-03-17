@@ -30,7 +30,7 @@ export class BudgetController {
                 throw new Error('Email not found');
             }
 
-            if (!!req.query.current) {
+            if (req.query.current) {
                 return await BudgetService.getLatestBudget(email);
             }
 

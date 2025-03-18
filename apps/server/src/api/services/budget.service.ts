@@ -162,6 +162,8 @@ export class BudgetService {
             })
             .toArray();
 
+        logger.debug('budgetsToBeCloned: ' + JSON.stringify(budgetsToBeCloned));
+
         const newBudgets = [];
 
         for (const budget of budgetsToBeCloned) {
@@ -176,6 +178,7 @@ export class BudgetService {
             });
         }
 
+        logger.debug('newBudgets: ' + JSON.stringify(newBudgets));
         budgetsCollection.insertMany(newBudgets, { ordered: true });
     }
 }

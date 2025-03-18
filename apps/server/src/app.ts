@@ -184,7 +184,7 @@ cron.schedule('*/11 * * * *', async () => {
     await ky.get(`${process.env.HOST}/health`);
 });
 
-cron.schedule('10 2 * * *', async () => {
+cron.schedule('0 0 1 * *', async () => {
     await BudgetService.createBudgetsForNewMonth();
 });
 

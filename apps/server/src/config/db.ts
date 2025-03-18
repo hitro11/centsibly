@@ -25,15 +25,11 @@ export async function connectToDBclient(): Promise<void> {
 }
 
 export async function database(): Promise<Db> {
-    try {
-        if (!client) {
-            await connectToDBclient();
-        }
-
-        return client.db(DATABASE_NAME);
-    } catch (e) {
-        throw e;
+    if (!client) {
+        await connectToDBclient();
     }
+
+    return client.db(DATABASE_NAME);
 }
 
 export async function pingDB(): Promise<boolean> {

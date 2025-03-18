@@ -9,20 +9,23 @@ export function getCurrentYearMonth(): YearMonth {
 
 export function getPreviousYearMonth(): YearMonth {
     const date = new Date();
-    let month = date.getMonth() + 1;
+    const month = date.getMonth();
+    let monthString = `${month}`;
     let year = date.getFullYear();
 
-    if (month === 1) {
-        month = 12;
-        year = year - 1;
+    if (month === 0) {
+        monthString = '12';
+        year--;
+    } else if (month <= 9) {
+        monthString = `0${month}`;
     }
 
-    month = month > 9 ? month : Number(`0${month}`);
-    return `${year}-${month}` as YearMonth;
+    console.log(`${year}-${monthString}`);
+    return `${year}-${monthString}` as YearMonth;
 }
 
 /**
- * @param {YearMonth}  date - YYYY-MM.
+ * @param {YearMonth}  date - YYYY-MM
  * @returns {string} eg: Dec 2024
  */
 export function dateToReadableText(date: YearMonth) {

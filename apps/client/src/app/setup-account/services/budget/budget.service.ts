@@ -24,7 +24,7 @@ export class BudgetService {
         try {
             const data = this.initialBudget;
             data.month = getCurrentYearMonth();
-            data.email = this.userService.email;
+            data.email = this.userService.email();
             BudgetSchema.parse(data);
             await this.addBudget(data);
         } catch (error) {

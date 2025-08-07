@@ -8,19 +8,20 @@ import Session from 'supertokens-web-js/recipe/session';
     providedIn: 'root',
 })
 export class UserService {
-    _email = signal('');
+    private _email = signal('');
+    readonly email = this._email.asReadonly();
 
     constructor(private httpClient: HttpClient) {
-        effect(async () => {
-            if (await Session.doesSessionExist()) {
-                const email = await this.getUserEmail();
-                this._email.set(email);
-            }
-        });
+        this.setUserEmail();
     }
 
-    get email(): string {
-        return this._email();
+    async setUserEmail() {
+        if (!(await Session.doesSessionExist())) {
+            return;
+        }
+
+        const email = await this.getUserEmail();
+        this._email.set(email);
     }
 
     async getUserAuthInfo(): Promise<unknown> {

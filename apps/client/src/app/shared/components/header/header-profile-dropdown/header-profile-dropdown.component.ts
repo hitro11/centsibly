@@ -1,4 +1,3 @@
-import { ThemeService } from './../../../services/theme.service';
 import { AuthenticationService } from './../../../../auth/services/authentication.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../services/local-storage.service';
@@ -60,9 +59,9 @@ export class HeaderProfileDropdownComponent {
     authService = inject(AuthenticationService);
     userService = inject(UserService);
     localStorageService = inject(LocalStorageService);
-    email = this.userService._email;
-    isUserLoggedIn = this.authService.isUserLoggedIn();
     router = inject(Router);
+    email = this.userService.email;
+    isUserLoggedIn = this.authService.isUserLoggedIn;
 
     signInOrSignOut() {
         return this.isUserLoggedIn()

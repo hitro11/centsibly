@@ -80,7 +80,7 @@ export class SetupExpensesComponent {
     themeService = inject(ThemeService);
     router = inject(Router);
     maxCharacterLimit = 25;
-    theme = this.themeService.getTheme();
+    theme = this.themeService.theme;
 
     expenseNameValidators = [
         Validators.required,

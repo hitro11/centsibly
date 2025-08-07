@@ -11,6 +11,7 @@ import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../setup-account/services/user.service';
 import { BudgetService } from '../setup-account/services/budget/budget.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
     selector: 'app-auth',
@@ -23,6 +24,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
     themeService = inject(ThemeService);
     userService = inject(UserService);
     budgetService = inject(BudgetService);
+    authService = inject(AuthenticationService);
     errorMessage = '';
 
     constructor(
@@ -76,6 +78,12 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                     }),
                     (window as any).supertokensUIEmailPassword.init({}),
                     (window as any).supertokensUIThirdParty.init({
+                        onHandleEvent: (context: any) => {
+                            if (context.action === 'SUCCESS') {
+                                if (context.createdNewSession) {
+                                }
+                            }
+                        },
                         signInAndUpFeature: {
                             providers: [
                                 (
@@ -88,7 +96,7 @@ export class AuthComponent implements OnDestroy, AfterViewInit {
                 ],
 
                 style:
-                    this.themeService.getTheme()() === 'dark'
+                    this.themeService.theme() === 'dark'
                         ? `
         [data-supertokens~=container] {
           --palette-background: 28, 27, 34;

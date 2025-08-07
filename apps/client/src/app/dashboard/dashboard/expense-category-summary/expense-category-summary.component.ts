@@ -19,7 +19,7 @@ import {
     HlmCardTitleDirective,
 } from '@spartan-ng/ui-card-helm';
 import { Expense } from 'utils/schemas/schemas';
-import { setLabelColor, toTitleCase } from '../../../shared/utils';
+import { toTitleCase } from '../../../shared/utils';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { Chart } from 'chart.js';
 import {
@@ -51,7 +51,7 @@ export class ExpenseCategorySummaryComponent
     chart: Chart | undefined;
 
     themeService = inject(ThemeService);
-    theme = this.themeService.getTheme();
+    theme = this.themeService.theme;
 
     constructor() {}
 

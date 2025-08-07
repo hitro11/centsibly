@@ -9,11 +9,7 @@ import {
 } from '@angular/core';
 import { BudgetService } from '../../setup-account/services/budget/budget.service';
 import { Chart, ChartItem } from 'chart.js/auto';
-import {
-    getColorsForSummaryChart,
-    setLabelColor,
-    toTitleCase,
-} from '../../shared/utils';
+import { toTitleCase } from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
@@ -49,6 +45,7 @@ import { TransactionsListComponent } from './transactions-list/transactions-list
 import { TransactionService } from '../services/transaction.service';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { BrnSeparatorComponent } from '@spartan-ng/ui-separator-brain';
+import { ChartService } from '../../charts/chart.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -84,7 +81,8 @@ export class DashboardComponent implements OnInit {
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
     transactionsService = inject(TransactionService);
-    theme = this.themeService.getTheme();
+    chartService = inject(ChartService);
+    theme = this.themeService.theme;
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
     expenses: Expense[] = [];
     month = getCurrentYearMonth();
@@ -92,23 +90,12 @@ export class DashboardComponent implements OnInit {
     budgetExists = signal(true);
     transactions: Transaction[] = [];
 
-    constructor() {
-        effect(() => {
-            const currentTheme = this.theme();
-
-            if (
-                this.isChart(this.summaryChart) &&
-                this.summaryChart.options?.plugins?.legend?.labels?.color
-            ) {
-                this.summaryChart.options.plugins.legend.labels.color =
-                    setLabelColor(currentTheme);
-                this.summaryChart.update();
-            }
-        });
-    }
+    constructor() {}
 
     async ngOnInit(): Promise<void> {
         try {
+            this.chartService.registerChart(this.summaryChart, this.theme);
+
             await this.refreshTransactionsList();
             const budget = await this.budgetService.getCurrentBudget();
             if (!budget) {
@@ -144,7 +131,9 @@ export class DashboardComponent implements OnInit {
                             ],
                             backgroundColor: [
                                 ...this.expenses.map((expense, i) =>
-                                    getColorsForSummaryChart(i)
+                                    this.chartService.getColorsForSummaryChart(
+                                        i
+                                    )
                                 ),
                                 CHART_COLOR_SURPLUS,
                             ],
@@ -160,7 +149,9 @@ export class DashboardComponent implements OnInit {
                             align: 'center',
                             labels: {
                                 padding: 25,
-                                color: setLabelColor(this.theme()),
+                                color: this.chartService.setLabelColor(
+                                    this.theme()
+                                ),
                                 usePointStyle: true,
                             },
                         },
@@ -172,13 +163,6 @@ export class DashboardComponent implements OnInit {
         }
     }
 
-    isChart(chart: any): chart is Chart {
-        return (
-            this.summaryChart.options?.plugins?.legend?.labels?.color !==
-            undefined
-        );
-    }
-
     async refreshTransactionsList() {
         this.transactions = await this.transactionsService.getTransactions();
     }
@@ -187,5 +171,9 @@ export class DashboardComponent implements OnInit {
         this.expenses =
             ((await this.budgetService.getCurrentBudget()) ?? {}).expenses ??
             [];
+    }
+
+    ngOnDestroy() {
+        this.chartService.unregisterChart(this.summaryChart);
     }
 }

@@ -37,3 +37,9 @@ export const TransactionSchema = z.object({
     amount: dollarAmountZod,
 });
 export const TransactionArraySchema = z.array(TransactionSchema);
+export const SettingsSchema = z.object({
+    email: z.string().email('Invalid email'),
+    currency: CurrencySchema,
+    income: dollarAmountZod,
+    expenses: z.array(ExpenseSchema),
+});

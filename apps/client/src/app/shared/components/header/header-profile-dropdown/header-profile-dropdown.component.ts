@@ -7,6 +7,7 @@ import {
     lucideLogOut,
     lucideMenu,
     lucideMoon,
+    lucideSettings,
     lucideUserCircle,
 } from '@ng-icons/lucide';
 
@@ -48,6 +49,7 @@ import { UserService } from '../../../../setup-account/services/user.service';
     providers: [
         provideIcons({
             lucideUserCircle,
+            lucideSettings,
             lucideLogOut,
             lucideMoon,
             lucideMenu,
@@ -67,5 +69,9 @@ export class HeaderProfileDropdownComponent {
         return this.isUserLoggedIn()
             ? this.authService.signout()
             : this.router.navigate(['/auth']);
+    }
+
+    onSettingsButtonClick(): void {
+        this.router.navigate(['/settings']);
     }
 }

@@ -10,12 +10,12 @@
     <hlm-menu class="w-[15rem] dark:bg-[#181C1F]">
         <hlm-menu-group>
             <button
-                (click)="(true)"
+                (click)="onSettingsButtonClick()"
                 hlmMenuItem
                 class="py-3 hover:cursor-pointer"
             >
-                <hlm-icon name="lucideUserCircle" hlmMenuIcon />
-                <span class="ml-0 text-base">{{ email() }}</span>
+                <hlm-icon name="lucideSettings" hlmMenuIcon />
+                <span class="ml-0 text-base">Settings</span>
             </button>
 
             <button

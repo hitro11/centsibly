@@ -3,12 +3,13 @@ import {
     effect,
     ElementRef,
     inject,
+    OnDestroy,
     OnInit,
     signal,
     ViewChild,
 } from '@angular/core';
 import { BudgetService } from '../../setup-account/services/budget/budget.service';
-import { Chart, ChartItem } from 'chart.js/auto';
+import { Chart } from 'chart.js/auto';
 import { toTitleCase } from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
@@ -75,13 +76,14 @@ import { ChartService } from '../../charts/chart.service';
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
     @ViewChild('budgetSummary') chartCanvasRef!: ElementRef;
 
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
     transactionsService = inject(TransactionService);
     chartService = inject(ChartService);
+
     theme = this.themeService.theme;
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
     expenses: Expense[] = [];
@@ -90,22 +92,35 @@ export class DashboardComponent implements OnInit {
     budgetExists = signal(true);
     transactions: Transaction[] = [];
 
-    constructor() {}
+    constructor() {
+        effect(() => {
+            const theme = this.themeService.theme();
+
+            if (
+                !this.chartService.isChart(this.summaryChart) ||
+                !this.summaryChart.options?.plugins?.legend?.labels?.color
+            ) {
+                return;
+            }
+
+            this.summaryChart.options.plugins.legend.labels.color =
+                this.chartService.setLabelColor(theme);
+            this.summaryChart.update();
+        });
+    }
 
     async ngOnInit(): Promise<void> {
         try {
-            this.chartService.registerChart(this.summaryChart, this.theme);
-
             await this.refreshTransactionsList();
-            const budget = await this.budgetService.getCurrentBudget();
-            if (!budget) {
-                console.log('no budget set. Please set it');
+            const currentBudget = await this.budgetService.getCurrentBudget();
+            if (!currentBudget) {
+                console.warn('no budget set. Please set it');
                 this.budgetExists.set(false);
                 return;
             }
             this.budgetExists.set(true);
-            const income = budget.income;
-            this.expenses = budget.expenses;
+            const income = currentBudget.income;
+            this.expenses = currentBudget.expenses;
             const surplus =
                 income -
                 this.expenses.reduce((total, current) => {
@@ -173,7 +188,5 @@ export class DashboardComponent implements OnInit {
             [];
     }
 
-    ngOnDestroy() {
-        this.chartService.unregisterChart(this.summaryChart);
-    }
+    ngOnDestroy() {}
 }

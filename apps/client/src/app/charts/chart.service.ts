@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, Signal } from '@angular/core';
+import { effect, EffectRef, inject, Injectable, Signal } from '@angular/core';
 import { ThemeService } from '../shared/services/theme.service';
 import { Chart } from 'chart.js';
 import { CHART_COLORS } from '../shared/constants';
@@ -9,44 +9,7 @@ import { CHART_COLORS } from '../shared/constants';
 export class ChartService {
     themeService = inject(ThemeService);
 
-    private _charts = new Map<Partial<Chart>, Signal<string>>();
-
     constructor() {}
-
-    registerChart(chart: Partial<Chart>, themeSignal: Signal<string>) {
-        effect(() => {
-            const theme = themeSignal();
-
-            if (
-                !this.isChart(chart) ||
-                !chart.options?.plugins?.legend?.labels?.color
-            ) {
-                return;
-            }
-
-            chart.options.plugins.legend.labels.color =
-                this.setLabelColor(theme);
-            chart.update();
-        });
-        this._charts.set(chart, themeSignal);
-    }
-
-    unregisterChart(chart: Partial<Chart>) {
-        this._charts.delete(chart);
-    }
-
-    setChartTheme(chart: Partial<Chart>) {
-        const currentTheme = this.themeService.theme();
-
-        if (
-            this.isChart(chart) &&
-            chart.options?.plugins?.legend?.labels?.color
-        ) {
-            chart.options.plugins.legend.labels.color =
-                this.setLabelColor(currentTheme);
-            chart.update();
-        }
-    }
 
     isChart(chart: any): chart is Chart {
         return chart.options?.plugins?.legend?.labels?.color !== undefined;

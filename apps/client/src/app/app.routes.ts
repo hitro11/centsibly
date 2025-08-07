@@ -8,6 +8,7 @@ import { SetupAccountComponent } from './setup-account/setup-account.component';
 import { AuthGuard } from './routeGuards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { NoAuthGuard } from './routeGuards/no-auth.guard';
+import { SettingsContainerComponent } from './settings/settings-container/settings-container.component';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,11 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'settings',
+        component: SettingsContainerComponent,
         canActivate: [AuthGuard],
     },
 ];

@@ -28,18 +28,19 @@
         "helmet": "^8.0.0",
         "http-status-codes": "^2.3.0",
         "ky": "^1.7.2",
+        "moment-timezone": "^0.5.47",
         "mongodb": "^6.10.0",
         "morgan": "^1.10.0",
         "node-cron": "^3.0.3",
         "pino": "^9.5.0",
         "pino-pretty": "^12.1.0",
         "supertokens-node": "^21.0.0",
-        "zod": "^3.23.8",
-        "typescript": "^5.6.3"
+        "typescript": "^5.6.3",
+        "zod": "^3.23.8"
     },
     "devDependencies": {
+        "@centsibly/esint-config": "workspace:*",
         "prettier": "^3.4.1",
-        "ts-node": "^10.9.2",
-        "@centsibly/esint-config": "workspace:*"
+        "ts-node": "^10.9.2"
     }
 }

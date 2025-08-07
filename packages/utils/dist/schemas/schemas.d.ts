@@ -32,25 +32,25 @@ export declare const BudgetSchema: z.ZodObject<{
     }>, "many">;
     month: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    email: string;
     currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
+    email: string;
+    month: string;
     income: number;
     expenses: {
         name: string;
         amount: number;
         actual?: number | undefined;
     }[];
-    month: string;
 }, {
-    email: string;
     currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
+    email: string;
+    month: string;
     income: number;
     expenses: {
         name: string;
         amount: number;
         actual?: number | undefined;
     }[];
-    month: string;
 }>;
 export declare const TransactionSchema: z.ZodObject<{
     type: z.ZodEnum<["expense", "income"]>;

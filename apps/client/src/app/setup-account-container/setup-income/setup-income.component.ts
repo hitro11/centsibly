@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
@@ -15,7 +15,7 @@ import {
     AMOUNT_REGEX,
     CURRENCIES,
 } from '@centsibly/utils/constants';
-import { Currency } from 'utils/schemas/schemas';
+import { Budget, Currency } from 'utils/schemas/schemas';
 import { BudgetService } from '../services/budget/budget.service';
 import {
     BrnPopoverComponent,
@@ -26,6 +26,7 @@ import {
     HlmPopoverCloseDirective,
     HlmPopoverContentDirective,
 } from '@spartan-ng/ui-popover-helm';
+import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-setup-income',
@@ -49,10 +50,14 @@ import {
     templateUrl: './setup-income.component.html',
     styleUrl: './setup-income.component.scss',
 })
-export class SetupIncomeComponent {
-    @Input() nextButtonClicked!: () => boolean;
-    updateSection = output<'previous' | 'next'>();
+export class SetupIncomeComponent implements OnInit, OnDestroy {
+    formData = output<{
+        currency: Budget['currency'];
+        income: Budget['income'];
+    }>();
+    validityChanged = output<boolean>();
 
+    private destroy$ = new Subject<void>();
     fb = inject(FormBuilder);
     budgetService = inject(BudgetService);
     CURRENCIES = CURRENCIES;
@@ -76,23 +81,36 @@ export class SetupIncomeComponent {
 
     constructor() {}
 
-    updateSectionFn(direction: 'previous' | 'next') {
-        if (this.form.valid) {
-            this.budgetService.initialBudget.currency = (this.currency?.value ??
-                'CAD') as Currency;
+    ngOnInit(): void {
+        this.validityChanged.emit(this.form.valid);
 
-            this.budgetService.initialBudget.income =
-                this.income?.value ?? undefined;
-        }
+        this.form.valueChanges
+            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .subscribe(() => {
+                const isFormValid = this.form.valid;
+                const value = this.form.value;
 
-        this.updateSection.emit(direction);
+                this.validityChanged.emit(isFormValid);
+
+                if (isFormValid && value.currency && value.income) {
+                    this.formData.emit({
+                        currency: value.currency,
+                        income: value.income,
+                    });
+                }
+            });
     }
 
-    get currency() {
+    get currencyFormControl() {
         return this.form.get('currency');
     }
 
-    get income() {
+    get incomeFormControl() {
         return this.form.get('income');
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

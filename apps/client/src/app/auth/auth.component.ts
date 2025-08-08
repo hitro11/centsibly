@@ -9,8 +9,8 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { ThemeService } from '../shared/services/theme.service';
 import { environment } from '../../../environments/environment';
-import { UserService } from '../setup-account/services/user.service';
-import { BudgetService } from '../setup-account/services/budget/budget.service';
+import { UserService } from '../setup-account-container/services/user.service';
+import { BudgetService } from '../setup-account-container/services/budget/budget.service';
 import { AuthenticationService } from './services/authentication.service';
 
 @Component({

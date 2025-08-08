@@ -8,7 +8,7 @@ import {
     signal,
     ViewChild,
 } from '@angular/core';
-import { BudgetService } from '../../setup-account/services/budget/budget.service';
+import { BudgetService } from '../../setup-account-container/services/budget/budget.service';
 import { Chart } from 'chart.js/auto';
 import { toTitleCase } from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';

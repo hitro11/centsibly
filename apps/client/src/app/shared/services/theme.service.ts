@@ -11,7 +11,7 @@ export class ThemeService {
     private _renderer = inject(RendererFactory2).createRenderer(null, null);
     private _document = inject(DOCUMENT);
 
-    private _theme = signal<Theme>('light');
+    private _theme = signal<Theme>('dark');
     readonly theme = this._theme.asReadonly();
 
     constructor() {
@@ -19,7 +19,8 @@ export class ThemeService {
     }
 
     public toggleTheme(): void {
-        this.setTheme(this.getThemeFromLocalStorage());
+        const currentTheme = this.getThemeFromLocalStorage();
+        this.setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     }
 
     setTheme(theme: Theme) {
@@ -36,6 +37,6 @@ export class ThemeService {
     }
 
     private getThemeFromLocalStorage(): Theme {
-        return localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+        return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
     }
 }

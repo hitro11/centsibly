@@ -14,6 +14,7 @@ export class BudgetService {
     httpClient = inject(HttpClient);
     userService = inject(UserService);
 
+    // todo: possibly make this a signal?
     initialBudget: DeepPartial<Budget> = {
         currency: 'CAD',
     };
@@ -28,6 +29,7 @@ export class BudgetService {
             BudgetSchema.parse(data);
             await this.addBudget(data);
         } catch (error) {
+            console.error(error);
             throw error;
         }
     }

@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const settings: {} = await SettingsController.getSettings(req);
+        const settings = await SettingsController.getSettings(req);
         res.json(createHttpResponse('success', settings, null));
     } catch (error) {
         next(error);

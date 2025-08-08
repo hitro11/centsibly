@@ -1,6 +1,6 @@
 <div class="m-auto flex min-h-[calc(100dvh-81px-48px)] border-0">
     <div class="m-auto lg:w-[70%]">
-        @if (currentSection === 0) {
+        @if (currentSection() === 0) {
             <section
                 class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-4 py-8"
             >
@@ -11,32 +11,43 @@
                     <p class="mt-12 text-center text-xl lg:text-2xl">
                         Let's set up your budget in a few easy steps
                     </p>
-                    <div class="mt-24 flex justify-center">
-                        <button (click)="updateSection('next')" hlmBtn>
-                            Next
-                        </button>
-                    </div>
                 </div>
             </section>
         }
 
-        @if (currentSection === 1) {
+        @if (currentSection() === 1) {
             <section
                 class="flex w-full max-w-[calc(100vw)] flex-col justify-center px-4 py-8"
             >
                 <app-setup-income
-                    (updateSection)="updateSection($event)"
+                    (formData)="onIncomeFormDataUpdated($event)"
+                    (validityChanged)="onIncomeFormValidityChanged($event)"
                 ></app-setup-income>
             </section>
         }
-        @if (currentSection === 2) {
+        @if (currentSection() === 2) {
             <section
                 class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-4 py-8"
             >
-                <app-setup-expenses
-                    (updateSection)="updateSection($event)"
-                ></app-setup-expenses>
+                <app-setup-expenses></app-setup-expenses>
             </section>
         }
+
+        <div
+            class="mt-16 flex w-full"
+            [ngClass]="{
+                'justify-between': currentSection() > 0 && currentSection() < 2,
+                'justify-center':
+                    currentSection() === 0 || currentSection() === 2,
+            }"
+        >
+            @if (currentSection() > 0) {
+                <button (click)="goBack()" hlmBtn>Back</button>
+            }
+
+            <button (click)="goNext()" [disabled]="!isGoNextEnabled()" hlmBtn>
+                Continue
+            </button>
+        </div>
     </div>
 </div>

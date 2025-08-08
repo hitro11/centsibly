@@ -25,7 +25,7 @@ import {
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
 import { Router } from '@angular/router';
-import { UserService } from '../../../../setup-account/services/user.service';
+import { UserService } from '../../../../setup-account-container/services/user.service';
 
 @Component({
     selector: 'app-header-profile-dropdown',

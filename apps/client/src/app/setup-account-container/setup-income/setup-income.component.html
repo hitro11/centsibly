@@ -24,7 +24,7 @@
                             }
                         </hlm-select-content>
                     </brn-select>
-                    @if (currency?.errors?.['required']) {
+                    @if (currencyFormControl?.errors?.['required']) {
                         <hlm-error>{{ REQUIRED_ERROR_MESSAGE }}</hlm-error>
                     }
                 </hlm-form-field>
@@ -55,29 +55,16 @@
                         step="1"
                         placeholder="$"
                     />
-                    @if (income?.errors?.['required']) {
+                    @if (incomeFormControl?.errors?.['required']) {
                         <hlm-error>Invalid input</hlm-error>
                     }
-                    @if (income?.errors?.['max']) {
+                    @if (incomeFormControl?.errors?.['max']) {
                         <hlm-error>Budget exceeded maximum value</hlm-error>
                     }
-                    @if (income?.errors?.['min']) {
+                    @if (incomeFormControl?.errors?.['min']) {
                         <hlm-error>Budget cannot be less than 1</hlm-error>
                     }
                 </hlm-form-field>
-            </div>
-
-            <div class="mt-16 flex w-full justify-between">
-                <button (click)="updateSectionFn('previous')" hlmBtn>
-                    Back
-                </button>
-                <button
-                    (click)="updateSectionFn('next')"
-                    [disabled]="!form.valid"
-                    hlmBtn
-                >
-                    Continue
-                </button>
             </div>
         </form>
     </div>

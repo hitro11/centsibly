@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
+import {
+    Component,
+    computed,
+    effect,
+    inject,
+    OnDestroy,
+    OnInit,
+    output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
@@ -14,6 +22,7 @@ import {
     MAX_NUMBER_VALUE,
     AMOUNT_REGEX,
     CURRENCIES,
+    DEBOUNCE_TIME_MS,
 } from '@centsibly/utils/constants';
 import { Budget, Currency } from 'utils/schemas/schemas';
 import { BudgetService } from '../services/budget/budget.service';
@@ -27,6 +36,8 @@ import {
     HlmPopoverContentDirective,
 } from '@spartan-ng/ui-popover-helm';
 import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { DeepPartial, DeepPartialWithNull } from '../../shared/types';
 
 @Component({
     selector: 'app-setup-income',
@@ -51,17 +62,22 @@ import { debounceTime, filter, Subject, takeUntil } from 'rxjs';
     styleUrl: './setup-income.component.scss',
 })
 export class SetupIncomeComponent implements OnInit, OnDestroy {
-    formData = output<{
-        currency: Budget['currency'];
-        income: Budget['income'];
-    }>();
+    formData = output<
+        DeepPartialWithNull<{
+            currency: Budget['currency'];
+            income: Budget['income'];
+        }>
+    >();
+
     validityChanged = output<boolean>();
 
     private destroy$ = new Subject<void>();
     fb = inject(FormBuilder);
     budgetService = inject(BudgetService);
+    localStorageService = inject(LocalStorageService);
     CURRENCIES = CURRENCIES;
     REQUIRED_ERROR_MESSAGE = REQUIRED_ERROR_MESSAGE;
+    INCOME_FORM_NAME = this.budgetService.INCOME_FORM_NAME;
 
     form = this.fb.group({
         currency: [
@@ -82,22 +98,36 @@ export class SetupIncomeComponent implements OnInit, OnDestroy {
     constructor() {}
 
     ngOnInit(): void {
+        const formDraft = this.localStorageService.get(this.INCOME_FORM_NAME);
+        if (formDraft) {
+            console.log('restoring income form from from LS:', formDraft);
+            this.form.setValue(formDraft);
+        }
+
         this.validityChanged.emit(this.form.valid);
+        this.formData.emit(this.form.value);
 
         this.form.valueChanges
-            .pipe(debounceTime(300), takeUntil(this.destroy$))
+            .pipe(debounceTime(DEBOUNCE_TIME_MS), takeUntil(this.destroy$))
             .subscribe(() => {
                 const isFormValid = this.form.valid;
-                const value = this.form.value;
-
                 this.validityChanged.emit(isFormValid);
 
-                if (isFormValid && value.currency && value.income) {
-                    this.formData.emit({
-                        currency: value.currency,
-                        income: value.income,
-                    });
+                if (isFormValid) {
+                    this.formData.emit(this.form.value);
                 }
+            });
+
+        this.budgetService.saveIncomeForm
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                console.log('saving income form');
+                console.log(this.form.getRawValue());
+
+                this.localStorageService.set(
+                    this.INCOME_FORM_NAME,
+                    this.form.getRawValue()
+                );
             });
     }
 

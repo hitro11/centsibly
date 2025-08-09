@@ -33,7 +33,7 @@ export declare const BudgetSchema: z.ZodObject<{
     month: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
+    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
     income: number;
     expenses: {
         name: string;
@@ -43,7 +43,7 @@ export declare const BudgetSchema: z.ZodObject<{
     month: string;
 }, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
+    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
     income: number;
     expenses: {
         name: string;
@@ -108,7 +108,7 @@ export declare const SettingsSchema: z.ZodObject<{
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
+    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
     income: number;
     expenses: {
         name: string;
@@ -117,7 +117,7 @@ export declare const SettingsSchema: z.ZodObject<{
     }[];
 }, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
+    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
     income: number;
     expenses: {
         name: string;

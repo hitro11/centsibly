@@ -1,11 +1,12 @@
-import { firstValueFrom } from 'rxjs';
-import { inject, Injectable } from '@angular/core';
+import { firstValueFrom, Subject } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
 import { Budget, BudgetSchema, HTTPresponse } from '@centsibly/utils/schemas';
 import { getCurrentYearMonth } from '@centsibly/utils/utils';
 import { DeepPartial } from '../../../shared/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { UserService } from '../user.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Injectable({
     providedIn: 'root',
@@ -13,11 +14,18 @@ import { UserService } from '../user.service';
 export class BudgetService {
     httpClient = inject(HttpClient);
     userService = inject(UserService);
+    localStorageService = inject(LocalStorageService);
 
     // todo: possibly make this a signal?
     initialBudget: DeepPartial<Budget> = {
         currency: 'CAD',
     };
+
+    saveIncomeForm = new Subject<void>();
+    saveExpenseForm = new Subject<void>();
+
+    INCOME_FORM_NAME = 'incomeForm';
+    EXPENSE_FORM_NAME = 'expenseForm';
 
     constructor() {}
 
@@ -27,10 +35,19 @@ export class BudgetService {
             data.month = getCurrentYearMonth();
             data.email = this.userService.email();
             BudgetSchema.parse(data);
-            await this.addBudget(data);
+            console.log(data);
+            // await this.addBudget(data);
         } catch (error) {
             console.error(error);
             throw error;
+        }
+    }
+
+    saveFormToLocalStorage(form: 'income' | 'expense') {
+        if (form === 'income') {
+            this.saveIncomeForm.next();
+        } else {
+            this.saveExpenseForm.next();
         }
     }
 

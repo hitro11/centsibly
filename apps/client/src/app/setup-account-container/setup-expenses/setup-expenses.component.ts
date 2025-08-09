@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, output } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    inject,
+    OnDestroy,
+    OnInit,
+    output,
+} from '@angular/core';
 import {
     AbstractControl,
     FormArray,
@@ -23,10 +31,10 @@ import {
     lucideAlertTriangle,
 } from '@ng-icons/lucide';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { UserService } from '../services/user.service';
 import { deepCopy } from '../../shared/utils';
 import {
     AMOUNT_REGEX,
+    DEBOUNCE_TIME_MS,
     MAX_NUMBER_VALUE,
     STRING_REGEX,
 } from '@centsibly/utils/constants';
@@ -36,7 +44,7 @@ import {
     HlmCardDirective,
 } from '@spartan-ng/ui-card-helm';
 import { ThemeService } from '../../shared/services/theme.service';
-import { Expense } from '@centsibly/utils/schemas';
+import { Budget, Expense } from '@centsibly/utils/schemas';
 import {
     HlmAlertDirective,
     HlmAlertDescriptionDirective,
@@ -45,6 +53,9 @@ import {
 } from '@spartan-ng/ui-alert-helm';
 import { BudgetService } from '../services/budget/budget.service';
 import { Router } from '@angular/router';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { DeepPartialWithNull } from '../../shared/types';
 
 @Component({
     selector: 'app-setup-expenses',
@@ -72,15 +83,25 @@ import { Router } from '@angular/router';
     templateUrl: './setup-expenses.component.html',
     styleUrl: './setup-expenses.component.scss',
 })
-export class SetupExpensesComponent {
+export class SetupExpensesComponent
+    implements OnInit, AfterViewInit, OnDestroy
+{
     updateSection = output<'previous' | 'next'>();
+    formData = output<DeepPartialWithNull<Budget['expenses']>>();
+    validityChanged = output<boolean>();
 
     fb = inject(FormBuilder);
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
+    localStorageService = inject(LocalStorageService);
     router = inject(Router);
+    changeDetectorRef = inject(ChangeDetectorRef);
+
+    private destroy$ = new Subject<void>();
+
     maxCharacterLimit = 25;
     theme = this.themeService.theme;
+    EXPENSE_FORM_NAME = this.budgetService.EXPENSE_FORM_NAME;
 
     expenseNameValidators = [
         Validators.required,
@@ -100,81 +121,161 @@ export class SetupExpensesComponent {
         expenses: this.fb.array([], [Validators.required]),
     });
 
-    constructor() {
-        if (!this.expensesData.length) {
-            this.addExpense();
+    constructor() {}
+
+    ngOnInit(): void {
+        const formDraft = this.localStorageService.get(this.EXPENSE_FORM_NAME);
+
+        if (formDraft) {
+            for (const expense of formDraft) {
+                this.addExpense(expense.name, expense.amount, true);
+            }
         } else {
-            for (const expense of this.expensesData) {
-                this.addExpense(expense?.name, expense?.amount);
+            if (!this.expensesData.length) {
+                this.addExpense();
+            } else {
+                for (const expense of this.expensesData) {
+                    this.addExpense(expense?.name, expense?.amount);
+                }
             }
         }
+
+        // required so that data is emitted to parent when loading
+        // form data from localstorage
+        if (this.form.valid) {
+            const expenses =
+                this.form.value.expenses?.map((value: any) => ({
+                    name: value?.name ?? null,
+                    amount: value?.amount ?? null,
+                })) ?? [];
+
+            this.formData.emit(expenses);
+        }
+
+        this.form.valueChanges
+            .pipe(debounceTime(DEBOUNCE_TIME_MS), takeUntil(this.destroy$))
+            .subscribe(() => {
+                const isFormValid = this.form.valid;
+                this.validityChanged.emit(isFormValid);
+
+                if (isFormValid) {
+                    const expenses =
+                        this.form.value.expenses?.map((value: any) => ({
+                            name: value?.name ?? null,
+                            amount: value?.amount ?? null,
+                        })) ?? [];
+
+                    this.formData.emit(expenses);
+                }
+            });
+
+        this.budgetService.saveExpenseForm
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.localStorageService.set(
+                    this.EXPENSE_FORM_NAME,
+                    this.form.controls['expenses'].getRawValue()
+                );
+            });
     }
 
-    get expenses() {
-        return this.form.controls['expenses'] as FormArray<any>;
+    ngAfterViewInit(): void {
+        this.validateTotalExpensesAgainstIncome();
+        this.validityChanged.emit(this.form.valid);
     }
 
-    addExpense(name: string | null = null, amount: number | null = null) {
+    get expensesFormControlArray() {
+        return this.form.controls['expenses'] as FormArray;
+    }
+
+    addExpense(name?: string, amount?: number, onInit = false) {
         const newExpense = this.fb.group({
             name: [name, this.expenseNameValidators],
             amount: [amount, this.expenseAmountValidators],
         });
 
-        this.expenses?.push(newExpense);
+        this.expensesFormControlArray?.push(newExpense);
 
-        // reset formgroup to prevent 'required' error from activating on formcontrol creation
-        newExpense.markAsPristine();
-        newExpense.markAsUntouched();
-        newExpense.updateValueAndValidity();
+        // reset formgroup to prevent 'required' error from activating
+        if (!onInit) {
+            newExpense.markAsUntouched();
+            newExpense.updateValueAndValidity();
+        }
     }
 
     deleteExpense(index: number): void {
-        this.expenses?.removeAt(index);
+        this.expensesFormControlArray?.removeAt(index);
     }
 
     expenseNameUpdated() {
         const names: string[] = [];
 
-        for (const control of this.expenses.controls) {
-            const name = control.value.name;
-            const nameFC = (control as FormGroup).controls['name'];
+        for (const control of this.expensesFormControlArray.controls) {
+            const expenseName: string = control.value.name;
+            const expenseNameFormControl = (control as FormGroup).controls[
+                'name'
+            ];
 
-            if (names.includes(name)) {
-                nameFC.setErrors({
+            if (names.includes(expenseName?.toLowerCase())) {
+                expenseNameFormControl.setErrors({
                     duplicateName: true,
                 });
 
-                const i = names.findIndex((n) => n?.localeCompare(name) === 0);
+                const i = names.findIndex(
+                    (n) => n?.localeCompare(expenseName) === 0
+                );
 
-                (this.expenses.at(i) as FormGroup).controls['name'].setErrors({
+                (this.expensesFormControlArray.at(i) as FormGroup).controls[
+                    'name'
+                ].setErrors({
                     duplicateName: true,
                 });
             } else {
-                nameFC.updateValueAndValidity();
-                nameFC.setErrors(nameFC.errors);
+                expenseNameFormControl.updateValueAndValidity();
+                expenseNameFormControl.setErrors(expenseNameFormControl.errors);
             }
 
-            names.push(name);
+            names.push(expenseName?.toLowerCase());
         }
     }
 
     expenseAmountUpdated() {
-        let totalExpenses = 0;
+        this.validateTotalExpensesAgainstIncome();
+    }
+
+    validateTotalExpensesAgainstIncome() {
         const income = this.budgetService.initialBudget.income ?? 0;
+        const expenses = this.expensesFormControlArray.controls.map(
+            (c) => c.value
+        );
 
-        for (const control of this.expenses.controls) {
-            totalExpenses += control.value.amount;
+        const isExpensesExceedIncome = this.doExpensesExceedIncome(
+            income,
+            expenses
+        );
+
+        const errors = isExpensesExceedIncome
+            ? {
+                  ...this.form.errors,
+                  expensesGreaterThanIncome: true,
+              }
+            : this.form.errors;
+
+        this.form.setErrors(errors);
+        this.form.markAllAsTouched();
+    }
+
+    doExpensesExceedIncome(
+        income: Budget['income'],
+        expenses: Budget['expenses']
+    ): boolean {
+        let totalExpenses = 0;
+
+        for (const expense of expenses) {
+            totalExpenses += expense.amount ?? 0;
         }
 
-        if (totalExpenses > income) {
-            this.form.setErrors({
-                ...this.form.errors,
-                expensesGreaterThanIncome: true,
-            });
-        } else {
-            this.form.updateValueAndValidity();
-            this.form.setErrors(this.form.errors);
-        }
+        return totalExpenses > income;
     }
 
     async updateSectionFn(direction: 'previous' | 'next') {
@@ -185,22 +286,23 @@ export class SetupExpensesComponent {
 
             const expenses: Expense[] = [];
 
-            for (let i = 0; i < this.expenses.length; i++) {
-                const name = this.expenses.at(i).value.name as string;
-                const amount = parseInt(this.expenses.at(i).value.amount);
+            for (let i = 0; i < this.expensesFormControlArray.length; i++) {
+                const name = this.expensesFormControlArray.at(i).value
+                    .name as string;
+                const amount = parseInt(
+                    this.expensesFormControlArray.at(i).value.amount
+                );
                 expenses.push({ name, amount });
             }
 
             this.budgetService.initialBudget.expenses = expenses;
-
-            if (direction === 'next') {
-                await this.budgetService.onSetupFormSubmit();
-                this.router.navigate(['/dashboard']);
-            } else {
-                this.updateSection.emit(direction);
-            }
         } catch (error) {
             console.error(error);
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

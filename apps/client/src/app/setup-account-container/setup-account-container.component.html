@@ -29,24 +29,30 @@
             <section
                 class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-4 py-8"
             >
-                <app-setup-expenses></app-setup-expenses>
+                <app-setup-expenses
+                    (formData)="onExpenseFormDataUpdated($event)"
+                    (validityChanged)="onExpensesFormValidityChanged($event)"
+                ></app-setup-expenses>
             </section>
         }
 
         <div
             class="mt-16 flex w-full"
             [ngClass]="{
-                'justify-between': currentSection() > 0 && currentSection() < 2,
-                'justify-center':
-                    currentSection() === 0 || currentSection() === 2,
+                'justify-between': currentSection() > 0,
+                'justify-center': currentSection() === 0,
             }"
         >
             @if (currentSection() > 0) {
                 <button (click)="goBack()" hlmBtn>Back</button>
             }
 
-            <button (click)="goNext()" [disabled]="!isGoNextEnabled()" hlmBtn>
-                Continue
+            <button
+                (click)="onNextClick()"
+                [disabled]="!isNextEnabled()"
+                hlmBtn
+            >
+                {{ currentSection() === 2 ? 'Finish' : 'Continue' }}
             </button>
         </div>
     </div>

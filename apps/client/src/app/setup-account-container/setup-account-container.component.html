@@ -2,7 +2,8 @@
     <div class="m-auto lg:w-[70%]">
         @if (currentSection() === 0) {
             <section
-                class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-4 py-8"
+                hlmCard
+                class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-8 py-14"
             >
                 <div>
                     <h2 class="${hlmH2} text-center text-3xl lg:text-4xl">
@@ -16,9 +17,7 @@
         }
 
         @if (currentSection() === 1) {
-            <section
-                class="flex w-full max-w-[calc(100vw)] flex-col justify-center px-4 py-8"
-            >
+            <section hlmCard class="flex flex-col justify-center p-8">
                 <app-setup-income
                     (formData)="onIncomeFormDataUpdated($event)"
                     (validityChanged)="onIncomeFormValidityChanged($event)"
@@ -27,7 +26,8 @@
         }
         @if (currentSection() === 2) {
             <section
-                class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-4 py-8"
+                hlmCard
+                class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-8 py-14"
             >
                 <app-setup-expenses
                     (formData)="onExpenseFormDataUpdated($event)"
@@ -37,7 +37,7 @@
         }
 
         <div
-            class="mt-16 flex w-full"
+            class="mb-4 mt-16 flex w-full"
             [ngClass]="{
                 'justify-between': currentSection() > 0,
                 'justify-center': currentSection() === 0,
@@ -52,7 +52,7 @@
                 [disabled]="!isNextEnabled()"
                 hlmBtn
             >
-                {{ currentSection() === 2 ? 'Finish' : 'Continue' }}
+                {{ currentSection() === 2 ? 'Finish' : 'Next' }}
             </button>
         </div>
     </div>

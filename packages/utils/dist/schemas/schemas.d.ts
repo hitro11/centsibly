@@ -33,7 +33,7 @@ export declare const BudgetSchema: z.ZodObject<{
     month: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;
@@ -43,7 +43,7 @@ export declare const BudgetSchema: z.ZodObject<{
     month: string;
 }, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;
@@ -51,6 +51,43 @@ export declare const BudgetSchema: z.ZodObject<{
         actual?: number | undefined;
     }[];
     month: string;
+}>;
+export declare const BudgetForAccountSchema: z.ZodObject<Omit<{
+    email: z.ZodString;
+    currency: z.ZodEnum<["CAD", "EUR", "GBP", "INR", "JPY", "USD"]>;
+    income: z.ZodNumber;
+    expenses: z.ZodArray<z.ZodObject<{
+        name: z.ZodString;
+        amount: z.ZodNumber;
+        actual: z.ZodOptional<z.ZodNumber>;
+    }, "strip", z.ZodTypeAny, {
+        name: string;
+        amount: number;
+        actual?: number | undefined;
+    }, {
+        name: string;
+        amount: number;
+        actual?: number | undefined;
+    }>, "many">;
+    month: z.ZodString;
+}, "month">, "strip", z.ZodTypeAny, {
+    email: string;
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
+    income: number;
+    expenses: {
+        name: string;
+        amount: number;
+        actual?: number | undefined;
+    }[];
+}, {
+    email: string;
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
+    income: number;
+    expenses: {
+        name: string;
+        amount: number;
+        actual?: number | undefined;
+    }[];
 }>;
 export declare const TransactionSchema: z.ZodObject<{
     type: z.ZodEnum<["expense", "income"]>;
@@ -79,6 +116,7 @@ export declare const TransactionArraySchema: z.ZodArray<z.ZodObject<{
     category: string;
 }>, "many">;
 export type Budget = z.infer<typeof BudgetSchema>;
+export type BudgetForAccount = z.infer<typeof BudgetForAccountSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;
@@ -108,7 +146,7 @@ export declare const SettingsSchema: z.ZodObject<{
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;
@@ -117,7 +155,7 @@ export declare const SettingsSchema: z.ZodObject<{
     }[];
 }, {
     email: string;
-    currency: "CAD" | "EUR" | "GBP" | "JPY" | "USD" | "INR";
+    currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;

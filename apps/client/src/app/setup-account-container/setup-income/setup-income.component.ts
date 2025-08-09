@@ -1,13 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    computed,
-    effect,
-    inject,
-    OnDestroy,
-    OnInit,
-    output,
-} from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
@@ -56,6 +48,7 @@ import { DeepPartial, DeepPartialWithNull } from '../../shared/types';
         HlmPopoverCloseDirective,
         HlmPopoverContentDirective,
         HlmIconComponent,
+        HlmButtonDirective,
     ],
     providers: [provideIcons({ lucideDollarSign, lucideInfo })],
     templateUrl: './setup-income.component.html',
@@ -81,11 +74,11 @@ export class SetupIncomeComponent implements OnInit, OnDestroy {
 
     form = this.fb.group({
         currency: [
-            this.budgetService.initialBudget.currency,
+            this.budgetService.accountBudget.currency,
             [Validators.required],
         ],
         income: [
-            this.budgetService.initialBudget.income,
+            this.budgetService.accountBudget.income,
             [
                 Validators.required,
                 Validators.max(MAX_NUMBER_VALUE),

@@ -1,4 +1,4 @@
-<div>
+<div class="border-0">
     <h1 class="mt-8 text-center text-4xl">Expenses</h1>
 
     <p class="mt-12 text-center">
@@ -94,10 +94,7 @@
 
                         <div class="mt-8 flex justify-center gap-6">
                             @if ($index !== 0) {
-                                <button
-                                    (click)="deleteExpense($index)"
-                                    class=""
-                                >
+                                <button (click)="deleteExpense($index)">
                                     <hlm-icon
                                         class="delete"
                                         size="lg"

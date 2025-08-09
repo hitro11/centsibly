@@ -12,6 +12,11 @@ import { Budget, BudgetSchema } from 'utils/schemas/schemas';
 import { BudgetService } from './services/budget/budget.service';
 import { DeepPartial, DeepPartialWithNull } from '../shared/types';
 import { LocalStorageService } from '../shared/services/local-storage.service';
+import {
+    HlmCardContentDirective,
+    HlmCardDescriptionDirective,
+    HlmCardDirective,
+} from '@spartan-ng/ui-card-helm';
 
 @Component({
     selector: 'app-setup-account-container',
@@ -23,6 +28,9 @@ import { LocalStorageService } from '../shared/services/local-storage.service';
         SetupIncomeComponent,
         SetupExpensesComponent,
         HlmButtonDirective,
+        HlmCardDirective,
+        HlmCardContentDirective,
+        HlmCardDescriptionDirective,
     ],
     templateUrl: './setup-account-container.component.html',
     styleUrl: './setup-account-container.component.scss',
@@ -41,7 +49,7 @@ export class SetupAccountContainerComponent implements OnInit {
     isIncomeValid = signal<boolean>(false);
     isExpensesValid = signal<boolean>(false);
 
-    initialBudget = this.budgetService.initialBudget;
+    accountBudget = this.budgetService.accountBudget;
     currency?: Budget['currency'] | null | undefined;
     income?: Budget['income'] | null | undefined;
     expenses?: DeepPartialWithNull<Budget['expenses']>;
@@ -83,8 +91,8 @@ export class SetupAccountContainerComponent implements OnInit {
                 });
 
                 if (validatedData.success) {
-                    this.initialBudget.currency = validatedData.data.currency;
-                    this.initialBudget.income = validatedData.data.income;
+                    this.accountBudget.currency = validatedData.data.currency;
+                    this.accountBudget.income = validatedData.data.income;
                     this.currentSection.update((v) => v++);
                 } else {
                     console.error(validatedData.error);
@@ -104,14 +112,14 @@ export class SetupAccountContainerComponent implements OnInit {
                 const validatedData = this.validateExpenses(this.expenses);
 
                 if (validatedData.success) {
-                    this.initialBudget.expenses = validatedData.data.expenses;
+                    this.accountBudget.expenses = validatedData.data.expenses;
                 } else {
                     console.error(validatedData.error);
                     return;
                 }
 
                 this.localStorageService.delete(this.EXPENSE_FORM_NAME);
-                this.budgetService.onSetupFormSubmit();
+                this.budgetService.onAccountSetupFormSubmit();
                 break;
             }
 

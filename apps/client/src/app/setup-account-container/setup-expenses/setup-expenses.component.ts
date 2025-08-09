@@ -115,7 +115,7 @@ export class SetupExpensesComponent
         Validators.pattern(AMOUNT_REGEX),
     ];
 
-    expensesData = deepCopy(this.budgetService.initialBudget.expenses) ?? [];
+    expensesData = deepCopy(this.budgetService.accountBudget.expenses) ?? [];
 
     form = this.fb.group({
         expenses: this.fb.array([], [Validators.required]),
@@ -244,7 +244,7 @@ export class SetupExpensesComponent
     }
 
     validateTotalExpensesAgainstIncome() {
-        const income = this.budgetService.initialBudget.income ?? 0;
+        const income = this.budgetService.accountBudget.income ?? 0;
         const expenses = this.expensesFormControlArray.controls.map(
             (c) => c.value
         );
@@ -295,7 +295,7 @@ export class SetupExpensesComponent
                 expenses.push({ name, amount });
             }
 
-            this.budgetService.initialBudget.expenses = expenses;
+            this.budgetService.accountBudget.expenses = expenses;
         } catch (error) {
             console.error(error);
         }

@@ -2,8 +2,8 @@ import { firstValueFrom, Subject } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import {
     Budget,
-    BudgetForAccount,
-    BudgetForAccountSchema,
+    AccountInfo,
+    AccountInfoSchema,
     BudgetSchema,
     HTTPresponse,
 } from '@centsibly/utils/schemas';
@@ -27,7 +27,7 @@ export class BudgetService {
         currency: 'CAD',
     };
 
-    accountBudget: DeepPartial<BudgetForAccount> = {
+    accountBudget: DeepPartial<AccountInfo> = {
         currency: 'CAD',
     };
 
@@ -43,8 +43,7 @@ export class BudgetService {
         try {
             const data = this.accountBudget;
             data.email = this.userService.email();
-            const parsedData = BudgetForAccountSchema.parse(data);
-            console.log(parsedData);
+            const parsedData = AccountInfoSchema.parse(data);
             await this.updateAccountBudgetInfo(parsedData);
         } catch (error) {
             console.error(error);
@@ -60,10 +59,13 @@ export class BudgetService {
         }
     }
 
-    async updateAccountBudgetInfo(body: BudgetForAccount): Promise<unknown> {
+    async updateAccountBudgetInfo(body: AccountInfo): Promise<unknown> {
         try {
             return firstValueFrom(
-                this.httpClient.post(`${environment.API_URL}/account`, body)
+                this.httpClient.post(
+                    `${environment.API_URL}/user/account`,
+                    body
+                )
             );
         } catch (error) {
             console.error(error);

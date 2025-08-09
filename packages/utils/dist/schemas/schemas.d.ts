@@ -52,7 +52,7 @@ export declare const BudgetSchema: z.ZodObject<{
     }[];
     month: string;
 }>;
-export declare const BudgetForAccountSchema: z.ZodObject<Omit<{
+export declare const AccountInfoSchema: z.ZodObject<Omit<{
     email: z.ZodString;
     currency: z.ZodEnum<["CAD", "EUR", "GBP", "INR", "JPY", "USD"]>;
     income: z.ZodNumber;
@@ -116,7 +116,7 @@ export declare const TransactionArraySchema: z.ZodArray<z.ZodObject<{
     category: string;
 }>, "many">;
 export type Budget = z.infer<typeof BudgetSchema>;
-export type BudgetForAccount = z.infer<typeof BudgetForAccountSchema>;
+export type AccountInfo = z.infer<typeof AccountInfoSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;

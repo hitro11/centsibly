@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { SetupIncomeComponent } from './setup-income/setup-income.component';
 import { SetupExpensesComponent } from './setup-expenses/setup-expenses.component';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { Budget, BudgetSchema } from 'utils/schemas/schemas';
+import { AccountInfo, Budget, BudgetSchema } from 'utils/schemas/schemas';
 import { BudgetService } from './services/budget/budget.service';
 import { DeepPartial, DeepPartialWithNull } from '../shared/types';
 import { LocalStorageService } from '../shared/services/local-storage.service';
@@ -50,8 +50,8 @@ export class SetupAccountContainerComponent implements OnInit {
     isExpensesValid = signal<boolean>(false);
 
     accountBudget = this.budgetService.accountBudget;
-    currency?: Budget['currency'] | null | undefined;
-    income?: Budget['income'] | null | undefined;
+    currency?: AccountInfo['currency'] | null | undefined;
+    income?: AccountInfo['income'] | null | undefined;
     expenses?: DeepPartialWithNull<Budget['expenses']>;
     INCOME_FORM_NAME = this.budgetService.INCOME_FORM_NAME;
     EXPENSE_FORM_NAME = this.budgetService.EXPENSE_FORM_NAME;
@@ -118,8 +118,7 @@ export class SetupAccountContainerComponent implements OnInit {
                     return;
                 }
 
-                this.localStorageService.delete(this.EXPENSE_FORM_NAME);
-                this.budgetService.onAccountSetupFormSubmit();
+                this.onsubmit();
                 break;
             }
 
@@ -151,6 +150,13 @@ export class SetupAccountContainerComponent implements OnInit {
         this.currentSection.update((v) => v - 1);
     }
 
+    async onsubmit() {
+        this.localStorageService.delete(this.EXPENSE_FORM_NAME);
+        this.localStorageService.delete(this.INCOME_FORM_NAME);
+        await this.budgetService.onAccountSetupFormSubmit();
+        this.router.navigate(['/dashboard']);
+    }
+
     onIncomeFormValidityChanged($event: boolean) {
         this.isIncomeValid.set($event);
     }
@@ -161,8 +167,8 @@ export class SetupAccountContainerComponent implements OnInit {
 
     onIncomeFormDataUpdated(
         formValue: DeepPartialWithNull<{
-            currency: Budget['currency'];
-            income: Budget['income'];
+            currency: AccountInfo['currency'];
+            income: AccountInfo['income'];
         }>
     ) {
         this.currency = formValue?.currency;
@@ -170,19 +176,19 @@ export class SetupAccountContainerComponent implements OnInit {
     }
 
     onExpenseFormDataUpdated(
-        expenses: DeepPartialWithNull<Budget['expenses']>
+        expenses: DeepPartialWithNull<AccountInfo['expenses']>
     ) {
         this.expenses = expenses;
     }
 
-    validateIncome(data: DeepPartialWithNull<Budget>) {
+    validateIncome(data: DeepPartialWithNull<AccountInfo>) {
         return BudgetSchema.pick({
             currency: true,
             income: true,
         }).safeParse(data);
     }
 
-    validateExpenses(data: DeepPartialWithNull<Budget['expenses']>) {
+    validateExpenses(data: DeepPartialWithNull<AccountInfo['expenses']>) {
         const dataObject = { expenses: data };
         return BudgetSchema.pick({
             expenses: true,

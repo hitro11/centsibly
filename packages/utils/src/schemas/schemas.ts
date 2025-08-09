@@ -37,7 +37,7 @@ export const BudgetSchema = z.object({
         .regex(/^\d{4}-(0[1-9]|1[0-2])$/),
 });
 
-export const BudgetForAccountSchema = BudgetSchema.omit({ month: true });
+export const AccountInfoSchema = BudgetSchema.omit({ month: true });
 
 export const TransactionSchema = z.object({
     type: z.enum(['expense', 'income'], { message: 'Please sleect a type' }),
@@ -49,7 +49,7 @@ export const TransactionArraySchema = z.array(TransactionSchema);
 
 // Types
 export type Budget = z.infer<typeof BudgetSchema>;
-export type BudgetForAccount = z.infer<typeof BudgetForAccountSchema>;
+export type AccountInfo = z.infer<typeof AccountInfoSchema>;
 export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;

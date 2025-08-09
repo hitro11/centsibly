@@ -16,7 +16,7 @@ import {
     CURRENCIES,
     DEBOUNCE_TIME_MS,
 } from '@centsibly/utils/constants';
-import { Budget, Currency } from 'utils/schemas/schemas';
+import { AccountInfo, Currency } from 'utils/schemas/schemas';
 import { BudgetService } from '../services/budget/budget.service';
 import {
     BrnPopoverComponent,
@@ -57,8 +57,8 @@ import { DeepPartial, DeepPartialWithNull } from '../../shared/types';
 export class SetupIncomeComponent implements OnInit, OnDestroy {
     formData = output<
         DeepPartialWithNull<{
-            currency: Budget['currency'];
-            income: Budget['income'];
+            currency: AccountInfo['currency'];
+            income: AccountInfo['income'];
         }>
     >();
 

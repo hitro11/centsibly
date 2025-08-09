@@ -1,7 +1,7 @@
 import { Router, Response, Request, NextFunction } from 'express';
 import { UserController } from '../controllers/user-controller.js';
 import { validateData } from '../middleware/validation.middleware.js';
-import { BudgetSchema } from '@centsibly/utils/schemas';
+import { AccountInfoSchema, BudgetSchema } from '@centsibly/utils/schemas';
 
 const router = Router();
 
@@ -19,11 +19,11 @@ router.get(
 
 router.post(
     '/account',
-    validateData(BudgetSchema),
+    validateData(AccountInfoSchema),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const accountInfo = req.body;
-            await UserController.setAccount(req, accountInfo);
+            await UserController.updateAccount(req, accountInfo);
             res.json();
         } catch (error) {
             next(error);
@@ -74,18 +74,6 @@ router.get('/email', async (req, res, next: NextFunction) => {
     try {
         const email = await UserController.getEmail(req, res);
         res.json({ email });
-    } catch (error) {
-        next(error);
-    }
-});
-
-router.get('/exists', async (req, res, next: NextFunction) => {
-    try {
-        const doesAccountExist = await UserController.doesAccountExist(
-            req,
-            res
-        );
-        res.json({ doesAccountExist });
     } catch (error) {
         next(error);
     }

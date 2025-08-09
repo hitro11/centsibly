@@ -44,7 +44,7 @@ import {
     HlmCardDirective,
 } from '@spartan-ng/ui-card-helm';
 import { ThemeService } from '../../shared/services/theme.service';
-import { Budget, Expense } from '@centsibly/utils/schemas';
+import { AccountInfo, Expense } from '@centsibly/utils/schemas';
 import {
     HlmAlertDirective,
     HlmAlertDescriptionDirective,
@@ -87,7 +87,7 @@ export class SetupExpensesComponent
     implements OnInit, AfterViewInit, OnDestroy
 {
     updateSection = output<'previous' | 'next'>();
-    formData = output<DeepPartialWithNull<Budget['expenses']>>();
+    formData = output<DeepPartialWithNull<AccountInfo['expenses']>>();
     validityChanged = output<boolean>();
 
     fb = inject(FormBuilder);
@@ -266,8 +266,8 @@ export class SetupExpensesComponent
     }
 
     doExpensesExceedIncome(
-        income: Budget['income'],
-        expenses: Budget['expenses']
+        income: AccountInfo['income'],
+        expenses: AccountInfo['expenses']
     ): boolean {
         let totalExpenses = 0;
 

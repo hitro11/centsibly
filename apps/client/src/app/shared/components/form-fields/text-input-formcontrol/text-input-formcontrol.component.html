@@ -1,0 +1,15 @@
+<label *ngIf="label">{{ label }}</label>
+<input
+    type="text"
+    [value]="value"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [required]="required"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+    class="form-control"
+    [class.is-invalid]="errorMessage"
+/>
+<div *ngIf="errorMessage" class="invalid-feedback">
+    {{ errorMessage }}
+</div>

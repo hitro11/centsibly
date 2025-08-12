@@ -55,6 +55,7 @@ export class UserService {
             });
             return account;
         } catch (error) {
+            logger.error(error);
             throw error;
         }
     }

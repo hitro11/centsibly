@@ -3,6 +3,7 @@ import { effect, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import Session from 'supertokens-web-js/recipe/session';
+import { AccountInfo } from 'utils/schemas/schemas';
 
 @Injectable({
     providedIn: 'root',
@@ -48,5 +49,15 @@ export class UserService {
         );
 
         return response.doesAccountExist;
+    }
+
+    async getAccountInfo() {
+        const response = await firstValueFrom(
+            this.httpClient.get<{ accountInfo: AccountInfo }>(
+                `${environment.API_URL}/user/account`
+            )
+        );
+
+        console.log(response);
     }
 }

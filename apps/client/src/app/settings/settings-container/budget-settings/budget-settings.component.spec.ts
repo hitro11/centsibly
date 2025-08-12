@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsSectionComponent } from './settings-section.component';
+import { BudgetSettingsComponent } from './budget-settings.component';
 
-describe('SettingsSectionComponent', () => {
-  let component: SettingsSectionComponent;
-  let fixture: ComponentFixture<SettingsSectionComponent>;
+describe('BudgetSettingsComponent', () => {
+  let component: BudgetSettingsComponent;
+  let fixture: ComponentFixture<BudgetSettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SettingsSectionComponent]
+      imports: [BudgetSettingsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SettingsSectionComponent);
+    fixture = TestBed.createComponent(BudgetSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

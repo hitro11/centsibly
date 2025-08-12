@@ -4,6 +4,7 @@ import {
     ChangeDetectorRef,
     Component,
     inject,
+    input,
     OnDestroy,
     OnInit,
     output,
@@ -83,11 +84,20 @@ import { DeepPartialWithNull } from '../../shared/types';
     templateUrl: './setup-expenses.component.html',
     styleUrl: './setup-expenses.component.scss',
 })
-export class SetupExpensesComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
-    updateSection = output<'previous' | 'next'>();
-    formData = output<DeepPartialWithNull<AccountInfo['expenses']>>();
+export class SetupExpensesComponent implements OnInit, OnDestroy {
+    inputData = input<
+        DeepPartialWithNull<{
+            expenses: AccountInfo['expenses'];
+            income: AccountInfo['income'];
+        }>
+    >();
+
+    outputtedFormData = output<
+        DeepPartialWithNull<{
+            expenses: AccountInfo['expenses'];
+        }>
+    >();
+
     validityChanged = output<boolean>();
 
     fb = inject(FormBuilder);
@@ -96,9 +106,7 @@ export class SetupExpensesComponent
     localStorageService = inject(LocalStorageService);
     router = inject(Router);
     changeDetectorRef = inject(ChangeDetectorRef);
-
     private destroy$ = new Subject<void>();
-
     maxCharacterLimit = 25;
     theme = this.themeService.theme;
     EXPENSE_FORM_NAME = this.budgetService.EXPENSE_FORM_NAME;
@@ -115,42 +123,29 @@ export class SetupExpensesComponent
         Validators.pattern(AMOUNT_REGEX),
     ];
 
-    expensesData = deepCopy(this.budgetService.accountBudget.expenses) ?? [];
-
     form = this.fb.group({
-        expenses: this.fb.array([], [Validators.required]),
+        expenses: this.fb.array(
+            [],
+            [
+                Validators.required,
+                this.duplicateNameValidator(),
+                this.totalExpensesGreaterThanIncomeValidator(),
+            ]
+        ),
     });
 
     constructor() {}
 
     ngOnInit(): void {
-        const formDraft = this.localStorageService.get(this.EXPENSE_FORM_NAME);
-
-        if (formDraft) {
-            for (const expense of formDraft) {
-                this.addExpense(expense.name, expense.amount, true);
-            }
+        if (!this.inputData()?.expenses?.length) {
+            this.addExpense();
         } else {
-            if (!this.expensesData.length) {
-                this.addExpense();
-            } else {
-                for (const expense of this.expensesData) {
-                    this.addExpense(expense?.name, expense?.amount);
-                }
+            for (const expense of this.inputData()?.expenses ?? []) {
+                this.addExpense(expense?.name ?? '', expense?.amount ?? 0);
             }
         }
 
-        // required so that data is emitted to parent when loading
-        // form data from localstorage
-        if (this.form.valid) {
-            const expenses =
-                this.form.value.expenses?.map((value: any) => ({
-                    name: value?.name ?? null,
-                    amount: value?.amount ?? null,
-                })) ?? [];
-
-            this.formData.emit(expenses);
-        }
+        this.validityChanged.emit(this.form.valid);
 
         this.form.valueChanges
             .pipe(debounceTime(DEBOUNCE_TIME_MS), takeUntil(this.destroy$))
@@ -158,34 +153,37 @@ export class SetupExpensesComponent
                 const isFormValid = this.form.valid;
                 this.validityChanged.emit(isFormValid);
 
-                if (isFormValid) {
-                    const expenses =
-                        this.form.value.expenses?.map((value: any) => ({
-                            name: value?.name ?? null,
-                            amount: value?.amount ?? null,
-                        })) ?? [];
-
-                    this.formData.emit(expenses);
-                }
-            });
-
-        this.budgetService.saveExpenseForm
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.localStorageService.set(
-                    this.EXPENSE_FORM_NAME,
-                    this.form.controls['expenses'].getRawValue()
+                const expenses = this.generateOutputObject(
+                    this.form.value.expenses
                 );
+                this.outputtedFormData.emit(expenses);
             });
     }
 
-    ngAfterViewInit(): void {
-        this.validateTotalExpensesAgainstIncome();
-        this.validityChanged.emit(this.form.valid);
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     get expensesFormControlArray() {
         return this.form.controls['expenses'] as FormArray;
+    }
+
+    generateOutputObject(expenses: unknown[] | undefined): DeepPartialWithNull<{
+        expenses: AccountInfo['expenses'];
+    }> {
+        if (!expenses) {
+            return { expenses: [] };
+        }
+
+        const expensesObj = expenses?.map((value: any) => {
+            return {
+                name: value?.name ?? null,
+                amount: value?.amount ?? null,
+            };
+        });
+
+        return { expenses: expensesObj };
     }
 
     addExpense(name?: string, amount?: number, onInit = false) {
@@ -207,64 +205,6 @@ export class SetupExpensesComponent
         this.expensesFormControlArray?.removeAt(index);
     }
 
-    expenseNameUpdated() {
-        const names: string[] = [];
-
-        for (const control of this.expensesFormControlArray.controls) {
-            const expenseName: string = control.value.name;
-            const expenseNameFormControl = (control as FormGroup).controls[
-                'name'
-            ];
-
-            if (names.includes(expenseName?.toLowerCase())) {
-                expenseNameFormControl.setErrors({
-                    duplicateName: true,
-                });
-
-                const i = names.findIndex(
-                    (n) => n?.localeCompare(expenseName) === 0
-                );
-
-                (this.expensesFormControlArray.at(i) as FormGroup).controls[
-                    'name'
-                ].setErrors({
-                    duplicateName: true,
-                });
-            } else {
-                expenseNameFormControl.updateValueAndValidity();
-                expenseNameFormControl.setErrors(expenseNameFormControl.errors);
-            }
-
-            names.push(expenseName?.toLowerCase());
-        }
-    }
-
-    expenseAmountUpdated() {
-        this.validateTotalExpensesAgainstIncome();
-    }
-
-    validateTotalExpensesAgainstIncome() {
-        const income = this.budgetService.accountBudget.income ?? 0;
-        const expenses = this.expensesFormControlArray.controls.map(
-            (c) => c.value
-        );
-
-        const isExpensesExceedIncome = this.doExpensesExceedIncome(
-            income,
-            expenses
-        );
-
-        const errors = isExpensesExceedIncome
-            ? {
-                  ...this.form.errors,
-                  expensesGreaterThanIncome: true,
-              }
-            : this.form.errors;
-
-        this.form.setErrors(errors);
-        this.form.markAllAsTouched();
-    }
-
     doExpensesExceedIncome(
         income: AccountInfo['income'],
         expenses: AccountInfo['expenses']
@@ -278,31 +218,62 @@ export class SetupExpensesComponent
         return totalExpenses > income;
     }
 
-    async updateSectionFn(direction: 'previous' | 'next') {
-        try {
-            if (!this.form.valid && direction === 'next') {
-                return;
-            }
+    // custom validators
+    duplicateNameValidator(): ValidatorFn {
+        return (formArray: AbstractControl): ValidationErrors | null => {
+            if (!(formArray instanceof FormArray)) return null;
 
-            const expenses: Expense[] = [];
+            const names = new Set<string>();
+            const duplicates = new Set<string>();
 
-            for (let i = 0; i < this.expensesFormControlArray.length; i++) {
-                const name = this.expensesFormControlArray.at(i).value
-                    .name as string;
-                const amount = parseInt(
-                    this.expensesFormControlArray.at(i).value.amount
-                );
-                expenses.push({ name, amount });
-            }
+            // Find duplicates
+            formArray.controls.forEach((control) => {
+                const name = control.get('name')?.value?.toLowerCase();
+                if (name) {
+                    if (names.has(name)) {
+                        duplicates.add(name);
+                    } else {
+                        names.add(name);
+                    }
+                }
+            });
 
-            this.budgetService.accountBudget.expenses = expenses;
-        } catch (error) {
-            console.error(error);
-        }
+            // Set errors on individual controls
+            formArray.controls.forEach((control) => {
+                const nameControl = control.get('name');
+                const name = nameControl?.value?.toLowerCase();
+
+                if (name && duplicates.has(name)) {
+                    nameControl?.setErrors({
+                        ...nameControl.errors,
+                        duplicateName: true,
+                    });
+                } else if (nameControl?.errors?.['duplicateName']) {
+                    delete nameControl.errors['duplicateName'];
+                    const hasOtherErrors =
+                        Object.keys(nameControl.errors).length > 0;
+                    nameControl.setErrors(
+                        hasOtherErrors ? nameControl.errors : null
+                    );
+                }
+            });
+
+            return null;
+        };
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+    totalExpensesGreaterThanIncomeValidator(): ValidatorFn {
+        return (formArray: AbstractControl): ValidationErrors | null => {
+            if (!(formArray instanceof FormArray)) return null;
+
+            const expenses = formArray.controls.map((c) => c.value);
+            const income = this.inputData()?.income ?? 0;
+
+            if (this.doExpensesExceedIncome(income, expenses)) {
+                return { expensesGreaterThanIncome: true };
+            }
+
+            return null;
+        };
     }
 }

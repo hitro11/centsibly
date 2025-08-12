@@ -140,6 +140,9 @@ importers:
       '@spartan-ng/ui-tooltip-brain':
         specifier: 0.0.1-alpha.356
         version: 0.0.1-alpha.356(@angular/cdk@18.2.14(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(@spartan-ng/ui-core@0.0.1-alpha.380(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(clsx@2.1.1)(rxjs@7.8.1)(tailwind-merge@2.6.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.10.5)(typescript@5.5.4))))(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.10.5)(typescript@5.5.4))))(rxjs@7.8.1)
+      '@tanstack/angular-table':
+        specifier: ^8.21.3
+        version: 8.21.3(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))
       chart.js:
         specifier: ^4.4.7
         version: 4.4.7
@@ -2693,6 +2696,16 @@ packages:
       '@angular/core': ^18.0.0
       '@spartan-ng/ui-core': 0.0.1-alpha.356
       rxjs: ~7.8.0
+
+  '@tanstack/angular-table@8.21.3':
+    resolution: {integrity: sha512-8VqEGObnTBNJm3qQSPy+WEGqjXDLesEPSnBTEHdbHFh1rMP1pQsgI85Dwy8OX4kB82wIDvJuw4LceGIXZEbotA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@angular/core': '>=17'
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -10889,6 +10902,14 @@ snapshots:
       '@spartan-ng/ui-core': 0.0.1-alpha.380(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(clsx@2.1.1)(rxjs@7.8.1)(tailwind-merge@2.6.0)(tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.10.5)(typescript@5.5.4))))(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.10.5)(typescript@5.5.4)))
       rxjs: 7.8.1
       tslib: 2.8.1
+
+  '@tanstack/angular-table@8.21.3(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))':
+    dependencies:
+      '@angular/core': 18.2.13(rxjs@7.8.1)(zone.js@0.14.10)
+      '@tanstack/table-core': 8.21.3
+      tslib: 2.8.1
+
+  '@tanstack/table-core@8.21.3': {}
 
   '@trysound/sax@0.2.0': {}
 

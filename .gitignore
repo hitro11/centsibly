@@ -31,10 +31,8 @@ packages/utils/dist/*
 
 # Visual Studio Code
 client/.vscode/*
-!client/.vscode/settings.json
-!client/.vscode/tasks.json
-!client/.vscode/launch.json
-!client/.vscode/extensions.json
+.vscode/*
+!.vscode/launch.json
 .history/*
 
 # Miscellaneous

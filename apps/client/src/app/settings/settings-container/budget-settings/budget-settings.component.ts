@@ -1,25 +1,21 @@
-import { CURRENCIES } from '@centsibly/utils/constants';
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { SetupIncomeComponent } from '../../../setup-account-container/setup-income/setup-income.component';
+import { AccountInfo, AccountInfoSchema, Budget } from 'utils/schemas/schemas';
+import { DeepPartialWithNull } from '../../../shared/types';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
-import { AuthenticationService } from '../auth/services/authentication.service';
 import { Router } from '@angular/router';
-import { SetupIncomeComponent } from './setup-income/setup-income.component';
-import { SetupExpensesComponent } from './setup-expenses/setup-expenses.component';
+import { CURRENCIES } from 'utils/constants';
+import { AuthenticationService } from '../../../auth/services/authentication.service';
+import { BudgetService } from '../../../setup-account-container/services/budget/budget.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { CommonModule } from '@angular/common';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { AccountInfo, AccountInfoSchema } from 'utils/schemas/schemas';
-import { BudgetService } from './services/budget/budget.service';
-import { DeepPartialWithNull } from '../shared/types';
-import { LocalStorageService } from '../shared/services/local-storage.service';
-import {
-    HlmCardContentDirective,
-    HlmCardDescriptionDirective,
-    HlmCardDirective,
-} from '@spartan-ng/ui-card-helm';
+import { HlmCardDirective } from '@spartan-ng/ui-card-helm';
+import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
+import { SetupExpensesComponent } from '../../../setup-account-container/setup-expenses/setup-expenses.component';
 
 @Component({
-    selector: 'app-setup-account-container',
+    selector: 'app-budget-settings',
     standalone: true,
     imports: [
         ReactiveFormsModule,
@@ -29,13 +25,11 @@ import {
         SetupExpensesComponent,
         HlmButtonDirective,
         HlmCardDirective,
-        HlmCardContentDirective,
-        HlmCardDescriptionDirective,
     ],
-    templateUrl: './setup-account-container.component.html',
-    styleUrl: './setup-account-container.component.scss',
+    templateUrl: './budget-settings.component.html',
+    styleUrl: './budget-settings.component.scss',
 })
-export class SetupAccountContainerComponent implements OnInit {
+export class BudgetSettingsComponent {
     authService = inject(AuthenticationService);
     budgetService = inject(BudgetService);
     fb = inject(FormBuilder);
@@ -49,11 +43,12 @@ export class SetupAccountContainerComponent implements OnInit {
     isIncomeValid = signal<boolean>(false);
     isExpensesValid = signal<boolean>(false);
 
-    accountInfo: DeepPartialWithNull<AccountInfo> = {
-        currency: null,
-        income: null,
-        expenses: null,
-    };
+    accountBudget = this.budgetService.accountBudget;
+    currency?: AccountInfo['currency'] | null | undefined;
+    income?: AccountInfo['income'] | null | undefined;
+    expenses?: DeepPartialWithNull<{
+        expenses: AccountInfo['expenses'];
+    }>;
     INCOME_FORM_NAME = this.budgetService.INCOME_FORM_NAME;
     EXPENSE_FORM_NAME = this.budgetService.EXPENSE_FORM_NAME;
 
@@ -87,13 +82,13 @@ export class SetupAccountContainerComponent implements OnInit {
 
             case 1: {
                 const validatedData = this.validateIncome({
-                    currency: this.accountInfo.currency,
-                    income: this.accountInfo.income,
+                    currency: this.currency,
+                    income: this.income,
                 });
 
                 if (validatedData.success) {
-                    this.accountInfo.currency = validatedData.data.currency;
-                    this.accountInfo.income = validatedData.data.income;
+                    this.accountBudget.currency = validatedData.data.currency;
+                    this.accountBudget.income = validatedData.data.income;
                     this.currentSection.update((v) => v++);
                 } else {
                     console.error(validatedData.error);
@@ -106,16 +101,14 @@ export class SetupAccountContainerComponent implements OnInit {
             }
 
             case 2: {
-                if (!this.accountInfo.expenses) {
+                if (!this.expenses) {
                     return;
                 }
 
-                const validatedData = this.validateExpenses(
-                    this.accountInfo.expenses
-                );
+                const validatedData = this.validateExpenses(this.expenses);
 
                 if (validatedData.success) {
-                    this.accountInfo.expenses = validatedData.data.expenses;
+                    this.accountBudget.expenses = validatedData.data.expenses;
                 } else {
                     console.error(validatedData.error);
                     return;
@@ -154,7 +147,9 @@ export class SetupAccountContainerComponent implements OnInit {
     }
 
     async onsubmit() {
-        await this.budgetService.onAccountSetupFormSubmit(this.accountInfo);
+        this.localStorageService.delete(this.EXPENSE_FORM_NAME);
+        this.localStorageService.delete(this.INCOME_FORM_NAME);
+        // await this.budgetService.onAccountSetupFormSubmit();
         this.router.navigate(['/dashboard']);
     }
 
@@ -172,31 +167,30 @@ export class SetupAccountContainerComponent implements OnInit {
             income: AccountInfo['income'];
         }>
     ) {
-        this.accountInfo.currency = formValue?.currency;
-        this.accountInfo.income = formValue?.income;
+        this.currency = formValue?.currency;
+        this.income = formValue?.income;
     }
 
     onExpenseFormDataUpdated(
-        data: DeepPartialWithNull<{
+        expenses: DeepPartialWithNull<{
             expenses: AccountInfo['expenses'];
         }>
     ) {
-        this.accountInfo.expenses = data.expenses;
+        this.expenses = expenses;
     }
 
-    validateIncome(
-        data: DeepPartialWithNull<{
-            currency: AccountInfo['currency'];
-            income: AccountInfo['income'];
-        }>
-    ) {
+    validateIncome(data: DeepPartialWithNull<AccountInfo>) {
         return AccountInfoSchema.pick({
             currency: true,
             income: true,
         }).safeParse(data);
     }
 
-    validateExpenses(data: DeepPartialWithNull<AccountInfo['expenses']>) {
+    validateExpenses(
+        data: DeepPartialWithNull<{
+            expenses: AccountInfo['expenses'];
+        }>
+    ) {
         const dataObject = { expenses: data };
         return AccountInfoSchema.pick({
             expenses: true,

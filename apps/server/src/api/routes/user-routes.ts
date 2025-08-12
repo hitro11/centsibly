@@ -1,7 +1,7 @@
 import { Router, Response, Request, NextFunction } from 'express';
 import { UserController } from '../controllers/user-controller.js';
 import { validateData } from '../middleware/validation.middleware.js';
-import { AccountInfoSchema, BudgetSchema } from '@centsibly/utils/schemas';
+import { AccountInfoSchema } from '@centsibly/utils/schemas';
 
 const router = Router();
 

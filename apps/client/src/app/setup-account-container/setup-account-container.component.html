@@ -18,9 +18,15 @@
 
         @if (currentSection() === 1) {
             <section hlmCard class="flex flex-col justify-center p-8">
+                <h1 class="text-center text-4xl">Budget</h1>
+
                 <app-setup-income
-                    (formData)="onIncomeFormDataUpdated($event)"
+                    (outputtedFormData)="onIncomeFormDataUpdated($event)"
                     (validityChanged)="onIncomeFormValidityChanged($event)"
+                    [inputData]="{
+                        currency: accountInfo.currency,
+                        income: accountInfo.income,
+                    }"
                 ></app-setup-income>
             </section>
         }
@@ -29,9 +35,19 @@
                 hlmCard
                 class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-8 py-14"
             >
+                <h1 class="mt-8 text-center text-4xl">Expenses</h1>
+
+                <p class="mt-12 text-center">
+                    Enter your expenses for a typical month below. Each expense
+                    must have a category and an amount.
+                </p>
                 <app-setup-expenses
-                    (formData)="onExpenseFormDataUpdated($event)"
+                    (outputtedFormData)="onExpenseFormDataUpdated($event)"
                     (validityChanged)="onExpensesFormValidityChanged($event)"
+                    [inputData]="{
+                        expenses: accountInfo.expenses,
+                        income: accountInfo.income,
+                    }"
                 ></app-setup-expenses>
             </section>
         }

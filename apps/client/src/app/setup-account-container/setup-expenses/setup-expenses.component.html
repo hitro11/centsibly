@@ -1,20 +1,9 @@
 <div class="border-0">
-    <h1 class="mt-8 text-center text-4xl">Expenses</h1>
-
-    <p class="mt-12 text-center">
-        Enter your expenses for a typical month below. Each expense must have a
-        category and an amount.
-    </p>
-
-    <div style="display: none">
-        Form Errors: {{ form.errors | json }}<br />
-        Form Touched: {{ form.touched }}<br />
-        Form Dirty: {{ form.dirty }}
-    </div>
-
     <form class="mt-16" [formGroup]="form">
         <div class="errors mb-8">
-            @if (form.errors?.['expensesGreaterThanIncome']) {
+            @if (
+                expensesFormControlArray.errors?.['expensesGreaterThanIncome']
+            ) {
                 <div hlmAlert variant="destructive">
                     <hlm-icon
                         class="mt-1"
@@ -46,7 +35,6 @@
                                     hlmInput
                                     type="text"
                                     placeholder="Name"
-                                    (input)="expenseNameUpdated()"
                                 />
                             </label>
 
@@ -74,7 +62,6 @@
                                     type="number"
                                     step="1"
                                     placeholder="$"
-                                    (input)="expenseAmountUpdated()"
                                 />
                             </label>
 

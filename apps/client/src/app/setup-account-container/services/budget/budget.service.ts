@@ -8,7 +8,7 @@ import {
     HTTPresponse,
 } from '@centsibly/utils/schemas';
 import { getCurrentYearMonth } from '@centsibly/utils/utils';
-import { DeepPartial } from '../../../shared/types';
+import { DeepPartial, DeepPartialWithNull } from '../../../shared/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { UserService } from '../user.service';
@@ -39,9 +39,10 @@ export class BudgetService {
 
     constructor() {}
 
-    async onAccountSetupFormSubmit(): Promise<void> {
+    async onAccountSetupFormSubmit(
+        data: DeepPartialWithNull<AccountInfo>
+    ): Promise<void> {
         try {
-            const data = this.accountBudget;
             data.email = this.userService.email();
             const parsedData = AccountInfoSchema.parse(data);
             await this.updateAccountBudgetInfo(parsedData);

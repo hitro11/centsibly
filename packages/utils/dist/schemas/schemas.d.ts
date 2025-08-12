@@ -12,6 +12,16 @@ export declare const ExpenseSchema: z.ZodObject<{
     amount: number;
     actual?: number | undefined;
 }>;
+export declare const ExpenseSchemaForAccount: z.ZodObject<{
+    name: z.ZodString;
+    amount: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    amount: number;
+}, {
+    name: string;
+    amount: number;
+}>;
 export declare const CurrencySchema: z.ZodEnum<["CAD", "EUR", "GBP", "INR", "JPY", "USD"]>;
 export declare const BudgetSchema: z.ZodObject<{
     email: z.ZodString;
@@ -52,7 +62,7 @@ export declare const BudgetSchema: z.ZodObject<{
     }[];
     month: string;
 }>;
-export declare const AccountInfoSchema: z.ZodObject<Omit<{
+export declare const AccountInfoSchema: z.ZodObject<z.objectUtil.extendShape<Omit<{
     email: z.ZodString;
     currency: z.ZodEnum<["CAD", "EUR", "GBP", "INR", "JPY", "USD"]>;
     income: z.ZodNumber;
@@ -70,14 +80,25 @@ export declare const AccountInfoSchema: z.ZodObject<Omit<{
         actual?: number | undefined;
     }>, "many">;
     month: z.ZodString;
-}, "month">, "strip", z.ZodTypeAny, {
+}, "month">, {
+    expenses: z.ZodArray<z.ZodObject<Omit<{
+        name: z.ZodString;
+        amount: z.ZodNumber;
+        actual: z.ZodOptional<z.ZodNumber>;
+    }, "actual">, "strip", z.ZodTypeAny, {
+        name: string;
+        amount: number;
+    }, {
+        name: string;
+        amount: number;
+    }>, "many">;
+}>, "strip", z.ZodTypeAny, {
     email: string;
     currency: "CAD" | "EUR" | "GBP" | "INR" | "JPY" | "USD";
     income: number;
     expenses: {
         name: string;
         amount: number;
-        actual?: number | undefined;
     }[];
 }, {
     email: string;
@@ -86,7 +107,6 @@ export declare const AccountInfoSchema: z.ZodObject<Omit<{
     expenses: {
         name: string;
         amount: number;
-        actual?: number | undefined;
     }[];
 }>;
 export declare const TransactionSchema: z.ZodObject<{

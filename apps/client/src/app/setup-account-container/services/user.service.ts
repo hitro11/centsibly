@@ -51,13 +51,12 @@ export class UserService {
         return response.doesAccountExist;
     }
 
-    async getAccountInfo() {
-        const response = await firstValueFrom(
-            this.httpClient.get<{ accountInfo: AccountInfo }>(
+    async getAccountInfo(): Promise<AccountInfo> {
+        const resp = await firstValueFrom(
+            this.httpClient.get<AccountInfo>(
                 `${environment.API_URL}/user/account`
             )
         );
-
-        console.log(response);
+        return resp;
     }
 }

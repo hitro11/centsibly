@@ -5,9 +5,11 @@ import {
     Component,
     inject,
     input,
+    OnChanges,
     OnDestroy,
     OnInit,
     output,
+    SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
@@ -56,7 +58,7 @@ import { DeepPartialWithNull } from '../../shared/types';
     templateUrl: './setup-income.component.html',
     styleUrl: './setup-income.component.scss',
 })
-export class SetupIncomeComponent implements OnInit, OnDestroy {
+export class SetupIncomeComponent implements OnInit, OnChanges, OnDestroy {
     inputData = input<
         DeepPartialWithNull<{
             currency: AccountInfo['currency'];
@@ -101,12 +103,6 @@ export class SetupIncomeComponent implements OnInit, OnDestroy {
     constructor() {}
 
     ngOnInit(): void {
-        this.form.controls['currency'].setValue(
-            this.inputData()?.currency ?? 'CAD'
-        );
-        this.form.controls['income'].setValue(this.inputData()?.income);
-        this.validityChanged.emit(this.form.valid);
-
         this.form.valueChanges
             .pipe(debounceTime(DEBOUNCE_TIME_MS), takeUntil(this.destroy$))
             .subscribe(() => {
@@ -114,6 +110,16 @@ export class SetupIncomeComponent implements OnInit, OnDestroy {
                 this.validityChanged.emit(isFormValid);
                 this.outputtedFormData.emit(this.form.value);
             });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['inputData'] && changes['inputData'].currentValue) {
+            this.form.controls['currency'].setValue(
+                this.inputData()?.currency ?? 'CAD'
+            );
+            this.form.controls['income'].setValue(this.inputData()?.income);
+            this.validityChanged.emit(this.form.valid);
+        }
     }
 
     get currencyFormControl() {

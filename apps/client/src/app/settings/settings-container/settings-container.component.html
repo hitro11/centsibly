@@ -1,5 +1,76 @@
-<h2 class="text-center text-3xl lg:text-4xl">Settings</h2>
-<section class="mt-8">
-    <app-budget-settings></app-budget-settings>
+<h2 class="mt-8 text-center text-3xl lg:text-4xl">Settings</h2>
+<section class="m-auto mt-16 lg:w-[70%]">
+    <div hlmCard>
+        <div class="m-auto min-h-[calc(100dvh-81px-48px)] border-0">
+            <div class="mt-4">
+                <hlm-toaster
+                    [toastOptions]="{
+                        classes: {
+                            toast: 'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-green-900 group-[.toaster]:shadow-xl group-[.toaster]:border-2',
+                        },
+                    }"
+                    position="bottom-center"
+                    [closeButton]="true"
+                />
+            </div>
+            @if (
+                accountInfo.currency ||
+                accountInfo.income ||
+                accountInfo.expenses
+            ) {
+                <div class="m-auto mt-8 lg:w-[70%]">
+                    <section class="flex flex-col justify-center px-14 py-8">
+                        <div hlmCardHeader>
+                            <h1 hlmCardTitle class="text-xl">Income</h1>
+                        </div>
+                        <div hlmCardContent>
+                            <app-setup-income
+                                [inputData]="accountInfo"
+                                (outputtedFormData)="
+                                    onIncomeFormDataUpdated($event)
+                                "
+                                (validityChanged)="
+                                    onIncomeFormValidityChanged($event)
+                                "
+                            ></app-setup-income>
+                        </div>
+                    </section>
+                    <section
+                        class="mt-24 flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-14 py-8"
+                    >
+                        <h1 class="text-xl">Expenses Categories</h1>
+                        <app-setup-expenses
+                            [inputData]="accountInfo"
+                            (outputtedFormData)="
+                                onExpenseFormDataUpdated($event)
+                            "
+                            (validityChanged)="
+                                onExpensesFormValidityChanged($event)
+                            "
+                        ></app-setup-expenses>
+                    </section>
+                    <section class="mt-8 flex justify-between">
+                        <button
+                            type="reset"
+                            title="Reset settings form"
+                            (click)="resetSettings()"
+                            hlmBtn
+                        >
+                            Reset
+                        </button>
+
+                        <button
+                            type="submit"
+                            title="Update settings"
+                            (click)="onSubmit()"
+                            [disabled]="!isSubmitEnabled()"
+                            hlmBtn
+                        >
+                            Save
+                        </button>
+                    </section>
+                </div>
+            }
+        </div>
+    </div>
 </section>
-<brn-separator decorative hlmSeparator class="my-8" />

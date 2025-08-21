@@ -7,7 +7,9 @@ import {
     input,
     OnDestroy,
     OnInit,
+    OnChanges,
     output,
+    SimpleChanges,
 } from '@angular/core';
 import {
     AbstractControl,
@@ -84,7 +86,7 @@ import { DeepPartialWithNull } from '../../shared/types';
     templateUrl: './setup-expenses.component.html',
     styleUrl: './setup-expenses.component.scss',
 })
-export class SetupExpensesComponent implements OnInit, OnDestroy {
+export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
     inputData = input<
         DeepPartialWithNull<{
             expenses: AccountInfo['expenses'];
@@ -137,16 +139,6 @@ export class SetupExpensesComponent implements OnInit, OnDestroy {
     constructor() {}
 
     ngOnInit(): void {
-        if (!this.inputData()?.expenses?.length) {
-            this.addExpense();
-        } else {
-            for (const expense of this.inputData()?.expenses ?? []) {
-                this.addExpense(expense?.name ?? '', expense?.amount ?? 0);
-            }
-        }
-
-        this.validityChanged.emit(this.form.valid);
-
         this.form.valueChanges
             .pipe(debounceTime(DEBOUNCE_TIME_MS), takeUntil(this.destroy$))
             .subscribe(() => {
@@ -158,6 +150,29 @@ export class SetupExpensesComponent implements OnInit, OnDestroy {
                 );
                 this.outputtedFormData.emit(expenses);
             });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['inputData']?.currentValue) {
+            while (this.expensesFormControlArray.length > 0) {
+                this.expensesFormControlArray.removeAt(0);
+            }
+
+            setTimeout(() => {
+                if (!this.inputData()?.expenses?.length) {
+                    this.addExpense();
+                } else {
+                    for (const expense of this.inputData()?.expenses ?? []) {
+                        this.addExpense(
+                            expense?.name ?? '',
+                            expense?.amount ?? 0
+                        );
+                    }
+                }
+
+                this.validityChanged.emit(this.form.valid);
+            }, 0);
+        }
     }
 
     ngOnDestroy(): void {
@@ -186,7 +201,7 @@ export class SetupExpensesComponent implements OnInit, OnDestroy {
         return { expenses: expensesObj };
     }
 
-    addExpense(name?: string, amount?: number, onInit = false) {
+    addExpense(name?: string, amount?: number) {
         const newExpense = this.fb.group({
             name: [name, this.expenseNameValidators],
             amount: [amount, this.expenseAmountValidators],
@@ -195,10 +210,8 @@ export class SetupExpensesComponent implements OnInit, OnDestroy {
         this.expensesFormControlArray?.push(newExpense);
 
         // reset formgroup to prevent 'required' error from activating
-        if (!onInit) {
-            newExpense.markAsUntouched();
-            newExpense.updateValueAndValidity();
-        }
+        newExpense.markAsUntouched();
+        newExpense.updateValueAndValidity();
     }
 
     deleteExpense(index: number): void {

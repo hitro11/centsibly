@@ -81,7 +81,11 @@
 
                         <div class="mt-8 flex justify-center gap-6">
                             @if ($index !== 0) {
-                                <button (click)="deleteExpense($index)">
+                                <button
+                                    type="button"
+                                    title="Delete expense"
+                                    (click)="deleteExpense($index)"
+                                >
                                     <hlm-icon
                                         class="delete"
                                         size="lg"
@@ -95,7 +99,11 @@
             }
 
             <div class="flex flex-row justify-center">
-                <button (click)="addExpense()">
+                <button
+                    type="button"
+                    title="Add expense"
+                    (click)="addExpense()"
+                >
                     <hlm-icon
                         [ngClass]="{
                             add: theme() === 'light',

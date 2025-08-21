@@ -26,7 +26,6 @@ import EmailVerification from 'supertokens-node/recipe/emailverification';
 import { ErrorHandler } from './api/middleware/error-handler.middleware.js';
 import cron from 'node-cron';
 import ky from 'ky';
-import { BudgetService } from './api/services/budget.service.js';
 
 supertokens.init({
     framework: 'express',

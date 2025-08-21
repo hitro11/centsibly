@@ -27,7 +27,7 @@ export class SidenavComponent implements OnInit {
     authService = inject(AuthenticationService);
     // subreddits$: Observable<Subreddit[]>;
     subreddits: any = [];
-    isUserLoggedIn = this.authService.isUserLoggedIn();
+    isUserLoggedIn = this.authService.isUserLoggedIn;
 
     // constructor() {
     //   this.subreddits$ = this.profileService.getUserSubscribedSubreddits();

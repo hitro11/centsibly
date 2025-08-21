@@ -1,14 +1,9 @@
-<div class="">
-    <h1 class="mt-8 text-center text-4xl">Expenses</h1>
-
-    <p class="mt-12 text-center">
-        Enter your expenses for a typical month below. Each expense must have a
-        category and an amount.
-    </p>
-
+<div class="border-0">
     <form class="mt-16" [formGroup]="form">
         <div class="errors mb-8">
-            @if (form.errors?.['expensesGreaterThanIncome']) {
+            @if (
+                expensesFormControlArray.errors?.['expensesGreaterThanIncome']
+            ) {
                 <div hlmAlert variant="destructive">
                     <hlm-icon
                         class="mt-1"
@@ -24,7 +19,7 @@
         </div>
 
         <ng-container formArrayName="expenses">
-            @for (expense of expenses.controls; track $index) {
+            @for (expense of expensesFormControlArray.controls; track $index) {
                 <section class="mb-8 p-6" hlmCard>
                     <div
                         cardContent
@@ -40,21 +35,20 @@
                                     hlmInput
                                     type="text"
                                     placeholder="Name"
-                                    (input)="expenseNameUpdated()"
                                 />
                             </label>
 
-                            @let nameFC = expense?.get('name');
-                            @if (nameFC?.errors?.['pattern']) {
+                            @let nameFormControl = expense?.get('name');
+                            @if (nameFormControl?.errors?.['pattern']) {
                                 <hlm-error>Invalid characters</hlm-error>
                             }
-                            @if (nameFC?.errors?.['maxlength']) {
+                            @if (nameFormControl?.errors?.['maxlength']) {
                                 <hlm-error
                                     >Name cannot be greater than
                                     {{ maxCharacterLimit }} characters
                                 </hlm-error>
                             }
-                            @if (nameFC?.errors?.['duplicateName']) {
+                            @if (nameFormControl?.errors?.['duplicateName']) {
                                 <hlm-error>Duplicate name</hlm-error>
                             }
                         </hlm-form-field>
@@ -68,20 +62,17 @@
                                     type="number"
                                     step="1"
                                     placeholder="$"
-                                    (input)="expenseAmountUpdated()"
                                 />
                             </label>
 
-                            @let amountFC = expense?.get('amount');
-                            @if (amountFC?.errors?.['pattern']) {
+                            @let amountFormControl = expense?.get('amount');
+                            @if (amountFormControl?.errors?.['pattern']) {
                                 <hlm-error>Not a valid number</hlm-error>
-                            }
-                            @if (amountFC?.errors?.['min']) {
+                            } @else if (amountFormControl?.errors?.['min']) {
                                 <hlm-error
                                     >Expense cannot be less than 0</hlm-error
                                 >
-                            }
-                            @if (amountFC?.errors?.['max']) {
+                            } @else if (amountFormControl?.errors?.['max']) {
                                 <hlm-error
                                     >Expense exceeded maximum value</hlm-error
                                 >
@@ -91,8 +82,9 @@
                         <div class="mt-8 flex justify-center gap-6">
                             @if ($index !== 0) {
                                 <button
+                                    type="button"
+                                    title="Delete expense"
                                     (click)="deleteExpense($index)"
-                                    class=""
                                 >
                                     <hlm-icon
                                         class="delete"
@@ -107,7 +99,11 @@
             }
 
             <div class="flex flex-row justify-center">
-                <button (click)="addExpense()">
+                <button
+                    type="button"
+                    title="Add expense"
+                    (click)="addExpense()"
+                >
                     <hlm-icon
                         [ngClass]="{
                             add: theme() === 'light',
@@ -120,15 +116,4 @@
             </div>
         </ng-container>
     </form>
-
-    <div class="mt-16 flex justify-between">
-        <button (click)="updateSectionFn('previous')" hlmBtn>Back</button>
-        <button
-            (click)="updateSectionFn('next')"
-            [disabled]="!form.valid"
-            hlmBtn
-        >
-            Finish
-        </button>
-    </div>
 </div>

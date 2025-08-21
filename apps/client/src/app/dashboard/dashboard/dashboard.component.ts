@@ -3,17 +3,14 @@ import {
     effect,
     ElementRef,
     inject,
+    OnDestroy,
     OnInit,
     signal,
     ViewChild,
 } from '@angular/core';
-import { BudgetService } from '../../setup-account/services/budget/budget.service';
-import { Chart, ChartItem } from 'chart.js/auto';
-import {
-    getColorsForSummaryChart,
-    setLabelColor,
-    toTitleCase,
-} from '../../shared/utils';
+import { BudgetService } from '../../setup-account-container/services/budget/budget.service';
+import { Chart } from 'chart.js/auto';
+import { toTitleCase } from '../../shared/utils';
 import { ThemeService } from '../../shared/services/theme.service';
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { provideIcons } from '@ng-icons/core';
@@ -49,6 +46,7 @@ import { TransactionsListComponent } from './transactions-list/transactions-list
 import { TransactionService } from '../services/transaction.service';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { BrnSeparatorComponent } from '@spartan-ng/ui-separator-brain';
+import { ChartService } from '../../charts/chart.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -78,13 +76,15 @@ import { BrnSeparatorComponent } from '@spartan-ng/ui-separator-brain';
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
     @ViewChild('budgetSummary') chartCanvasRef!: ElementRef;
 
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
     transactionsService = inject(TransactionService);
-    theme = this.themeService.getTheme();
+    chartService = inject(ChartService);
+
+    theme = this.themeService.theme;
     summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
     expenses: Expense[] = [];
     month = getCurrentYearMonth();
@@ -94,31 +94,33 @@ export class DashboardComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            const currentTheme = this.theme();
+            const theme = this.themeService.theme();
 
             if (
-                this.isChart(this.summaryChart) &&
-                this.summaryChart.options?.plugins?.legend?.labels?.color
+                !this.chartService.isChart(this.summaryChart) ||
+                !this.summaryChart.options?.plugins?.legend?.labels?.color
             ) {
-                this.summaryChart.options.plugins.legend.labels.color =
-                    setLabelColor(currentTheme);
-                this.summaryChart.update();
+                return;
             }
+
+            this.summaryChart.options.plugins.legend.labels.color =
+                this.chartService.setLabelColor(theme);
+            this.summaryChart.update();
         });
     }
 
     async ngOnInit(): Promise<void> {
         try {
             await this.refreshTransactionsList();
-            const budget = await this.budgetService.getCurrentBudget();
-            if (!budget) {
-                console.log('no budget set. Please set it');
+            const currentBudget = await this.budgetService.getCurrentBudget();
+            if (!currentBudget) {
+                console.warn('no budget set. Please set it');
                 this.budgetExists.set(false);
                 return;
             }
             this.budgetExists.set(true);
-            const income = budget.income;
-            this.expenses = budget.expenses;
+            const income = currentBudget.income;
+            this.expenses = currentBudget.expenses;
             const surplus =
                 income -
                 this.expenses.reduce((total, current) => {
@@ -144,7 +146,9 @@ export class DashboardComponent implements OnInit {
                             ],
                             backgroundColor: [
                                 ...this.expenses.map((expense, i) =>
-                                    getColorsForSummaryChart(i)
+                                    this.chartService.getColorsForSummaryChart(
+                                        i
+                                    )
                                 ),
                                 CHART_COLOR_SURPLUS,
                             ],
@@ -160,7 +164,9 @@ export class DashboardComponent implements OnInit {
                             align: 'center',
                             labels: {
                                 padding: 25,
-                                color: setLabelColor(this.theme()),
+                                color: this.chartService.setLabelColor(
+                                    this.theme()
+                                ),
                                 usePointStyle: true,
                             },
                         },
@@ -172,13 +178,6 @@ export class DashboardComponent implements OnInit {
         }
     }
 
-    isChart(chart: any): chart is Chart {
-        return (
-            this.summaryChart.options?.plugins?.legend?.labels?.color !==
-            undefined
-        );
-    }
-
     async refreshTransactionsList() {
         this.transactions = await this.transactionsService.getTransactions();
     }
@@ -188,4 +187,6 @@ export class DashboardComponent implements OnInit {
             ((await this.budgetService.getCurrentBudget()) ?? {}).expenses ??
             [];
     }
+
+    ngOnDestroy() {}
 }

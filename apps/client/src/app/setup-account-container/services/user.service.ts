@@ -3,24 +3,26 @@ import { effect, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import Session from 'supertokens-web-js/recipe/session';
+import { AccountInfo } from 'utils/schemas/schemas';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
-    _email = signal('');
+    private _email = signal('');
+    readonly email = this._email.asReadonly();
 
     constructor(private httpClient: HttpClient) {
-        effect(async () => {
-            if (await Session.doesSessionExist()) {
-                const email = await this.getUserEmail();
-                this._email.set(email);
-            }
-        });
+        this.setUserEmail();
     }
 
-    get email(): string {
-        return this._email();
+    async setUserEmail() {
+        if (!(await Session.doesSessionExist())) {
+            return;
+        }
+
+        const email = await this.getUserEmail();
+        this._email.set(email);
     }
 
     async getUserAuthInfo(): Promise<unknown> {
@@ -47,5 +49,14 @@ export class UserService {
         );
 
         return response.doesAccountExist;
+    }
+
+    async getAccountInfo(): Promise<AccountInfo> {
+        const resp = await firstValueFrom(
+            this.httpClient.get<AccountInfo>(
+                `${environment.API_URL}/user/account`
+            )
+        );
+        return resp;
     }
 }

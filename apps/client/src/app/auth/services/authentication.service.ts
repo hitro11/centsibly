@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import EmailVerification from 'supertokens-web-js/recipe/emailverification';
+import SuperTokens from 'supertokens-web-js';
 
 @Injectable({
     providedIn: 'root',
@@ -15,24 +16,23 @@ export class AuthenticationService {
         inject(LocalStorageService);
     private router = inject(Router);
     private http = inject(HttpClient);
-    private isLoggedInSignal = signal(false);
+
+    private _isUserLoggedIn = signal(false);
+    readonly isUserLoggedIn = this._isUserLoggedIn.asReadonly();
 
     constructor() {
-        effect(async () => {
-            const isLoggedIn = await Session.doesSessionExist();
-            this.isLoggedInSignal.set(isLoggedIn);
-        });
+        this.checkAuthStatus();
     }
 
-    isUserLoggedIn() {
-        return this.isLoggedInSignal.asReadonly();
+    async checkAuthStatus(): Promise<void> {
+        this._isUserLoggedIn.set(await Session.doesSessionExist());
     }
 
     async signout(): Promise<void> {
         console.log('goodbye!');
         await Session.signOut();
         this.router.navigate(['/auth']);
-        this.isLoggedInSignal.set(false);
+        this._isUserLoggedIn.set(false);
     }
 
     async getUserId(): Promise<string> {

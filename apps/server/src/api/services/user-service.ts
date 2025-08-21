@@ -1,14 +1,14 @@
 import { logger } from '../../config/logger.js';
 import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
-import { Budget } from '@centsibly/utils/schemas';
+import { Budget, AccountInfo } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 
 export class UserService {
-    static async setAccount(email: string, budgetInfo: Budget) {
+    static async updateAccount(email: string, accountInfo: AccountInfo) {
         try {
             email = email.toLowerCase();
-            logger.debug(email, budgetInfo);
+            logger.debug(email, accountInfo);
             const accountsCollection = (await database()).collection(
                 'accounts'
             );
@@ -21,16 +21,16 @@ export class UserService {
 
             if (isExistingAccount) {
                 await accountsCollection.updateOne({ email }, [
-                    { $set: { currency: budgetInfo.currency } },
-                    { $set: { income: budgetInfo.income } },
-                    { $set: { expenses: budgetInfo.expenses } },
+                    { $set: { currency: accountInfo.currency } },
+                    { $set: { income: accountInfo.income } },
+                    { $set: { expenses: accountInfo.expenses } },
                 ]);
             } else {
                 await accountsCollection.insertOne({
                     email,
-                    currency: budgetInfo.currency,
-                    income: budgetInfo.income,
-                    expenses: budgetInfo.expenses,
+                    currency: accountInfo.currency,
+                    income: accountInfo.income,
+                    expenses: accountInfo.expenses,
                 });
             }
         } catch (error) {
@@ -55,22 +55,24 @@ export class UserService {
             });
             return account;
         } catch (error) {
+            logger.error(error);
             throw error;
         }
     }
 
-    static async getAuthInfo(req: unknown) {
+    static async getSupertokensUserInfo(req: unknown) {
         try {
             const userid = (req as SessionRequest).session!.getUserId();
             return await supertokens.getUser(userid);
         } catch (error) {
+            logger.error(error);
             throw error;
         }
     }
 
     static async getEmail(req: unknown): Promise<string | null> {
         try {
-            const userInfo = await this.getAuthInfo(req);
+            const userInfo = await this.getSupertokensUserInfo(req);
 
             if (!userInfo) {
                 throw new Error('user information not found');

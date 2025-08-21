@@ -5,6 +5,7 @@ import { userRoutes } from './user-routes.js';
 import { budgetRoutes } from './budget.routes.js';
 import { RequestHandler, Router } from 'express';
 import { transactionRoutes } from './transaction.routes.js';
+import { settingsRoutes } from './settings.routes.js';
 
 const indexRouter = Router();
 indexRouter.use('/auth', authRoutes);
@@ -15,4 +16,5 @@ indexRouter.use(
     verifySession() as RequestHandler,
     transactionRoutes
 );
+indexRouter.use('/settings', verifySession() as RequestHandler, settingsRoutes);
 export const router: Router = indexRouter;

@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { ThemeService } from './shared/services/theme.service';
@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 import ThirdParty from 'supertokens-web-js/recipe/thirdparty';
 import EmailPassword from 'supertokens-web-js/recipe/emailpassword';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { hlmH1 } from '@spartan-ng/ui-typography-helm';
 import EmailVerification from 'supertokens-web-js/recipe/emailverification';
 
 SuperTokens.init({
@@ -43,8 +42,8 @@ SuperTokens.init({
     styleUrl: './app.component.scss',
 })
 export class AppComponent {
-    title = 'rSlash';
+    title = 'centsibly';
     themeService: ThemeService = inject(ThemeService);
     authService: AuthenticationService = inject(AuthenticationService);
-    isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
+    isUserLoggedIn = this.authService.isUserLoggedIn();
 }

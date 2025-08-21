@@ -13,6 +13,10 @@ export const ExpenseSchema = z.object({
     amount: dollarAmountZod,
     actual: dollarAmountZod.optional(),
 });
+export const ExpenseSchemaForAccount = z.object({
+    name: z.string(),
+    amount: dollarAmountZod,
+});
 export const CurrencySchema = z.enum([
     'CAD',
     'EUR',
@@ -31,9 +35,18 @@ export const BudgetSchema = z.object({
         .length(7)
         .regex(/^\d{4}-(0[1-9]|1[0-2])$/),
 });
+export const AccountInfoSchema = BudgetSchema.omit({ month: true }).extend({
+    expenses: z.array(ExpenseSchema.omit({ actual: true })),
+});
 export const TransactionSchema = z.object({
     type: z.enum(['expense', 'income'], { message: 'Please sleect a type' }),
     category: z.string({ message: 'Please sleect a category' }).min(1),
     amount: dollarAmountZod,
 });
 export const TransactionArraySchema = z.array(TransactionSchema);
+export const SettingsSchema = z.object({
+    email: z.string().email('Invalid email'),
+    currency: CurrencySchema,
+    income: dollarAmountZod,
+    expenses: z.array(ExpenseSchema),
+});

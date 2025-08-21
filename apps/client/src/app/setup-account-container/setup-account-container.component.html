@@ -1,0 +1,75 @@
+<div class="m-auto flex min-h-[calc(100dvh-81px-48px)] border-0">
+    <div class="m-auto lg:w-[70%]">
+        @if (currentSection() === 0) {
+            <section
+                hlmCard
+                class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-8 py-14"
+            >
+                <div>
+                    <h2 class="${hlmH2} text-center text-3xl lg:text-4xl">
+                        Welcome to Centsibly!
+                    </h2>
+                    <p class="mt-12 text-center text-xl lg:text-2xl">
+                        Let's set up your budget in a few easy steps
+                    </p>
+                </div>
+            </section>
+        }
+
+        @if (currentSection() === 1) {
+            <section hlmCard class="flex flex-col justify-center p-8">
+                <h1 class="text-center text-4xl">Budget</h1>
+
+                <app-setup-income
+                    (outputtedFormData)="onIncomeFormDataUpdated($event)"
+                    (validityChanged)="onIncomeFormValidityChanged($event)"
+                    [inputData]="{
+                        currency: accountInfo.currency,
+                        income: accountInfo.income,
+                    }"
+                ></app-setup-income>
+            </section>
+        }
+        @if (currentSection() === 2) {
+            <section
+                hlmCard
+                class="flex w-full max-w-[calc(100vw-20px)] flex-col justify-center px-8 py-14"
+            >
+                <h1 class="mt-8 text-center text-4xl">Expenses</h1>
+
+                <p class="mt-12 text-center">
+                    Enter your expenses for a typical month below. Each expense
+                    must have a category and an amount.
+                </p>
+                <app-setup-expenses
+                    (outputtedFormData)="onExpenseFormDataUpdated($event)"
+                    (validityChanged)="onExpensesFormValidityChanged($event)"
+                    [inputData]="{
+                        expenses: accountInfo.expenses,
+                        income: accountInfo.income,
+                    }"
+                ></app-setup-expenses>
+            </section>
+        }
+
+        <div
+            class="mb-4 mt-16 flex w-full"
+            [ngClass]="{
+                'justify-between': currentSection() > 0,
+                'justify-center': currentSection() === 0,
+            }"
+        >
+            @if (currentSection() > 0) {
+                <button (click)="goBack()" hlmBtn>Back</button>
+            }
+
+            <button
+                (click)="onNextClick()"
+                [disabled]="!isNextEnabled()"
+                hlmBtn
+            >
+                {{ currentSection() === 2 ? 'Finish' : 'Next' }}
+            </button>
+        </div>
+    </div>
+</div>

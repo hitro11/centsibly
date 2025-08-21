@@ -24,9 +24,9 @@ import { HlmMenuModule } from '@spartan-ng/ui-menu-helm';
 export class HeaderComponent {
     logoPath = './img/logo.png';
     themeService: ThemeService = inject(ThemeService);
-    theme = this.themeService.getTheme();
+    theme = this.themeService.theme;
     authService: AuthenticationService = inject(AuthenticationService);
-    isUserLoggedIn: Signal<boolean> = this.authService.isUserLoggedIn();
+    isUserLoggedIn = this.authService.isUserLoggedIn;
     router = inject(Router);
     isUserVerified = false;
 

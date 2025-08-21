@@ -1,4 +1,3 @@
-import { ThemeService } from './../../../services/theme.service';
 import { AuthenticationService } from './../../../../auth/services/authentication.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../services/local-storage.service';
@@ -8,6 +7,7 @@ import {
     lucideLogOut,
     lucideMenu,
     lucideMoon,
+    lucideSettings,
     lucideUserCircle,
 } from '@ng-icons/lucide';
 
@@ -25,7 +25,7 @@ import {
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/ui-menu-brain';
 import { Router } from '@angular/router';
-import { UserService } from '../../../../setup-account/services/user.service';
+import { UserService } from '../../../../setup-account-container/services/user.service';
 
 @Component({
     selector: 'app-header-profile-dropdown',
@@ -49,6 +49,7 @@ import { UserService } from '../../../../setup-account/services/user.service';
     providers: [
         provideIcons({
             lucideUserCircle,
+            lucideSettings,
             lucideLogOut,
             lucideMoon,
             lucideMenu,
@@ -60,13 +61,17 @@ export class HeaderProfileDropdownComponent {
     authService = inject(AuthenticationService);
     userService = inject(UserService);
     localStorageService = inject(LocalStorageService);
-    email = this.userService._email;
-    isUserLoggedIn = this.authService.isUserLoggedIn();
     router = inject(Router);
+    email = this.userService.email;
+    isUserLoggedIn = this.authService.isUserLoggedIn;
 
     signInOrSignOut() {
         return this.isUserLoggedIn()
             ? this.authService.signout()
             : this.router.navigate(['/auth']);
+    }
+
+    onSettingsButtonClick(): void {
+        this.router.navigate(['/settings']);
     }
 }

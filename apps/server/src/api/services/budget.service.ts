@@ -2,71 +2,64 @@ import { logger } from '../../config/logger.js';
 import { Budget, Transaction, YearMonth } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { COLLECTIONS } from '../../config/constants.js';
-import { Collection, WithId } from 'mongodb';
+import { WithId } from 'mongodb';
 import {
     getCurrentYearMonth,
     getPreviousYearMonth,
 } from '@centsibly/utils/utils';
+import { UserService } from './user-service.js';
 
 export class BudgetService {
-    static async addBudget(email: string, budget: Budget): Promise<void> {
-        try {
-            email = email.toLowerCase();
-            const budgetsCollection = (await database()).collection(
-                COLLECTIONS.BUDGETS
-            );
+    static async addBudget(email: string, yearMonth: YearMonth): Promise<void> {
+        email = email.toLowerCase();
+        const accountInfo = await UserService.getAccount(email);
 
-            const budgetExists = !!(await budgetsCollection.countDocuments(
-                { email, month: budget.month },
-                { limit: 1 }
-            ));
+        try {
+            const budgetExists = !!(await this.getBudget(email, yearMonth));
 
             if (budgetExists) {
-                await budgetsCollection.updateOne(
-                    { email, month: budget.month },
-                    [
-                        { $set: { month: budget.month } },
-                        { $set: { currency: budget.currency } },
-                        { $set: { income: budget.income } },
-                        { $set: { expenses: budget.expenses } },
-                    ]
+                throw new Error(
+                    `budget already exists for ${email} in ${yearMonth}`
                 );
-            } else {
-                await budgetsCollection.insertOne({
-                    email,
-                    month: budget.month,
-                    currency: budget.currency,
-                    income: budget.income,
-                    expenses: budget.expenses,
-                });
             }
-        } catch (error) {
-            logger.error(error);
-            throw error;
+        } catch (error: any) {
+            if (error.message?.includes('budget already exists')) {
+                logger.error(error.message);
+            } else {
+                throw error;
+            }
         }
+
+        const budgetsCollection = (await database()).collection<Budget>(
+            COLLECTIONS.BUDGETS
+        );
+
+        await budgetsCollection.insertOne({
+            email,
+            month: yearMonth,
+            currency: accountInfo?.currency,
+            income: accountInfo?.income,
+            expenses: accountInfo?.expenses,
+        });
     }
 
     static async getBudget(
         email: string,
         month: string
     ): Promise<WithId<Budget> | null> {
-        try {
-            const budgetsCollection = (await database()).collection<Budget>(
-                COLLECTIONS.BUDGETS
-            );
+        const budgetsCollection = (await database()).collection<Budget>(
+            COLLECTIONS.BUDGETS
+        );
 
-            const budget = await budgetsCollection.findOne({
-                email: email.toLowerCase(),
-                month,
-            });
+        const budget = await budgetsCollection.findOne({
+            email: email.toLowerCase(),
+            month,
+        });
 
-            return budget ?? null;
-        } catch (error) {
-            throw error;
-        }
+        return budget;
     }
 
-    static async getBudgets(
+    static async getBudgetsInTimeRange(
         email: string,
         from: YearMonth,
         to: YearMonth
@@ -92,7 +85,9 @@ export class BudgetService {
         }
     }
 
-    static async getLatestBudget(email: string): Promise<WithId<Budget>[]> {
+    static async getLatestBudget(
+        email: string
+    ): Promise<WithId<Budget> | null> {
         try {
             const budgetsCollection = (await database()).collection<Budget>(
                 COLLECTIONS.BUDGETS
@@ -103,7 +98,7 @@ export class BudgetService {
                 month: getCurrentYearMonth(),
             });
 
-            return budget ? [budget] : [];
+            return budget ?? null;
         } catch (error) {
             throw error;
         }
@@ -114,7 +109,12 @@ export class BudgetService {
         transactions: Transaction[]
     ) {
         try {
-            const budget = (await this.getLatestBudget(email))[0];
+            const budget = await this.getLatestBudget(email);
+
+            if (!budget) {
+                throw new Error('Budget not found');
+                return;
+            }
 
             const budgetsCollection = (await database()).collection<Budget>(
                 COLLECTIONS.BUDGETS

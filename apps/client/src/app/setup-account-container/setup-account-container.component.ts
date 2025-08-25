@@ -137,12 +137,10 @@ export class SetupAccountContainerComponent implements OnInit {
 
         switch (this.currentSection()) {
             case 1: {
-                this.budgetService.saveFormToLocalStorage('income');
                 break;
             }
 
             case 2: {
-                this.budgetService.saveFormToLocalStorage('expense');
                 break;
             }
 

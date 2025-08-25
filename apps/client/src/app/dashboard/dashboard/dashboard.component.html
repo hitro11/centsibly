@@ -1,98 +1,141 @@
 <div class="mt-8 flex min-h-[calc(100dvh-81px-48px)] flex-col">
-    @if (!budgetExists()) {
-        <div hlmAlert>
-            <hlm-icon hlmAlertIcon name="lucideAlertTriangle" class="mt-1.5" />
-            <h4 class="mb-4 text-xl">Budget Not Found</h4>
-            <span hlmAlertDesc class="text-md">
-                Please create one
-                <a class="text-blue-500" routerLink="/setup-budget">here</a>.
-            </span>
-        </div>
+    @if (loading()) {
+        <hlm-spinner class="size-8 md:size-10" />
     } @else {
-        <h1 class="text-center text-4xl lg:text-5xl">
-            {{ monthasReadableText }}
-        </h1>
+        @if (budget$ | async; as budget) {
+            <h1 class="text-center text-5xl lg:text-6xl">
+                {{ monthasReadableText }}
+            </h1>
 
-        <div class="flex-1">
-            <div class="mt-20">
-                <h1 class="ml-4 text-center text-3xl lg:mt-24 lg:text-4xl">
-                    Expenses
-                </h1>
+            <div class="flex-1">
+                <div class="mt-20">
+                    <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
+                        Income
+                    </h1>
 
-                <div
-                    class="mt-4 flex flex-row flex-wrap justify-center gap-4 lg:mt-4"
-                >
-                    @for (expense of expenses; track $index) {
-                        <div class="mt-8 w-full md:w-[50%] lg:w-[25%]">
-                            <app-expense-category-summary
-                                [expense]="expense"
-                            ></app-expense-category-summary>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div class="mt-12">
-                <brn-separator hlmSeparator />
-            </div>
-
-            <div class="mt-8">
-                <h1 class="ml-4 text-center text-3xl lg:mt-24 lg:text-4xl">
-                    Transactions
-                </h1>
-
-                <div class="mt-4 flex flex-row justify-center">
-                    <app-transactions-list
-                        class="flex-1"
-                        [transactions]="transactions"
-                    ></app-transactions-list>
-                </div>
-            </div>
-
-            <div class="mt-8">
-                <brn-separator hlmSeparator />
-            </div>
-
-            <div class="mt-12">
-                <h1 class="text-center text-3xl lg:text-4xl">Summary</h1>
-                <div class="">
-                    <canvas
-                        #budgetSummary
-                        class="!m-auto !mt-6 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
-                        id="budgetSummary"
-                    ></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="fixed bottom-6 right-6 z-50">
-            <hlm-dialog>
-                <div class="mb-4 mr-2 flex flex-row justify-end">
-                    <button
-                        class="scale-[125%] shadow-lg dark:bg-gray-800"
-                        hlmBtn
-                        brnDialogTrigger
-                        size="icon"
-                        variant="outline"
+                    <div
+                        class="mt-4 flex flex-row flex-wrap justify-center gap-4 lg:mt-4"
                     >
-                        <hlm-icon size="xl" name="lucidePlus" />
-                    </button>
+                        <span class="text-3xl text-green-700"
+                            >${{ income$ | async }}</span
+                        >
+                    </div>
                 </div>
 
-                <hlm-dialog-content
-                    *brnDialogContent="let ctx"
-                    class="w-[calc(100vw-2rem)]"
-                >
-                    <hlm-dialog-header>
-                        <app-add-transaction
-                            [expenses]="expenses"
-                            (transactionSubmitted)="refreshTransactionsList()"
-                            (dialogClosed)="refreshBudget()"
-                        ></app-add-transaction>
-                    </hlm-dialog-header>
-                    <hlm-dialog-footer></hlm-dialog-footer>
-                </hlm-dialog-content>
-            </hlm-dialog>
-        </div>
+                <div class="mb-12 mt-12">
+                    <brn-separator hlmSeparator />
+                </div>
+
+                <div class="">
+                    <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
+                        Expense Categories
+                    </h1>
+
+                    <div
+                        class="mt-4 flex flex-row flex-wrap justify-center gap-4 lg:mt-4"
+                    >
+                        @for (expense of expenses$ | async; track $index) {
+                            <div
+                                [ngClass]="{
+                                    'mt-4': $index > 0,
+                                    'mt-2': $index === 0,
+                                }"
+                                class="w-full md:w-[50%] lg:w-[25%]"
+                            >
+                                <app-expense-category-summary
+                                    [expense]="expense"
+                                ></app-expense-category-summary>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="mb-12 mt-12">
+                    <brn-separator hlmSeparator />
+                </div>
+
+                <div class="">
+                    <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
+                        Transactions
+                    </h1>
+
+                    <div class="mt-8 flex flex-row justify-center">
+                        <app-transactions-list
+                            class="flex-1"
+                            [transactions]="transactions"
+                        ></app-transactions-list>
+                    </div>
+                </div>
+
+                <div class="mb-12 mt-12">
+                    <brn-separator hlmSeparator />
+                </div>
+
+                <div class="">
+                    <h1 class="text-center text-4xl lg:text-4xl">Summary</h1>
+                    <div class="">
+                        <canvas
+                            #budgetSummary
+                            class="!m-auto !mt-6 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
+                            id="budgetSummary"
+                        ></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fixed bottom-6 right-6 z-50">
+                <hlm-dialog>
+                    <div class="mb-4 mr-2 flex flex-row justify-end">
+                        <button
+                            type="button"
+                            title="Add a transaction"
+                            class="scale-[125%] shadow-lg dark:bg-gray-800"
+                            hlmBtn
+                            brnDialogTrigger
+                            size="icon"
+                            variant="outline"
+                        >
+                            <hlm-icon size="xl" name="lucidePlus" />
+                        </button>
+                    </div>
+
+                    <hlm-dialog-content
+                        *brnDialogContent="let ctx"
+                        class="w-[calc(100vw-2rem)]"
+                    >
+                        <hlm-dialog-header>
+                            <app-add-transaction
+                                [expenses]="[]"
+                                (transactionSubmitted)="
+                                    refreshTransactionsList()
+                                "
+                                (dialogClosed)="refreshBudget()"
+                            ></app-add-transaction>
+                        </hlm-dialog-header>
+                        <hlm-dialog-footer></hlm-dialog-footer>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+            </div>
+        } @else {
+            @if (!loading()) {
+                <div hlmAlert>
+                    <hlm-icon
+                        hlmAlertIcon
+                        name="lucideAlertTriangle"
+                        class="mt-1.5"
+                    />
+                    <h4 class="mb-4 text-xl">Budget Not Found</h4>
+                    <span hlmAlertDesc class="text-md">
+                        Please click
+                        <a
+                            class="cursor-pointer text-blue-500"
+                            (click)="createBudgetForCurrentMonth()"
+                            >here</a
+                        >
+                        to create one.
+                    </span>
+                </div>
+            }
+        }
     }
 </div>

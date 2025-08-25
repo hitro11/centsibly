@@ -2,6 +2,7 @@ import { Router, Response, Request, NextFunction } from 'express';
 import { UserController } from '../controllers/user-controller.js';
 import { validateData } from '../middleware/validation.middleware.js';
 import { AccountInfoSchema } from '@centsibly/utils/schemas';
+import { UserService } from '../services/user-service.js';
 
 const router = Router();
 
@@ -9,7 +10,8 @@ router.get(
     '/account',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const userInfo = await UserController.getAccount(req, res);
+            const email = await UserService.getEmail(req);
+            const userInfo = await UserController.getAccount(email ?? '');
             res.json(userInfo);
         } catch (error) {
             next(error);

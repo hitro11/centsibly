@@ -14,7 +14,7 @@ export const routes: Routes = [
     {
         path: '',
         component: LandingPageComponent,
-        canActivate: [NoAuthGuard],
+        // canActivate: [NoAuthGuard],
         data: { redirectTo: '/dashboard' },
     },
     {

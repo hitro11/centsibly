@@ -163,7 +163,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(middleware() as RequestHandler);
+app.use(middleware());
 app.use(morgan('common')); // request logging
 
 // Set the application to trust the reverse proxy

@@ -180,11 +180,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .subscribe((budget) => {
                 if (this.chartCanvasRef?.nativeElement) {
-                    console.log('chartCanvasRef rendered');
                     this.createOrUpdateChart(budget);
                 } else {
-                    console.warn('chartCanvasRef not rendered yet');
-
                     setTimeout(() => {
                         if (this.chartCanvasRef?.nativeElement) {
                             console.log('chartCanvasRef rendered');

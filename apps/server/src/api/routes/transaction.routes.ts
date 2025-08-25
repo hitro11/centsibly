@@ -1,10 +1,6 @@
 import { Router, Response, Request, NextFunction } from 'express';
 import { validateData } from '../middleware/validation.middleware.js';
-import {
-    HTTPresponse,
-    Transaction,
-    TransactionSchema,
-} from '@centsibly/utils/schemas';
+import { Transaction, TransactionSchema } from '@centsibly/utils/schemas';
 import { TransactionController } from '../controllers/transaction.controller.js';
 import { WithId } from 'mongodb';
 import { createHttpResponse } from '@centsibly/utils/utils';

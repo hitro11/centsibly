@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     Component,
     effect,
     ElementRef,
@@ -32,7 +33,7 @@ import {
 } from '@spartan-ng/ui-dialog-brain';
 
 import { AddTransactionComponent } from '../add-transaction/add-transaction.component';
-import { Expense, Transaction } from 'utils/schemas/schemas';
+import { Budget, Expense, Transaction } from 'utils/schemas/schemas';
 import { dateToReadableText, getCurrentYearMonth } from 'utils/utils/utils';
 import { CHART_COLOR_SURPLUS } from '../../shared/constants';
 import { ExpenseCategorySummaryComponent } from './expense-category-summary/expense-category-summary.component';
@@ -41,12 +42,26 @@ import {
     HlmAlertDirective,
     HlmAlertIconDirective,
 } from '@spartan-ng/ui-alert-helm';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TransactionsListComponent } from './transactions-list/transactions-list.component';
 import { TransactionService } from '../services/transaction.service';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { BrnSeparatorComponent } from '@spartan-ng/ui-separator-brain';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { ChartService } from '../../charts/chart.service';
+import { UserService } from '../../setup-account-container/services/user.service';
+import {
+    catchError,
+    filter,
+    map,
+    Observable,
+    of,
+    shareReplay,
+    Subject,
+    takeUntil,
+    tap,
+} from 'rxjs';
+import { AsyncPipe, NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-dashboard',
@@ -69,6 +84,9 @@ import { ChartService } from '../../charts/chart.service';
         TransactionsListComponent,
         HlmSeparatorDirective,
         BrnSeparatorComponent,
+        HlmSpinnerComponent,
+        AsyncPipe,
+        NgClass,
     ],
     providers: [
         provideIcons({ lucidePlus, lucidePlusCircle, lucideAlertTriangle }),
@@ -76,27 +94,36 @@ import { ChartService } from '../../charts/chart.service';
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('budgetSummary') chartCanvasRef!: ElementRef;
 
     budgetService = inject(BudgetService);
     themeService = inject(ThemeService);
     transactionsService = inject(TransactionService);
     chartService = inject(ChartService);
+    userService = inject(UserService);
+    router = inject(Router);
 
     theme = this.themeService.theme;
-    summaryChart: Partial<Chart<'doughnut', number[], string>> = {};
-    expenses: Expense[] = [];
+    summaryChart?: Partial<Chart<'doughnut', number[], string>>;
     month = getCurrentYearMonth();
     monthasReadableText = dateToReadableText(this.month);
-    budgetExists = signal(true);
+    budgetExists = signal(false);
+    loading = signal(true);
+
+    private destroy$ = new Subject<void>();
     transactions: Transaction[] = [];
+    budget$?: Observable<Budget | null>;
+    expenses$?: Observable<Expense[] | null>;
+    surplus$?: Observable<number | null>;
+    income$?: Observable<number | null>;
 
     constructor() {
         effect(() => {
             const theme = this.themeService.theme();
 
             if (
+                !this.summaryChart ||
                 !this.chartService.isChart(this.summaryChart) ||
                 !this.summaryChart.options?.plugins?.legend?.labels?.color
             ) {
@@ -109,84 +136,139 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
     }
 
-    async ngOnInit(): Promise<void> {
-        try {
-            await this.refreshTransactionsList();
-            const currentBudget = await this.budgetService.getCurrentBudget();
-            if (!currentBudget) {
-                console.warn('no budget set. Please set it');
-                this.budgetExists.set(false);
-                return;
-            }
-            this.budgetExists.set(true);
-            const income = currentBudget.income;
-            this.expenses = currentBudget.expenses;
-            const surplus =
-                income -
-                this.expenses.reduce((total, current) => {
-                    return total + current.amount;
-                }, 0);
-            this.summaryChart = new Chart(this.chartCanvasRef.nativeElement, {
-                type: 'doughnut',
-                data: {
-                    labels: [
-                        ...this.expenses.map(
-                            (expense) =>
-                                `${toTitleCase(expense.name)}: $${expense.amount}`
-                        ),
-                        `Surplus: $${surplus}`,
-                    ],
-                    datasets: [
-                        {
-                            data: [
-                                ...this.expenses.map(
-                                    (expense) => expense.amount
-                                ),
-                                surplus,
-                            ],
-                            backgroundColor: [
-                                ...this.expenses.map((expense, i) =>
-                                    this.chartService.getColorsForSummaryChart(
-                                        i
-                                    )
-                                ),
-                                CHART_COLOR_SURPLUS,
-                            ],
-                            borderColor: '#1c1b22',
-                            hoverOffset: 4,
-                        },
-                    ],
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            align: 'center',
-                            labels: {
-                                padding: 25,
-                                color: this.chartService.setLabelColor(
-                                    this.theme()
-                                ),
-                                usePointStyle: true,
-                            },
+    ngOnInit() {
+        this.budget$ = this.budgetService.getCurrentBudget().pipe(
+            tap(() => {
+                this.loading.set(false);
+            }),
+            catchError((err) => {
+                this.loading.set(false);
+                console.error('Error loading budget since', err);
+                return of(null);
+            }),
+            shareReplay({ bufferSize: 1, refCount: true }),
+            takeUntil(this.destroy$)
+        );
+
+        this.expenses$ = this.budget$.pipe(
+            filter((budget): budget is Budget => budget !== null),
+            map((budget) => budget.expenses)
+        );
+
+        this.income$ = this.budget$.pipe(
+            filter((budget): budget is Budget => budget !== null),
+            map((budget) => budget.income)
+        );
+
+        this.surplus$ = this.budget$.pipe(
+            filter((budget): budget is Budget => budget !== null),
+            map((budget) => {
+                const totalExpenses = budget.expenses.reduce(
+                    (total, expense) => total + expense.amount,
+                    0
+                );
+                return budget.income - totalExpenses;
+            })
+        );
+    }
+
+    ngAfterViewInit(): void {
+        this.budget$
+            ?.pipe(
+                filter((budget): budget is Budget => budget !== null),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((budget) => {
+                if (this.chartCanvasRef?.nativeElement) {
+                    this.createOrUpdateChart(budget);
+                } else {
+                    setTimeout(() => {
+                        if (this.chartCanvasRef?.nativeElement) {
+                            console.log('chartCanvasRef rendered');
+                            this.createOrUpdateChart(budget);
+                        }
+                    }, 0);
+                }
+            });
+    }
+
+    createOrUpdateChart(budget: Budget): void {
+        const surplus =
+            budget.income -
+            budget.expenses.reduce(
+                (total, expense) => total + expense.amount,
+                0
+            );
+
+        if (this.summaryChart && this.chartService.isChart(this.summaryChart)) {
+            this.summaryChart.destroy();
+        }
+
+        this.summaryChart = new Chart(this.chartCanvasRef.nativeElement, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    ...budget.expenses.map(
+                        (expense) =>
+                            `${toTitleCase(expense.name)}: ${expense.amount}`
+                    ),
+                    `Surplus: ${surplus}`,
+                ],
+                datasets: [
+                    {
+                        data: [
+                            ...budget.expenses.map((expense) => expense.amount),
+                            surplus,
+                        ],
+                        backgroundColor: [
+                            ...budget.expenses.map((expense, i) =>
+                                this.chartService.getColorsForSummaryChart(i)
+                            ),
+                            CHART_COLOR_SURPLUS,
+                        ],
+                        borderColor: '#1c1b22',
+                        hoverOffset: 4,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        align: 'center',
+                        labels: {
+                            padding: 25,
+                            color: this.chartService.setLabelColor(
+                                this.theme()
+                            ),
+                            usePointStyle: true,
                         },
                     },
                 },
-            });
-        } catch (error) {
-            console.log(error);
-        }
+            },
+        });
     }
 
     async refreshTransactionsList() {
         this.transactions = await this.transactionsService.getTransactions();
     }
 
-    async refreshBudget() {
-        this.expenses =
-            ((await this.budgetService.getCurrentBudget()) ?? {}).expenses ??
-            [];
+    refreshBudget() {
+        this.budgetService.refreshCurrentBudget();
     }
 
-    ngOnDestroy() {}
+    async createBudgetForCurrentMonth() {
+        const yearMonth = getCurrentYearMonth();
+        await this.budgetService.createBudgetForCurrentMonth(yearMonth);
+        this.router
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+                this.router.navigate(['/dashboard']);
+            });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }

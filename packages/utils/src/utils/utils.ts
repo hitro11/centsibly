@@ -1,4 +1,5 @@
-import { HTTPresponse, YearMonth } from '../../src/schemas/schemas.js';
+import { YearMonth } from '../../src/schemas/schemas.js';
+import { HTTPresponse } from './httpTypes.js';
 
 export function getCurrentYearMonth(): YearMonth {
     const date = new Date();

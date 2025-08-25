@@ -3,6 +3,7 @@ import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
 import { Budget, AccountInfo } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
+import { WithId } from 'mongodb';
 
 export class UserService {
     static async updateAccount(email: string, accountInfo: AccountInfo) {
@@ -39,25 +40,34 @@ export class UserService {
         }
     }
 
-    static async getAccount(req: unknown) {
+    static async getAccountOrNull(
+        email: string
+    ): Promise<WithId<AccountInfo> | null> {
         try {
-            const email = await this.getEmail(req);
-
             if (!email) {
-                throw new Error('Unauthorized');
+                throw new Error('email must be provided');
             }
-
             const accountsCollection = (await database()).collection(
                 'accounts'
             );
-            const account = await accountsCollection.findOne({
+            const account = await accountsCollection.findOne<
+                WithId<AccountInfo>
+            >({
                 email: email.toLowerCase(),
             });
             return account;
         } catch (error) {
-            logger.error(error);
+            logger.error('Error fetching account:', error);
             throw error;
         }
+    }
+
+    static async getAccount(email: string): Promise<WithId<AccountInfo>> {
+        const account = await this.getAccountOrNull(email);
+        if (!account) {
+            throw new Error(`Account not found: ${email}`);
+        }
+        return account;
     }
 
     static async getSupertokensUserInfo(req: unknown) {
@@ -70,7 +80,7 @@ export class UserService {
         }
     }
 
-    static async getEmail(req: unknown): Promise<string | null> {
+    static async getEmail(req: unknown): Promise<string> {
         try {
             const userInfo = await this.getSupertokensUserInfo(req);
 
@@ -78,14 +88,16 @@ export class UserService {
                 throw new Error('user information not found');
             }
 
-            return userInfo?.emails[0] ?? null;
+            return userInfo?.emails[0];
         } catch (error) {
+            logger.error(error);
             throw error;
         }
     }
 
     static async doesAccountExist(req: unknown): Promise<boolean> {
-        const doesAccountExist = !!(await this.getAccount(req));
+        const email = await this.getEmail(req);
+        const doesAccountExist = !!(await this.getAccount(email ?? ''));
         return doesAccountExist;
     }
 }

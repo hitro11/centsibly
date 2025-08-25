@@ -18,8 +18,8 @@ export class UserController {
         }
     }
 
-    static async getAccount(req: Request, res: Response) {
-        return await UserService.getAccount(req);
+    static async getAccount(email: string) {
+        return await UserService.getAccount(email);
     }
 
     static async getAuthInfo(req: Request, res: Response) {

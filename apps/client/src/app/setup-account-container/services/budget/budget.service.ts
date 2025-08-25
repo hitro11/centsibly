@@ -1,38 +1,38 @@
-import { firstValueFrom, Subject } from 'rxjs';
-import { inject, Injectable, signal } from '@angular/core';
+import {
+    firstValueFrom,
+    map,
+    Observable,
+    shareReplay,
+    startWith,
+    Subject,
+    switchMap,
+} from 'rxjs';
+import { inject, Injectable } from '@angular/core';
 import {
     Budget,
     AccountInfo,
     AccountInfoSchema,
-    BudgetSchema,
-    HTTPresponse,
+    YearMonth,
 } from '@centsibly/utils/schemas';
-import { getCurrentYearMonth } from '@centsibly/utils/utils';
+import {} from '@centsibly/utils/utils';
 import { DeepPartial, DeepPartialWithNull } from '../../../shared/types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { UserService } from '../user.service';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { BudgetHttpResponse } from 'utils/utils/httpTypes';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BudgetService {
-    httpClient = inject(HttpClient);
-    userService = inject(UserService);
-    localStorageService = inject(LocalStorageService);
+    private httpClient = inject(HttpClient);
+    private userService = inject(UserService);
 
-    // todo: possibly make this a signal?
-    initialBudget: DeepPartial<Budget> = {
-        currency: 'CAD',
-    };
+    private currentBudgetSubject$ = new Subject<void>();
 
     accountBudget: DeepPartial<AccountInfo> = {
         currency: 'CAD',
     };
-
-    saveIncomeForm = new Subject<void>();
-    saveExpenseForm = new Subject<void>();
 
     INCOME_FORM_NAME = 'incomeForm';
     EXPENSE_FORM_NAME = 'expenseForm';
@@ -49,14 +49,6 @@ export class BudgetService {
         } catch (error) {
             console.error(error);
             throw error;
-        }
-    }
-
-    saveFormToLocalStorage(form: 'income' | 'expense') {
-        if (form === 'income') {
-            this.saveIncomeForm.next();
-        } else {
-            this.saveExpenseForm.next();
         }
     }
 
@@ -85,19 +77,31 @@ export class BudgetService {
         }
     }
 
-    async getCurrentBudget(): Promise<Budget | null> {
-        try {
-            const resp = await firstValueFrom(
-                this.httpClient.get<HTTPresponse>(
-                    `${environment.API_URL}/budgets?current=true`
-                )
-            );
+    getCurrentBudget(): Observable<Budget | null> {
+        return this.currentBudgetSubject$.pipe(
+            startWith(void 0),
+            switchMap(() =>
+                this.httpClient
+                    .get<BudgetHttpResponse>(
+                        `${environment.API_URL}/budgets/current`
+                    )
+                    .pipe(map((resp) => resp.data as Budget | null))
+            ),
+            shareReplay({ bufferSize: 1, refCount: true })
+        );
+    }
 
-            const budget = (resp.data as Budget[])[0];
-            return budget ?? null;
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
+    refreshCurrentBudget() {
+        this.currentBudgetSubject$.next();
+    }
+
+    async createBudgetForCurrentMonth(yearMonth: YearMonth) {
+        const resp = await firstValueFrom(
+            this.httpClient.post<Budget>(`${environment.API_URL}/budgets`, {
+                yearMonth,
+            })
+        );
+
+        return resp;
     }
 }

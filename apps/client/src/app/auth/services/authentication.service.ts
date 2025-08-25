@@ -1,4 +1,4 @@
-import { HTTPresponse } from '@centsibly/utils/schemas';
+import { HTTPresponse } from '@centsibly/utils/httpTypes';
 import Session from 'supertokens-web-js/recipe/session';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';

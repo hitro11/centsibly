@@ -61,14 +61,6 @@ export type Currency = z.infer<typeof CurrencySchema>;
 export type Expense = z.infer<typeof ExpenseSchema>;
 export type Transaction = z.infer<typeof TransactionSchema>;
 
-// non schema types
-export type HTTPresponse = {
-    status: 'success' | 'error';
-    data: unknown;
-    error: null | unknown;
-    stack: null | unknown;
-};
-
 export type YearMonth =
     `${2}${0}${number}${number}-${'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12'}`;
 

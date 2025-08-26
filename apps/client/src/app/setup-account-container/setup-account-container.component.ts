@@ -121,7 +121,7 @@ export class SetupAccountContainerComponent implements OnInit {
                     return;
                 }
 
-                this.onsubmit();
+                this.onSubmit();
                 break;
             }
 
@@ -151,9 +151,12 @@ export class SetupAccountContainerComponent implements OnInit {
         this.currentSection.update((v) => v - 1);
     }
 
-    async onsubmit() {
-        await this.budgetService.onAccountSetupFormSubmit(this.accountInfo);
-        this.router.navigate(['/dashboard']);
+    onSubmit() {
+        this.budgetService
+            .onAccountSetupFormSubmit(this.accountInfo)
+            .subscribe(() => {
+                this.router.navigate(['/dashboard']);
+            });
     }
 
     onIncomeFormValidityChanged($event: boolean) {

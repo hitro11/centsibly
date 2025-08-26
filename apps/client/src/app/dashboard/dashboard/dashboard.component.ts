@@ -257,13 +257,28 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.budgetService.refreshCurrentBudget();
     }
 
-    async createBudgetForCurrentMonth() {
+    createBudgetForCurrentMonth() {
         const yearMonth = getCurrentYearMonth();
-        await this.budgetService.createBudgetForCurrentMonth(yearMonth);
-        this.router
-            .navigateByUrl('/', { skipLocationChange: true })
-            .then(() => {
-                this.router.navigate(['/dashboard']);
+
+        this.budgetService
+            .createBudget(yearMonth)
+            .pipe(
+                takeUntil(this.destroy$),
+                catchError((error) => {
+                    console.error(
+                        `Error creating budget for month ${yearMonth} since: ${error}`
+                    );
+                    return of(null);
+                })
+            )
+            .subscribe((resp) => {
+                if (resp) {
+                    this.router
+                        .navigateByUrl('/', { skipLocationChange: true })
+                        .then(() => {
+                            this.router.navigate(['/dashboard']);
+                        });
+                }
             });
     }
 

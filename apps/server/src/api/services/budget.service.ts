@@ -10,37 +10,36 @@ import {
 import { UserService } from './user-service.js';
 
 export class BudgetService {
-    static async addBudget(email: string, yearMonth: YearMonth): Promise<void> {
+    static async createBudget(
+        email: string,
+        yearMonth: YearMonth
+    ): Promise<Budget> {
         email = email.toLowerCase();
         const accountInfo = await UserService.getAccount(email);
 
-        try {
-            const budgetExists = !!(await this.getBudget(email, yearMonth));
+        const budgetExists = !!(await this.getBudget(email, yearMonth));
+        logger.debug({ budgetExists });
 
-            if (budgetExists) {
-                throw new Error(
-                    `budget already exists for ${email} in ${yearMonth}`
-                );
-            }
-        } catch (error: any) {
-            if (error.message?.includes('budget already exists')) {
-                logger.error(error.message);
-            } else {
-                throw error;
-            }
+        if (budgetExists) {
+            throw new Error(
+                `budget already exists for ${email} in ${yearMonth}`
+            );
         }
 
         const budgetsCollection = (await database()).collection<Budget>(
             COLLECTIONS.BUDGETS
         );
 
-        await budgetsCollection.insertOne({
+        const budget = {
             email,
             month: yearMonth,
             currency: accountInfo?.currency,
             income: accountInfo?.income,
             expenses: accountInfo?.expenses,
-        });
+        };
+
+        await budgetsCollection.insertOne(budget);
+        return budget;
     }
 
     static async getBudget(

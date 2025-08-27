@@ -7,11 +7,11 @@ import { WithId } from 'mongodb';
 import { getCurrentYearMonth } from '@centsibly/utils/utils';
 
 export class BudgetController {
-    static async addBudget(req: Request) {
+    static async createBudget(req: Request) {
         try {
             const email = await UserService.getEmail(req);
             const yearMonth = req.body.yearMonth ?? getCurrentYearMonth();
-            return await BudgetService.addBudget(email, yearMonth);
+            return await BudgetService.createBudget(email, yearMonth);
         } catch (error) {
             logger.error(error);
             throw error;

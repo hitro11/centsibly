@@ -259,27 +259,24 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
     doNothing(): void {}
 
     createBudgetForCurrentMonth() {
-        const yearMonth = getCurrentYearMonth();
-
         this.budgetService
-            .createBudget(yearMonth)
+            .createBudget(this.month)
             .pipe(
+                tap(() => this.loading.set(true)),
                 takeUntil(this.destroy$),
                 catchError((error) => {
                     console.error(
-                        `Error creating budget for month ${yearMonth} since: ${error}`
+                        `Error creating budget for month ${this.month} since: ${error}`
                     );
                     return of(null);
                 })
             )
             .subscribe((resp) => {
-                if (resp) {
-                    this.router
-                        .navigateByUrl('/', { skipLocationChange: true })
-                        .then(() => {
-                            this.router.navigate(['/dashboard']);
-                        });
-                }
+                this.router
+                    .navigateByUrl('/', { skipLocationChange: true })
+                    .then(() => {
+                        this.router.navigate(['/dashboard']);
+                    });
             });
     }
 

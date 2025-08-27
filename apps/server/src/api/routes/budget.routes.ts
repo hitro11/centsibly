@@ -3,6 +3,7 @@ import { Budget } from '@centsibly/utils/schemas';
 import { BudgetController } from '../controllers/budget.controller.js';
 import { createHttpResponse } from '@centsibly/utils/utils';
 import { WithId } from 'mongodb';
+import { logger } from '../../config/logger.js';
 
 const router = Router();
 
@@ -31,8 +32,8 @@ router.get(
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        await BudgetController.addBudget(req);
-        res.json(createHttpResponse('success', null, null, null));
+        const createdBudget = await BudgetController.createBudget(req);
+        res.json(createHttpResponse('success', createdBudget, null, null));
     } catch (error) {
         next(error);
     }

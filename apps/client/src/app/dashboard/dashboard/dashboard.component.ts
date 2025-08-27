@@ -1,4 +1,6 @@
 import {
+    AfterContentInit,
+    AfterViewChecked,
     AfterViewInit,
     Component,
     effect,
@@ -51,13 +53,16 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { ChartService } from '../../charts/chart.service';
 import { UserService } from '../../setup-account-container/services/user.service';
 import {
+    BehaviorSubject,
     catchError,
+    combineLatest,
     filter,
     map,
     Observable,
     of,
     shareReplay,
     Subject,
+    take,
     takeUntil,
     tap,
 } from 'rxjs';
@@ -94,7 +99,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
     @ViewChild('budgetSummary') chartCanvasRef!: ElementRef;
 
     budgetService = inject(BudgetService);
@@ -112,10 +117,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     loading = signal(true);
 
     private destroy$ = new Subject<void>();
-    transactions: Transaction[] = [];
+    private chartReady$ = new BehaviorSubject<boolean>(false);
+    transactions$?: Observable<Transaction[]>;
     budget$?: Observable<Budget | null>;
     expenses$?: Observable<Expense[] | null>;
-    surplus$?: Observable<number | null>;
     income$?: Observable<number | null>;
 
     constructor() {
@@ -138,15 +143,19 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         this.budget$ = this.budgetService.getCurrentBudget().pipe(
-            tap(() => {
-                this.loading.set(false);
-            }),
             catchError((err) => {
                 this.loading.set(false);
                 console.error('Error loading budget since', err);
                 return of(null);
             }),
-            shareReplay({ bufferSize: 1, refCount: true }),
+            takeUntil(this.destroy$)
+        );
+
+        this.transactions$ = this.transactionsService.getTransactions().pipe(
+            catchError((err) => {
+                console.error('Error loading transactions since', err);
+                return of([]);
+            }),
             takeUntil(this.destroy$)
         );
 
@@ -160,49 +169,62 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             map((budget) => budget.income)
         );
 
-        this.surplus$ = this.budget$.pipe(
-            filter((budget): budget is Budget => budget !== null),
-            map((budget) => {
-                const totalExpenses = budget.expenses.reduce(
-                    (total, expense) => total + expense.amount,
-                    0
-                );
-                return budget.income - totalExpenses;
-            })
-        );
-    }
+        combineLatest([this.budget$, this.transactions$, this.expenses$])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.loading.set(false));
 
-    ngAfterViewInit(): void {
-        this.budget$
-            ?.pipe(
-                filter((budget): budget is Budget => budget !== null),
-                takeUntil(this.destroy$)
-            )
-            .subscribe((budget) => {
-                if (this.chartCanvasRef?.nativeElement) {
-                    this.createOrUpdateChart(budget);
-                } else {
-                    setTimeout(() => {
-                        if (this.chartCanvasRef?.nativeElement) {
-                            console.log('chartCanvasRef rendered');
-                            this.createOrUpdateChart(budget);
-                        }
-                    }, 0);
-                }
+        this.checkIfCanvasReady();
+        combineLatest([
+            this.budget$!.pipe(
+                filter((budget): budget is Budget => budget !== null)
+            ),
+            this.chartReady$.pipe(filter((ready) => ready)),
+        ])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(([budget]) => {
+                this.createOrUpdateChart(budget);
             });
     }
 
+    ngAfterViewChecked(): void {
+        if (!this.chartReady$.value && this.chartCanvasRef?.nativeElement) {
+            this.chartReady$.next(true);
+        }
+    }
+
+    onTransactionScreenClosed() {
+        this.loading.set(true);
+        this.chartReady$.next(false);
+        this.budgetService.refreshCurrentBudget();
+        this.transactionsService.refreshTransactions();
+    }
+
+    private checkIfCanvasReady() {
+        const check = () => {
+            if (this.chartCanvasRef?.nativeElement) {
+                this.chartReady$.next(true);
+            } else {
+                setTimeout(check, 50);
+            }
+        };
+        check();
+    }
+
     createOrUpdateChart(budget: Budget): void {
+        if (!this.chartCanvasRef?.nativeElement) {
+            return;
+        }
+
+        if (this.summaryChart && this.chartService.isChart(this.summaryChart)) {
+            this.summaryChart.destroy();
+        }
+
         const surplus =
             budget.income -
             budget.expenses.reduce(
                 (total, expense) => total + expense.amount,
                 0
             );
-
-        if (this.summaryChart && this.chartService.isChart(this.summaryChart)) {
-            this.summaryChart.destroy();
-        }
 
         this.summaryChart = new Chart(this.chartCanvasRef.nativeElement, {
             type: 'doughnut',
@@ -249,21 +271,30 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    async refreshTransactionsList() {
-        this.transactions = await this.transactionsService.getTransactions();
-    }
+    doNothing(): void {}
 
-    refreshBudget() {
-        this.budgetService.refreshCurrentBudget();
-    }
-
-    async createBudgetForCurrentMonth() {
+    createBudgetForCurrentMonth() {
         const yearMonth = getCurrentYearMonth();
-        await this.budgetService.createBudgetForCurrentMonth(yearMonth);
-        this.router
-            .navigateByUrl('/', { skipLocationChange: true })
-            .then(() => {
-                this.router.navigate(['/dashboard']);
+
+        this.budgetService
+            .createBudget(yearMonth)
+            .pipe(
+                takeUntil(this.destroy$),
+                catchError((error) => {
+                    console.error(
+                        `Error creating budget for month ${yearMonth} since: ${error}`
+                    );
+                    return of(null);
+                })
+            )
+            .subscribe((resp) => {
+                if (resp) {
+                    this.router
+                        .navigateByUrl('/', { skipLocationChange: true })
+                        .then(() => {
+                            this.router.navigate(['/dashboard']);
+                        });
+                }
             });
     }
 

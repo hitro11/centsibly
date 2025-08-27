@@ -1,6 +1,17 @@
-import { firstValueFrom } from 'rxjs';
+import {
+    catchError,
+    map,
+    Observable,
+    of,
+    shareReplay,
+    startWith,
+    Subject,
+    switchMap,
+    tap,
+} from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import {
+    Budget,
     Transaction,
     TransactionArraySchema,
     TransactionSchema,
@@ -13,38 +24,45 @@ import { environment } from '../../../../environments/environment';
 })
 export class TransactionService {
     httpClient = inject(HttpClient);
+    private transactionsSubject$ = new Subject<void>();
 
     constructor() {}
 
-    async postTransactions(transaction: Transaction): Promise<HTTPresponse> {
-        return firstValueFrom(
-            this.httpClient.post<HTTPresponse>(
-                `${environment.API_URL}/transactions`,
-                transaction
-            )
+    postTransactions(transaction: Transaction) {
+        return this.httpClient.post<HTTPresponse>(
+            `${environment.API_URL}/transactions`,
+            transaction
         );
     }
 
-    async getTransactions(): Promise<Transaction[] | []> {
-        try {
-            const response = await firstValueFrom(
-                this.httpClient.get<HTTPresponse>(
-                    `${environment.API_URL}/transactions`
-                )
-            );
+    getTransactions(): Observable<Transaction[]> {
+        return this.transactionsSubject$.pipe(
+            startWith(void 0),
+            switchMap(() =>
+                this.httpClient
+                    .get<HTTPresponse>(`${environment.API_URL}/transactions`)
+                    .pipe(
+                        map((resp) => {
+                            if (this.isTransactionArray(resp.data)) {
+                                return resp.data;
+                            }
+                            return [];
+                        }),
+                        catchError((error) => {
+                            console.error(
+                                'Failed to fetch transactions:',
+                                error
+                            );
+                            return of([]);
+                        })
+                    )
+            ),
+            shareReplay({ bufferSize: 1, refCount: true })
+        );
+    }
 
-            if (this.isTransactionArray(response.data)) {
-                return response.data;
-            } else {
-                console.error(
-                    'Invalid data structure: ' + JSON.stringify(response.error)
-                );
-                return [];
-            }
-        } catch (error) {
-            console.error('Failed to fetch transactions:', error);
-            return [];
-        }
+    refreshTransactions() {
+        this.transactionsSubject$.next();
     }
 
     isTransactionArray(data: unknown): data is Transaction[] {

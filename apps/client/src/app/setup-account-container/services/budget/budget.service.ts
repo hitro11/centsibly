@@ -39,42 +39,17 @@ export class BudgetService {
 
     constructor() {}
 
-    async onAccountSetupFormSubmit(
-        data: DeepPartialWithNull<AccountInfo>
-    ): Promise<void> {
-        try {
-            data.email = this.userService.email();
-            const parsedData = AccountInfoSchema.parse(data);
-            await this.updateAccountBudgetInfo(parsedData);
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
+    onAccountSetupFormSubmit(data: DeepPartialWithNull<AccountInfo>) {
+        data.email = this.userService.email();
+        const parsedData = AccountInfoSchema.parse(data);
+        return this.updateAccountBudgetInfo(parsedData);
     }
 
-    async updateAccountBudgetInfo(body: AccountInfo): Promise<unknown> {
-        try {
-            return firstValueFrom(
-                this.httpClient.post(
-                    `${environment.API_URL}/user/account`,
-                    body
-                )
-            );
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    }
-
-    async addBudget(body: unknown): Promise<unknown> {
-        try {
-            return firstValueFrom(
-                this.httpClient.post(`${environment.API_URL}/budgets`, body)
-            );
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
+    updateAccountBudgetInfo(body: AccountInfo) {
+        return this.httpClient.post(
+            `${environment.API_URL}/user/account`,
+            body
+        );
     }
 
     getCurrentBudget(): Observable<Budget | null> {
@@ -95,13 +70,11 @@ export class BudgetService {
         this.currentBudgetSubject$.next();
     }
 
-    async createBudgetForCurrentMonth(yearMonth: YearMonth) {
-        const resp = await firstValueFrom(
-            this.httpClient.post<Budget>(`${environment.API_URL}/budgets`, {
+    createBudget(yearMonth: YearMonth): Observable<Budget | null> {
+        return this.httpClient
+            .post<BudgetHttpResponse>(`${environment.API_URL}/budgets`, {
                 yearMonth,
             })
-        );
-
-        return resp;
+            .pipe(map((resp) => resp.data as Budget | null));
     }
 }

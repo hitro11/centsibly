@@ -1,5 +1,5 @@
 <div class="text-left">
-    <h2 class="mt-8 text-center text-2xl">New Transaction</h2>
+    <h2 class="mt-8 text-center text-2xl">Add Transaction</h2>
 
     <form class="mt-12" [formGroup]="form">
         <hlm-form-field class="mt-8">
@@ -77,11 +77,11 @@
         <div class="flex flex-row justify-center">
             <button
                 (click)="onSubmit()"
-                [disabled]="form.invalid || !form.dirty"
+                [disabled]="false && (form.invalid || !form.dirty)"
                 class="mt-14 w-full"
                 hlmBtn
             >
-                @if (submissionStatus === 'loading') {
+                @if (submissionStatus() === 'loading') {
                     <hlm-spinner />
                 } @else {
                     Submit
@@ -90,13 +90,13 @@
         </div>
     </form>
 
-    @if (submissionStatus === 'submitted') {
-        <div hlmAlert class="mt-6 border-green-600 bg-green-600 p-1">
+    @if (submissionStatus() === 'submitted') {
+        <div hlmAlert class="mt-6 border-green-600 p-1">
             <p hlmAlertDesc class="">Transaction Submitted!</p>
         </div>
     }
 
-    @if (submissionStatus === 'submittedWithError') {
+    @if (submissionStatus() === 'submittedWithError') {
         <div hlmAlert class="mt-6 border-red-600 p-1 px-2">
             <p hlmAlertDesc class="">Error: {{ submissionError }}</p>
         </div>

@@ -89,10 +89,12 @@ export class SettingsContainerComponent implements OnInit {
             JSON.stringify(this.accountInfo) !==
             JSON.stringify(this.originalAccountInfo)
         ) {
-            await this.budgetService.onAccountSetupFormSubmit(this.accountInfo);
+            this.budgetService
+                .onAccountSetupFormSubmit(this.accountInfo)
+                .subscribe((resp) => {
+                    this.showToast();
+                });
         }
-
-        this.showToast();
     }
 
     resetSettings() {

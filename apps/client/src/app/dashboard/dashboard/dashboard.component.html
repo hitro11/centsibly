@@ -59,12 +59,20 @@
                         Transactions
                     </h1>
 
-                    <div class="mt-8 flex flex-row justify-center">
-                        <app-transactions-list
-                            class="flex-1"
-                            [transactions]="transactions"
-                        ></app-transactions-list>
-                    </div>
+                    @if (transactions$ | async; as transactions) {
+                        @if (transactions.length) {
+                            <div class="mt-8 flex flex-row justify-center">
+                                <app-transactions-list
+                                    class="flex-1"
+                                    [transactions]="transactions ?? []"
+                                ></app-transactions-list>
+                            </div>
+                        } @else {
+                            <p class="mt-8 text-center text-lg">
+                                Error fetching transactions
+                            </p>
+                        }
+                    }
                 </div>
 
                 <div class="mb-12 mt-12">
@@ -76,7 +84,7 @@
                     <div class="">
                         <canvas
                             #budgetSummary
-                            class="!m-auto !mt-6 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
+                            class="!m-auto !mt-12 !block !w-[100%] md:!h-[50%] md:!w-[50%] lg:!h-[35%] lg:!w-[35%]"
                             id="budgetSummary"
                         ></canvas>
                     </div>
@@ -101,15 +109,13 @@
 
                     <hlm-dialog-content
                         *brnDialogContent="let ctx"
-                        class="w-[calc(100vw-2rem)]"
+                        class="!w-[calc(100vw-2rem)]"
                     >
                         <hlm-dialog-header>
                             <app-add-transaction
-                                [expenses]="[]"
-                                (transactionSubmitted)="
-                                    refreshTransactionsList()
-                                "
-                                (dialogClosed)="refreshBudget()"
+                                [expenses]="(expenses$ | async) ?? []"
+                                (transactionSubmitted)="doNothing()"
+                                (dialogClosed)="onTransactionScreenClosed()"
                             ></app-add-transaction>
                         </hlm-dialog-header>
                         <hlm-dialog-footer></hlm-dialog-footer>

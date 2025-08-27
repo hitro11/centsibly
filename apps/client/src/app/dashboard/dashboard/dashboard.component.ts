@@ -144,7 +144,6 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
     ngOnInit() {
         this.budget$ = this.budgetService.getCurrentBudget().pipe(
             catchError((err) => {
-                this.loading.set(false);
                 console.error('Error loading budget since', err);
                 return of(null);
             }),
@@ -160,20 +159,17 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
 
         this.expenses$ = this.budget$.pipe(
-            filter((budget): budget is Budget => budget !== null),
-            map((budget) => budget.expenses)
+            map((budget) => budget?.expenses ?? null)
         );
 
         this.income$ = this.budget$.pipe(
-            filter((budget): budget is Budget => budget !== null),
-            map((budget) => budget.income)
+            map((budget) => budget?.income ?? null)
         );
 
         combineLatest([this.budget$, this.transactions$, this.expenses$])
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => this.loading.set(false));
 
-        this.checkIfCanvasReady();
         combineLatest([
             this.budget$!.pipe(
                 filter((budget): budget is Budget => budget !== null)
@@ -197,17 +193,6 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.chartReady$.next(false);
         this.budgetService.refreshCurrentBudget();
         this.transactionsService.refreshTransactions();
-    }
-
-    private checkIfCanvasReady() {
-        const check = () => {
-            if (this.chartCanvasRef?.nativeElement) {
-                this.chartReady$.next(true);
-            } else {
-                setTimeout(check, 50);
-            }
-        };
-        check();
     }
 
     createOrUpdateChart(budget: Budget): void {

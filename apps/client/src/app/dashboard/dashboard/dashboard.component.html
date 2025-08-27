@@ -1,6 +1,6 @@
 <div class="mt-8 flex min-h-[calc(100dvh-81px-48px)] flex-col">
     @if (loading()) {
-        <hlm-spinner class="size-8 md:size-10" />
+        <hlm-spinner class="m-auto size-16" />
     } @else {
         @if (budget$ | async; as budget) {
             <h1 class="text-center text-5xl lg:text-6xl">
@@ -132,6 +132,7 @@
                     />
                     <h4 class="mb-4 text-xl">Budget Not Found</h4>
                     <span hlmAlertDesc class="text-md">
+                        There was no budget found for {{ monthasReadableText }}.
                         Please click
                         <a
                             class="cursor-pointer text-blue-500"

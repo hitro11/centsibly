@@ -63,44 +63,36 @@ export class BudgetService {
         from: YearMonth,
         to: YearMonth
     ): Promise<WithId<Budget>[]> {
-        try {
-            const budgetsCollection = (await database()).collection<Budget>(
-                COLLECTIONS.BUDGETS
-            );
+        const budgetsCollection = (await database()).collection<Budget>(
+            COLLECTIONS.BUDGETS
+        );
 
-            let budgets = await budgetsCollection
-                .find({
-                    email: email.toLowerCase(),
-                    month: {
-                        $gte: from,
-                        $lte: to ?? from,
-                    },
-                })
-                .toArray();
+        let budgets = await budgetsCollection
+            .find({
+                email: email.toLowerCase(),
+                month: {
+                    $gte: from,
+                    $lte: to ?? from,
+                },
+            })
+            .toArray();
 
-            return budgets ?? [];
-        } catch (error) {
-            throw error;
-        }
+        return budgets ?? [];
     }
 
-    static async getLatestBudget(
+    static async getCurrentBudget(
         email: string
     ): Promise<WithId<Budget> | null> {
-        try {
-            const budgetsCollection = (await database()).collection<Budget>(
-                COLLECTIONS.BUDGETS
-            );
+        const budgetsCollection = (await database()).collection<Budget>(
+            COLLECTIONS.BUDGETS
+        );
 
-            let budget = await budgetsCollection.findOne({
-                email: email.toLowerCase(),
-                month: getCurrentYearMonth(),
-            });
+        const budget = await budgetsCollection.findOne({
+            email: email.toLowerCase(),
+            month: getCurrentYearMonth(),
+        });
 
-            return budget ?? null;
-        } catch (error) {
-            throw error;
-        }
+        return budget ?? null;
     }
 
     static async updateBudgetActualsAfterTransaction(
@@ -108,7 +100,7 @@ export class BudgetService {
         transactions: Transaction[]
     ) {
         try {
-            const budget = await this.getLatestBudget(email);
+            const budget = await this.getCurrentBudget(email);
 
             if (!budget) {
                 throw new Error('Budget not found');

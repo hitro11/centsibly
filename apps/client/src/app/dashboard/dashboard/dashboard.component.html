@@ -1,13 +1,17 @@
 <div class="mt-8 flex min-h-[calc(100dvh-81px-48px)] flex-col">
-    @if (loading()) {
-        <hlm-spinner class="m-auto size-16" />
-    } @else {
-        @if (budget$ | async; as budget) {
-            <h1 class="text-center text-5xl lg:text-6xl">
-                {{ monthasReadableText }}
-            </h1>
+    <div class="flex-1">
+        <h1 class="text-center text-5xl lg:text-6xl">
+            {{ monthasReadableText }}
+        </h1>
 
-            <div class="flex-1">
+        <div class="mt-12"></div>
+
+        @if (budget$ | async; as budget) {
+            @if (budget.status === 'loading') {
+                <div class="flex items-center justify-center">
+                    <hlm-spinner class="size-16" />
+                </div>
+            } @else if (budget.status === 'success' && budget.data) {
                 <div class="mt-20">
                     <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
                         Income
@@ -38,7 +42,7 @@
                             <div
                                 [ngClass]="{
                                     'mt-4': $index > 0,
-                                    'mt-2': $index === 0,
+                                    'mt-6': $index === 0,
                                 }"
                                 class="w-full md:w-[50%] lg:w-[25%]"
                             >
@@ -55,31 +59,6 @@
                 </div>
 
                 <div class="">
-                    <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
-                        Transactions
-                    </h1>
-
-                    @if (transactions$ | async; as transactions) {
-                        @if (transactions.length) {
-                            <div class="mt-8 flex flex-row justify-center">
-                                <app-transactions-list
-                                    class="flex-1"
-                                    [transactions]="transactions ?? []"
-                                ></app-transactions-list>
-                            </div>
-                        } @else {
-                            <p class="mt-8 text-center text-lg">
-                                No transactions
-                            </p>
-                        }
-                    }
-                </div>
-
-                <div class="mb-12 mt-12">
-                    <brn-separator hlmSeparator />
-                </div>
-
-                <div class="">
                     <h1 class="text-center text-4xl lg:text-4xl">Summary</h1>
                     <div class="">
                         <canvas
@@ -89,42 +68,40 @@
                         ></canvas>
                     </div>
                 </div>
-            </div>
 
-            <div class="fixed bottom-6 right-6 z-50">
-                <hlm-dialog>
-                    <div class="mb-4 mr-2 flex flex-row justify-end">
-                        <button
-                            type="button"
-                            title="Add a transaction"
-                            class="scale-[125%] shadow-lg dark:bg-gray-800"
-                            hlmBtn
-                            brnDialogTrigger
-                            size="icon"
-                            variant="outline"
+                <div class="fixed bottom-6 right-6 z-50">
+                    <hlm-dialog>
+                        <div class="mb-4 mr-2 flex flex-row justify-end">
+                            <button
+                                type="button"
+                                title="Add a transaction"
+                                class="scale-[125%] shadow-lg dark:bg-gray-800"
+                                hlmBtn
+                                brnDialogTrigger
+                                size="icon"
+                                variant="outline"
+                            >
+                                <hlm-icon size="xl" name="lucidePlus" />
+                            </button>
+                        </div>
+
+                        <hlm-dialog-content
+                            *brnDialogContent="let ctx"
+                            class="!w-[calc(100vw-2rem)]"
                         >
-                            <hlm-icon size="xl" name="lucidePlus" />
-                        </button>
-                    </div>
-
-                    <hlm-dialog-content
-                        *brnDialogContent="let ctx"
-                        class="!w-[calc(100vw-2rem)]"
-                    >
-                        <hlm-dialog-header>
-                            <app-add-transaction
-                                [expenses]="(expenses$ | async) ?? []"
-                                (transactionSubmitted)="doNothing()"
-                                (dialogClosed)="onTransactionScreenClosed()"
-                            ></app-add-transaction>
-                        </hlm-dialog-header>
-                        <hlm-dialog-footer></hlm-dialog-footer>
-                    </hlm-dialog-content>
-                </hlm-dialog>
-            </div>
-        } @else {
-            @if (!loading()) {
-                <div hlmAlert>
+                            <hlm-dialog-header>
+                                <app-add-transaction
+                                    [expenses]="(expenses$ | async) ?? []"
+                                    (transactionSubmitted)="doNothing()"
+                                    (dialogClosed)="onTransactionScreenClosed()"
+                                ></app-add-transaction>
+                            </hlm-dialog-header>
+                            <hlm-dialog-footer></hlm-dialog-footer>
+                        </hlm-dialog-content>
+                    </hlm-dialog>
+                </div>
+            } @else if (budget.status === 'success' && !budget.data) {
+                <div hlmAlert class="mx-8">
                     <hlm-icon
                         hlmAlertIcon
                         name="lucideAlertTriangle"
@@ -142,7 +119,46 @@
                         to create one.
                     </span>
                 </div>
+            } @else if (budget.status === 'error') {
+                <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
+                    Budget
+                </h1>
+
+                <div hlmAlert variant="destructive" class="mt-8">
+                    <hlm-icon
+                        hlmAlertIcon
+                        class="mt-1"
+                        name="lucideAlertTriangle"
+                    />
+                    <h4 class="mb-4 text-xl">Error Loading Budget</h4>
+                    <p hlmAlertDesc class="text-md">
+                        {{ budget.error }}
+                    </p>
+                </div>
             }
         }
-    }
+
+        <div class="mb-12 mt-12">
+            <brn-separator hlmSeparator />
+        </div>
+
+        <div class="">
+            <h1 class="ml-4 text-center text-4xl lg:mt-24 lg:text-4xl">
+                Transactions
+            </h1>
+        </div>
+
+        @if (transactions$ | async; as transactions) {
+            @if (transactions.length) {
+                <div class="mt-8 flex flex-row justify-center">
+                    <app-transactions-list
+                        class="flex-1"
+                        [transactions]="transactions ?? []"
+                    ></app-transactions-list>
+                </div>
+            } @else {
+                <p class="mt-8 text-center text-lg">No transactions</p>
+            }
+        }
+    </div>
 </div>

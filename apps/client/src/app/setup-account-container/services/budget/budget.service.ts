@@ -55,14 +55,15 @@ export class BudgetService {
     getCurrentBudget(): Observable<Budget | null> {
         return this.currentBudgetSubject$.pipe(
             startWith(void 0),
-            switchMap(() =>
-                this.httpClient
+            switchMap(() => {
+                console.log('budget http');
+                return this.httpClient
                     .get<BudgetHttpResponse>(
                         `${environment.API_URL}/budgets/current`
                     )
-                    .pipe(map((resp) => resp.data as Budget | null))
-            ),
-            shareReplay({ bufferSize: 1, refCount: true })
+                    .pipe(map((resp) => resp.data as Budget | null));
+            }),
+            shareReplay(1)
         );
     }
 

@@ -57,7 +57,7 @@ export class TransactionService {
                         })
                     )
             ),
-            shareReplay({ bufferSize: 1, refCount: true })
+            shareReplay(1)
         );
     }
 

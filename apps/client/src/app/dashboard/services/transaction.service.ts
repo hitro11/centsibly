@@ -47,17 +47,10 @@ export class TransactionService {
                                 return resp.data;
                             }
                             return [];
-                        }),
-                        catchError((error) => {
-                            console.error(
-                                'Failed to fetch transactions:',
-                                error
-                            );
-                            return of([]);
                         })
                     )
             ),
-            shareReplay({ bufferSize: 1, refCount: true })
+            shareReplay(1)
         );
     }
 

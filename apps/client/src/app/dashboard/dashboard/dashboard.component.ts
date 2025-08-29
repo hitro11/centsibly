@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private destroy$ = new Subject<void>();
     private chartReady$ = new BehaviorSubject<boolean>(false);
-    transactions$?: Observable<Transaction[]>;
+    transactions$?: Observable<LoadState<Transaction[]>>;
     budget$?: Observable<LoadState<Budget>>;
     expenses$?: Observable<Expense[] | null>;
     income$?: Observable<number | null>;
@@ -148,11 +148,21 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     ngOnInit() {
         this.transactions$ = this.transactionsService.getTransactions().pipe(
-            catchError((err) => {
-                console.error('Error loading transactions since', err);
-                return of([]);
+            map(
+                (data) =>
+                    ({ status: 'success', data }) satisfies LoadState<
+                        Transaction[]
+                    >
+            ),
+            catchError((error) => {
+                console.error('Error loading transactions since', error);
+                return of({
+                    status: 'error',
+                    error: generateErrorMessageString(error),
+                } satisfies LoadState<Transaction[]>);
             }),
-            takeUntil(this.destroy$)
+            takeUntil(this.destroy$),
+            startWith({ status: 'loading' } satisfies LoadState<Transaction[]>)
         );
 
         this.budget$ = this.budgetService.getCurrentBudget().pipe(
@@ -202,7 +212,6 @@ export class DashboardComponent implements OnInit, AfterViewChecked, OnDestroy {
                     status: 'success';
                     data: Budget;
                 };
-                console.log(successBudget);
                 if (successBudget.data) {
                     this.createOrUpdateChart(successBudget.data);
                 }

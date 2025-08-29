@@ -47,13 +47,6 @@ export class TransactionService {
                                 return resp.data;
                             }
                             return [];
-                        }),
-                        catchError((error) => {
-                            console.error(
-                                'Failed to fetch transactions:',
-                                error
-                            );
-                            return of([]);
                         })
                     )
             ),

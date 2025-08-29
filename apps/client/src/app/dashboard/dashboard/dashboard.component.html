@@ -149,15 +149,35 @@
         </div>
 
         @if (transactions$ | async; as transactions) {
-            @if (transactions.length) {
-                <div class="mt-8 flex flex-row justify-center">
-                    <app-transactions-list
-                        class="flex-1"
-                        [transactions]="transactions ?? []"
-                    ></app-transactions-list>
+            @if (transactions.status === 'loading') {
+                <div class="flex items-center justify-center">
+                    <hlm-spinner class="size-16" />
                 </div>
-            } @else {
-                <p class="mt-8 text-center text-lg">No transactions</p>
+            } @else if (transactions.status === 'success') {
+                @if (transactions.data?.length) {
+                    <div class="mt-8 flex flex-row justify-center">
+                        <app-transactions-list
+                            class="flex-1"
+                            [transactions]="transactions?.data ?? []"
+                        ></app-transactions-list>
+                    </div>
+                } @else {
+                    <p class="mt-8 text-center text-lg">
+                        No transactions present.
+                    </p>
+                }
+            } @else if (transactions.status === 'error') {
+                <div hlmAlert variant="destructive" class="mt-8">
+                    <hlm-icon
+                        hlmAlertIcon
+                        class="mt-1"
+                        name="lucideAlertTriangle"
+                    />
+                    <h4 class="mb-4 text-xl">Error Loading Transactions</h4>
+                    <p hlmAlertDesc class="text-md">
+                        {{ transactions.error }}
+                    </p>
+                </div>
             }
         }
     </div>

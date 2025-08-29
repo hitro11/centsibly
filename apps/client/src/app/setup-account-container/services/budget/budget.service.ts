@@ -56,7 +56,6 @@ export class BudgetService {
         return this.currentBudgetSubject$.pipe(
             startWith(void 0),
             switchMap(() => {
-                console.log('budget http');
                 return this.httpClient
                     .get<BudgetHttpResponse>(
                         `${environment.API_URL}/budgets/current`

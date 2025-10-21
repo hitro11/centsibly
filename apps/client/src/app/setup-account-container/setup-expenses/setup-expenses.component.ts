@@ -86,15 +86,17 @@ import { DeepPartialWithNull } from '../../shared/types';
     templateUrl: './setup-expenses.component.html',
     styleUrl: './setup-expenses.component.scss',
 })
-export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
-    inputData = input<
+export class SetupExpensesComponent
+    implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
+    initialData = input<
         DeepPartialWithNull<{
             expenses: AccountInfo['expenses'];
             income: AccountInfo['income'];
         }>
     >();
 
-    outputtedFormData = output<
+    validData = output<
         DeepPartialWithNull<{
             expenses: AccountInfo['expenses'];
         }>
@@ -144,35 +146,44 @@ export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe(() => {
                 const isFormValid = this.form.valid;
                 this.validityChanged.emit(isFormValid);
-
-                const expenses = this.generateOutputObject(
-                    this.form.value.expenses
-                );
-                this.outputtedFormData.emit(expenses);
             });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['inputData']?.currentValue) {
-            while (this.expensesFormControlArray.length > 0) {
-                this.expensesFormControlArray.removeAt(0);
+    ngOnChanges(changes: SimpleChanges): void {}
+
+    ngAfterViewInit(): void {
+        if (!this.initialData()?.expenses?.length) {
+            this.addExpense();
+        } else {
+            for (const expense of this.initialData()?.expenses ?? []) {
+                this.addExpense(expense?.name ?? '', expense?.amount ?? 0);
             }
-
-            setTimeout(() => {
-                if (!this.inputData()?.expenses?.length) {
-                    this.addExpense();
-                } else {
-                    for (const expense of this.inputData()?.expenses ?? []) {
-                        this.addExpense(
-                            expense?.name ?? '',
-                            expense?.amount ?? 0
-                        );
-                    }
-                }
-
-                this.validityChanged.emit(this.form.valid);
-            }, 0);
         }
+    }
+
+    sendDataToParent(): Expense[] {
+        return this.form.controls['expenses']?.getRawValue() as Expense[];
+    }
+
+    isExpenseArray(array: unknown): array is Expense[] {
+        if (!Array.isArray(array)) {
+            return false;
+        }
+
+        for (const value of array) {
+            if (
+                !(
+                    'name' in value &&
+                    typeof value.name === 'string' &&
+                    'amount' in value &&
+                    typeof value.amount === 'number'
+                )
+            ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     ngOnDestroy(): void {
@@ -181,7 +192,7 @@ export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get expensesFormControlArray() {
-        return this.form.controls['expenses'] as FormArray;
+        return this.form.controls['expenses'] as unknown as FormArray;
     }
 
     generateOutputObject(expenses: unknown[] | undefined): DeepPartialWithNull<{
@@ -280,7 +291,7 @@ export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
             if (!(formArray instanceof FormArray)) return null;
 
             const expenses = formArray.controls.map((c) => c.value);
-            const income = this.inputData()?.income ?? 0;
+            const income = this.initialData()?.income ?? 0;
 
             if (this.doExpensesExceedIncome(income, expenses)) {
                 return { expensesGreaterThanIncome: true };

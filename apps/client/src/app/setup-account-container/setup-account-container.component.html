@@ -42,9 +42,9 @@
                     must have a category and an amount.
                 </p>
                 <app-setup-expenses
-                    (outputtedFormData)="onExpenseFormDataUpdated($event)"
+                    (validData)="onExpenseFormDataUpdated($event)"
                     (validityChanged)="onExpensesFormValidityChanged($event)"
-                    [inputData]="{
+                    [initialData]="{
                         expenses: accountInfo.expenses,
                         income: accountInfo.income,
                     }"

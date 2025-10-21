@@ -1,4 +1,4 @@
-<button [brnMenuTriggerFor]="menu">
+<button [brnMenuTriggerFor]="menu" title="menu">
     <hlm-icon
         size="xl"
         name="lucideUserCircle"
@@ -9,6 +9,10 @@
 <ng-template #menu>
     <hlm-menu class="w-[15rem] dark:bg-[#181C1F]">
         <hlm-menu-group>
+            <button hlmMenuItem class="py-3 hover:bg-transparent">
+                <hlm-icon name="lucideUserCircle" hlmMenuIcon />
+                <span class="ml-0 text-base">{{ email() }}</span>
+            </button>
             <button
                 (click)="onSettingsButtonClick()"
                 hlmMenuItem
@@ -17,7 +21,6 @@
                 <hlm-icon name="lucideSettings" hlmMenuIcon />
                 <span class="ml-0 text-base">Settings</span>
             </button>
-
             <button
                 (click)="signInOrSignOut()"
                 hlmMenuItem

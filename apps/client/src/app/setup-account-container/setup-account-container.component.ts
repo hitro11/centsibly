@@ -1,6 +1,14 @@
 import { CURRENCIES } from '@centsibly/utils/constants';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+    Component,
+    computed,
+    EventEmitter,
+    inject,
+    OnInit,
+    signal,
+    ViewChild,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HlmFormFieldModule } from '@spartan-ng/ui-formfield-helm';
 import { AuthenticationService } from '../auth/services/authentication.service';
@@ -36,6 +44,8 @@ import {
     styleUrl: './setup-account-container.component.scss',
 })
 export class SetupAccountContainerComponent implements OnInit {
+    @ViewChild(SetupExpensesComponent)
+    expensesComponent!: SetupExpensesComponent;
     authService = inject(AuthenticationService);
     budgetService = inject(BudgetService);
     fb = inject(FormBuilder);
@@ -54,6 +64,7 @@ export class SetupAccountContainerComponent implements OnInit {
         income: null,
         expenses: null,
     };
+
     INCOME_FORM_NAME = this.budgetService.INCOME_FORM_NAME;
     EXPENSE_FORM_NAME = this.budgetService.EXPENSE_FORM_NAME;
 
@@ -94,18 +105,18 @@ export class SetupAccountContainerComponent implements OnInit {
                 if (validatedData.success) {
                     this.accountInfo.currency = validatedData.data.currency;
                     this.accountInfo.income = validatedData.data.income;
-                    this.currentSection.update((v) => v++);
                 } else {
-                    console.error(validatedData.error);
                     return;
                 }
 
-                this.localStorageService.delete(this.INCOME_FORM_NAME);
                 this.currentSection.update((v) => v + 1);
                 break;
             }
 
             case 2: {
+                const x = this.expensesComponent.sendDataToParent();
+                console.log(x);
+
                 if (!this.accountInfo.expenses) {
                     return;
                 }

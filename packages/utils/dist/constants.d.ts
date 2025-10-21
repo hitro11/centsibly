@@ -18,5 +18,5 @@ export declare const CURRENCIES: readonly [{
 }];
 export declare const STRING_REGEX: RegExp;
 export declare const AMOUNT_REGEX: RegExp;
-export declare const DEBOUNCE_TIME_MS = 200;
+export declare const DEBOUNCE_TIME_MS = 250;
 //# sourceMappingURL=constants.d.ts.map

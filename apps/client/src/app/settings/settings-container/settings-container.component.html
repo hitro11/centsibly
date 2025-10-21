@@ -40,10 +40,8 @@
                     >
                         <h1 class="text-xl">Expenses Categories</h1>
                         <app-setup-expenses
-                            [inputData]="accountInfo"
-                            (outputtedFormData)="
-                                onExpenseFormDataUpdated($event)
-                            "
+                            [initialData]="accountInfo"
+                            (validData)="onExpenseFormDataUpdated($event)"
                             (validityChanged)="
                                 onExpensesFormValidityChanged($event)
                             "

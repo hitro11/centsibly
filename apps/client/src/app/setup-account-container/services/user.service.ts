@@ -1,5 +1,6 @@
+import { BudgetService } from './budget/budget.service';
 import { firstValueFrom, Observable } from 'rxjs';
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import Session from 'supertokens-web-js/recipe/session';

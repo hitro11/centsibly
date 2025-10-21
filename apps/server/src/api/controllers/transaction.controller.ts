@@ -28,8 +28,9 @@ export class TransactionController {
     static async getTransactions(req: Request) {
         try {
             const email = await UserService.getEmail(req);
-            const from = (req.query.from ?? getCurrentYearMonth()) as YearMonth;
-            const to = (req.query.to ?? getCurrentYearMonth()) as YearMonth;
+            const from = (req.query['from'] ??
+                getCurrentYearMonth()) as YearMonth;
+            const to = (req.query['to'] ?? getCurrentYearMonth()) as YearMonth;
 
             if (!email) {
                 throw new Error('Email not found');

@@ -77,4 +77,9 @@ export class BudgetService {
             })
             .pipe(map((resp) => resp.data as Budget | null));
     }
+
+    async hasUserCompletedSetup(): Promise<boolean> {
+        const userBudget = await firstValueFrom(this.getCurrentBudget());
+        return userBudget?.income ? true : false;
+    }
 }

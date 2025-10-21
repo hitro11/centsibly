@@ -1,7 +1,7 @@
 import { logger } from '../../config/logger.js';
 import supertokens from 'supertokens-node';
 import { SessionRequest } from 'supertokens-node/framework/express';
-import { Budget, AccountInfo } from '@centsibly/utils/schemas';
+import { AccountInfo } from '@centsibly/utils/schemas';
 import { database } from '../../config/db.js';
 import { WithId } from 'mongodb';
 

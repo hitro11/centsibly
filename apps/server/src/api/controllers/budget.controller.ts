@@ -20,8 +20,8 @@ export class BudgetController {
             throw new Error('Email not found');
         }
 
-        const from = req.query.from as YearMonth;
-        const to = req.query.to as YearMonth;
+        const from = req.query['from'] as YearMonth;
+        const to = req.query['to'] as YearMonth;
 
         return await BudgetService.getBudgetsInTimeRange(email, from, to);
     }

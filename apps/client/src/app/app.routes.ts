@@ -9,6 +9,7 @@ import { AuthGuard } from './routeGuards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { NoAuthGuard } from './routeGuards/no-auth.guard';
 import { SettingsContainerComponent } from './settings/settings-container/settings-container.component';
+import { IsSetupCompleteGuard } from './routeGuards/is-setup-complete.guard';
 
 export const routes: Routes = [
     {
@@ -29,7 +30,7 @@ export const routes: Routes = [
     {
         path: 'setup',
         component: SetupAccountContainerComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, IsSetupCompleteGuard],
     },
     {
         path: 'dashboard',

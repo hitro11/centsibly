@@ -153,12 +153,12 @@ export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['inputData']?.currentValue) {
-            while (this.expensesFormControlArray.length > 0) {
-                this.expensesFormControlArray.removeAt(0);
-            }
+        if (changes['inputData']) {
+            if (changes['inputData']?.firstChange) {
+                while (this.expensesFormControlArray.length > 0) {
+                    this.expensesFormControlArray.removeAt(0);
+                }
 
-            setTimeout(() => {
                 if (!this.inputData()?.expenses?.length) {
                     this.addExpense();
                 } else {
@@ -169,7 +169,9 @@ export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
                         );
                     }
                 }
+            }
 
+            setTimeout(() => {
                 this.validityChanged.emit(this.form.valid);
             }, 0);
         }
@@ -208,10 +210,11 @@ export class SetupExpensesComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.expensesFormControlArray?.push(newExpense);
-
-        // reset formgroup to prevent 'required' error from activating
-        newExpense.markAsUntouched();
-        newExpense.updateValueAndValidity();
+        // newExpense.markAllAsTouched();
+        // newExpense.markAsDirty();
+        // newExpense.updateValueAndValidity();
+        // newExpense.get('name')?.updateValueAndValidity();
+        // newExpense.get('amount')?.updateValueAndValidity();
     }
 
     deleteExpense(index: number): void {

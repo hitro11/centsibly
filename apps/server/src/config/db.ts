@@ -5,7 +5,7 @@ import { DATABASE_NAME } from './constants.js';
 let client: MongoClient;
 
 async function initDBclient(): Promise<void> {
-    client = new MongoClient(process.env.DB_CONNECTION_STRING, {
+    client = new MongoClient(process.env.DB_CONNECTION_STRING ?? '', {
         serverApi: {
             version: ServerApiVersion.v1,
             strict: true,
@@ -40,7 +40,7 @@ export async function pingDB(): Promise<boolean> {
     try {
         const db = await database();
         const resp = await db.command({ ping: 1 });
-        return resp.ok === 1 ? true : false;
+        return resp['ok'] === 1 ? true : false;
     } catch (error) {
         throw error;
     }

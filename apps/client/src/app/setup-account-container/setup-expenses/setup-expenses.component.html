@@ -34,7 +34,6 @@
                                     class="w-full"
                                     hlmInput
                                     type="text"
-                                    placeholder="Name"
                                 />
                             </label>
 
@@ -48,6 +47,9 @@
                                     {{ maxCharacterLimit }} characters
                                 </hlm-error>
                             }
+                            <!-- @if (nameFormControl?.errors?.['required']) {
+                                <hlm-error>Cannot be empty </hlm-error>
+                            } -->
                             @if (nameFormControl?.errors?.['duplicateName']) {
                                 <hlm-error>Duplicate name</hlm-error>
                             }
@@ -61,7 +63,6 @@
                                     hlmInput
                                     type="number"
                                     step="1"
-                                    placeholder="$"
                                 />
                             </label>
 

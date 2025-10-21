@@ -43,7 +43,7 @@ export class SetupAccountContainerComponent implements OnInit {
     localStorageService = inject(LocalStorageService);
 
     maxIncomeLength = 10;
-    currentSection = signal<number>(0);
+    currentSection = signal<number>(1);
     CURRENCIES = CURRENCIES;
 
     isIncomeValid = signal<boolean>(false);

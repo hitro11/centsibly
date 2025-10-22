@@ -5,7 +5,7 @@ import { DATABASE_NAME } from './constants.js';
 let client: MongoClient;
 
 async function initDBclient(): Promise<void> {
-    client = new MongoClient(process.env.DB_CONNECTION_STRING ?? '', {
+    client = new MongoClient(process.env['DB_CONNECTION_STRING'] ?? '', {
         serverApi: {
             version: ServerApiVersion.v1,
             strict: true,
